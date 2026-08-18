@@ -185,6 +185,24 @@ export default function AdminDashboard() {
     }
   }
 
+  // Compute duplicate email frequency map
+  const { emailCounts, duplicateEmailCount } = useMemo(() => {
+    const eMap = {};
+    registrations.forEach(r => {
+      if (r.email) {
+        const cleanEmail = r.email.trim().toLowerCase();
+        eMap[cleanEmail] = (eMap[cleanEmail] || 0) + 1;
+      }
+    });
+
+    const dupEmailEntries = registrations.filter(r => r.email && eMap[r.email.trim().toLowerCase()] > 1);
+
+    return {
+      emailCounts: eMap,
+      duplicateEmailCount: dupEmailEntries.length
+    };
+  }, [registrations]);
+
   // Filter & Sort Logic
   const filteredAndSortedRegistrations = useMemo(() => {
     let list = [...registrations];
@@ -194,6 +212,8 @@ export default function AdminDashboard() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       list = list.filter(r => new Date(r.submittedAt) >= today);
+    } else if (filterTab === 'duplicateEmail') {
+      list = list.filter(r => r.email && emailCounts[r.email.trim().toLowerCase()] > 1);
     } else if (filterTab === '5players') {
       list = list.filter(r => r.players && r.players.length === 5);
     } else if (filterTab === 'withProofs') {
@@ -202,6 +222,12 @@ export default function AdminDashboard() {
 
     // Sorting
     list.sort((a, b) => {
+      // If filtering by duplicate emails, group same emails together first
+      if (filterTab === 'duplicateEmail') {
+        const emailCompare = (a.email || '').localeCompare(b.email || '');
+        if (emailCompare !== 0) return emailCompare;
+      }
+
       if (sortBy === 'newest') {
         return new Date(b.submittedAt) - new Date(a.submittedAt);
       }
@@ -218,7 +244,7 @@ export default function AdminDashboard() {
     });
 
     return list;
-  }, [registrations, filterTab, sortBy]);
+  }, [registrations, filterTab, sortBy, emailCounts]);
 
   // Counts for quick filter pills
   const filterCounts = useMemo(() => {
@@ -227,10 +253,11 @@ export default function AdminDashboard() {
     return {
       all: registrations.length,
       today: registrations.filter(r => new Date(r.submittedAt) >= today).length,
+      duplicateEmails: duplicateEmailCount,
       fivePlayers: registrations.filter(r => r.players && r.players.length === 5).length,
       withProofs: registrations.filter(r => (r.youtubeProofs?.length > 0) && (r.instagramProofs?.length > 0)).length
     };
-  }, [registrations]);
+  }, [registrations, duplicateEmailCount]);
 
   // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredAndSortedRegistrations.length / itemsPerPage));
@@ -682,6 +709,21 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                 <Calendar className="w-3.5 h-3.5" /> Today Only <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${filterTab === 'today' ? 'bg-black text-gold' : 'bg-slate-800 text-gray-400'}`}>{filterCounts.today}</span>
               </button>
 
+              {/* DUPLICATE EMAILS FILTER PILL */}
+              <button
+                onClick={() => setFilterTab('duplicateEmail')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
+                  filterTab === 'duplicateEmail'
+                    ? 'bg-amber-500 text-black font-bold shadow-[0_0_12px_rgba(245,158,11,0.5)]'
+                    : filterCounts.duplicateEmails > 0
+                      ? 'bg-amber-950/35 text-amber-300 hover:bg-amber-900/50 border border-amber-500/40'
+                      : 'bg-[#14151c] text-gray-400 hover:bg-[#1e202a] border border-slate-750'
+                }`}
+              >
+                <AlertTriangle className={`w-3.5 h-3.5 ${filterTab === 'duplicateEmail' ? 'text-black' : 'text-amber-400'}`} />
+                Duplicate Emails <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${filterTab === 'duplicateEmail' ? 'bg-black text-amber-400' : 'bg-amber-900/60 text-amber-300'}`}>{filterCounts.duplicateEmails}</span>
+              </button>
+
               <button
                 onClick={() => setFilterTab('5players')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
@@ -775,13 +817,30 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                               <span className="text-gold-bright">{reg.registrationId}</span>
                             </td>
 
-                            {/* Team Name */}
+                            {/* Team Name & Email */}
                             <td className="py-3.5 px-4 font-semibold text-white">
                               <div className="font-gaming font-bold text-sm tracking-wide group-hover:text-gold transition-colors">
                                 {reg.teamName}
                               </div>
-                              <div className="text-[11px] text-gray-400 font-sans truncate max-w-[180px]">
-                                {reg.email}
+                              <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                                <span className="text-[11px] text-gray-400 font-sans truncate max-w-[180px]">
+                                  {reg.email}
+                                </span>
+                                {reg.email && emailCounts[reg.email.trim().toLowerCase()] > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSearch(reg.email);
+                                      setFilterTab('all');
+                                    }}
+                                    className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500 hover:text-black font-bold transition-all cursor-pointer select-none"
+                                    title={`Duplicate Email Detected (${emailCounts[reg.email.trim().toLowerCase()]} entries)! Click to filter all entries with this email`}
+                                  >
+                                    <AlertTriangle className="w-2.5 h-2.5 text-amber-400" />
+                                    Duplicate ({emailCounts[reg.email.trim().toLowerCase()]}x)
+                                  </button>
+                                )}
                               </div>
                             </td>
 
@@ -1203,6 +1262,32 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
 
             {/* Modal Body (Scrollable) */}
             <div className="p-6 overflow-y-auto space-y-6 flex-grow">
+
+              {/* Duplicate Email Warning Alert (if any) */}
+              {activeReviewItem.email && emailCounts[activeReviewItem.email.trim().toLowerCase()] > 1 && (
+                <div className="bg-amber-950/45 border border-amber-500/50 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.15)]">
+                  <div className="flex items-center gap-2.5">
+                    <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 animate-bounce" />
+                    <div>
+                      <span className="font-gaming font-bold text-amber-300 block">DUPLICATE EMAIL DETECTED</span>
+                      <span>
+                        This email address (<strong>{activeReviewItem.email}</strong>) has been used in <strong>{emailCounts[activeReviewItem.email.trim().toLowerCase()]}</strong> different registrations.
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch(activeReviewItem.email);
+                      setFilterTab('all');
+                      setQuickReviewIndex(null);
+                    }}
+                    className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-gaming font-bold text-[11px] rounded-lg transition-all shadow cursor-pointer shrink-0"
+                  >
+                    View All ({emailCounts[activeReviewItem.email.trim().toLowerCase()]}) Entries
+                  </button>
+                </div>
+              )}
 
               {/* Quick Info Ribbon */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#13141c] border border-gold/15 rounded-xl p-4 text-xs">
