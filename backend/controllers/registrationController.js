@@ -178,7 +178,9 @@ exports.getRegistrations = async (req, res) => {
           { registrationId: searchRegex },
           { teamName: searchRegex },
           { teamLeaderName: searchRegex },
-          { email: searchRegex }
+          { email: searchRegex },
+          { 'players.playerName': searchRegex },
+          { 'players.playerUID': searchRegex }
         ]
       };
     }
