@@ -214,10 +214,6 @@ export default function AdminDashboard() {
       list = list.filter(r => new Date(r.submittedAt) >= today);
     } else if (filterTab === 'duplicateEmail') {
       list = list.filter(r => r.email && emailCounts[r.email.trim().toLowerCase()] > 1);
-    } else if (filterTab === '5players') {
-      list = list.filter(r => r.players && r.players.length === 5);
-    } else if (filterTab === 'withProofs') {
-      list = list.filter(r => (r.youtubeProofs?.length > 0) && (r.instagramProofs?.length > 0));
     }
 
     // Sorting
@@ -253,9 +249,7 @@ export default function AdminDashboard() {
     return {
       all: registrations.length,
       today: registrations.filter(r => new Date(r.submittedAt) >= today).length,
-      duplicateEmails: duplicateEmailCount,
-      fivePlayers: registrations.filter(r => r.players && r.players.length === 5).length,
-      withProofs: registrations.filter(r => (r.youtubeProofs?.length > 0) && (r.instagramProofs?.length > 0)).length
+      duplicateEmails: duplicateEmailCount
     };
   }, [registrations, duplicateEmailCount]);
 
@@ -723,29 +717,6 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                 <AlertTriangle className={`w-3.5 h-3.5 ${filterTab === 'duplicateEmail' ? 'text-black' : 'text-amber-400'}`} />
                 Duplicate Emails <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${filterTab === 'duplicateEmail' ? 'bg-black text-amber-400' : 'bg-amber-900/60 text-amber-300'}`}>{filterCounts.duplicateEmails}</span>
               </button>
-
-              <button
-                onClick={() => setFilterTab('5players')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
-                  filterTab === '5players'
-                    ? 'bg-gold-gradient text-black font-bold shadow-gold-glow'
-                    : 'bg-[#14151c] text-gray-300 hover:bg-[#1e202a] border border-slate-750'
-                }`}
-              >
-                <Users className="w-3.5 h-3.5" /> 5-Player Squads <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${filterTab === '5players' ? 'bg-black text-gold' : 'bg-slate-800 text-gray-400'}`}>{filterCounts.fivePlayers}</span>
-              </button>
-
-              <button
-                onClick={() => setFilterTab('withProofs')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
-                  filterTab === 'withProofs'
-                    ? 'bg-gold-gradient text-black font-bold shadow-gold-glow'
-                    : 'bg-[#14151c] text-gray-300 hover:bg-[#1e202a] border border-slate-750'
-                }`}
-              >
-                <Camera className="w-3.5 h-3.5" /> Has Proofs <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${filterTab === 'withProofs' ? 'bg-black text-gold' : 'bg-slate-800 text-gray-400'}`}>{filterCounts.withProofs}</span>
-              </button>
-
               {/* Reset Filters shortcut */}
               {(filterTab !== 'all' || search || sortBy !== 'newest') && (
                 <button
