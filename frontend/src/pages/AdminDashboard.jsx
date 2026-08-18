@@ -765,8 +765,6 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                         <th className="py-3.5 px-4 font-bold">ID</th>
                         <th className="py-3.5 px-4 font-bold">Team Name</th>
                         <th className="py-3.5 px-4 font-bold">Leader</th>
-                        <th className="py-3.5 px-4 font-bold">Roster</th>
-                        <th className="py-3.5 px-4 font-bold">Proofs (Check)</th>
                         <th className="py-3.5 px-4 font-bold">Date</th>
                         <th className="py-3.5 px-4 font-bold text-right">Actions</th>
                       </tr>
@@ -774,9 +772,6 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                     <tbody className="divide-y divide-slate-850 text-xs">
                       {paginatedRegistrations.map((reg, rowIdx) => {
                         const globalIdx = (currentPage - 1) * itemsPerPage + rowIdx;
-                        const ytCount = reg.youtubeProofs?.length || 0;
-                        const igCount = reg.instagramProofs?.length || 0;
-                        const playersCount = reg.players?.length || 0;
 
                         return (
                           <tr
@@ -823,32 +818,6 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                               </div>
                             </td>
 
-                            {/* Roster Badge */}
-                            <td className="py-3.5 px-4 whitespace-nowrap">
-                              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-gaming font-bold border ${
-                                playersCount === 5
-                                  ? 'bg-amber-950/30 text-gold-bright border-gold/30'
-                                  : 'bg-slate-800 text-slate-300 border-slate-700'
-                              }`}>
-                                <Users className="w-3 h-3" /> {playersCount} Players
-                              </span>
-                            </td>
-
-                            {/* Quick Proof Badges & Inspection Trigger */}
-                            <td className="py-3.5 px-4 whitespace-nowrap">
-                              <div className="flex items-center gap-1.5">
-                                <button
-                                  type="button"
-                                  onClick={() => setQuickReviewIndex(globalIdx)}
-                                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-800/90 hover:bg-gold hover:text-black text-slate-200 border border-slate-700 hover:border-gold rounded text-[11px] font-bold transition-all cursor-pointer shadow-sm group/proof"
-                                  title="Click to quickly review screenshot proofs in modal"
-                                >
-                                  <Camera className="w-3.5 h-3.5 text-gold-bright group-hover/proof:text-black" />
-                                  <span>Proofs ({ytCount + igCount})</span>
-                                </button>
-                              </div>
-                            </td>
-
                             {/* Date */}
                             <td className="py-3.5 px-4 text-gray-400 text-[11px] whitespace-nowrap">
                               {new Date(reg.submittedAt).toLocaleDateString()}
@@ -859,10 +828,10 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                               <div className="flex justify-end items-center gap-2">
                                 <button
                                   onClick={() => setQuickReviewIndex(globalIdx)}
-                                  className="flex items-center gap-1 px-2.5 py-1.5 bg-gold/15 hover:bg-gold text-gold-bright hover:text-black border border-gold/30 rounded text-xs transition-all cursor-pointer font-bold"
+                                  className="flex items-center gap-1 px-3 py-1.5 bg-gold/15 hover:bg-gold text-gold-bright hover:text-black border border-gold/30 rounded text-xs transition-all cursor-pointer font-bold"
                                   title="Quick Proof & Roster Inspector"
                                 >
-                                  <Sparkles className="w-3.5 h-3.5" /> Quick View
+                                  <Sparkles className="w-3.5 h-3.5" /> Check Proofs
                                 </button>
 
                                 <Link
