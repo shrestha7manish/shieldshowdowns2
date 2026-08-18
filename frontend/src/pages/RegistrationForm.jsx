@@ -72,22 +72,6 @@ export default function RegistrationForm() {
     return () => clearInterval(interval);
   }, [timerConfig]);
 
-  useEffect(() => {
-    document.body.style.backgroundImage = "url('/bg.jpg')";
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundAttachment = "fixed";
-
-    return () => {
-      document.body.style.backgroundImage = "";
-      document.body.style.backgroundSize = "";
-      document.body.style.backgroundPosition = "";
-      document.body.style.backgroundRepeat = "";
-      document.body.style.backgroundAttachment = "";
-    };
-  }, []);
-
   // File uploads & previews state arrays (pre-allocated to size 5 for dynamic player slots)
   const [ytFiles, setYtFiles] = useState([null, null, null, null, null]);
   const [ytPreviews, setYtPreviews] = useState([null, null, null, null, null]);
@@ -472,7 +456,7 @@ export default function RegistrationForm() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 flex flex-col items-center gap-6">
       {/* Main Form Card */}
-      <div className="w-full bg-[#060608]/75 backdrop-blur-md border-2 border-gold/40 rounded-xl overflow-hidden shadow-2xl">
+      <div className="w-full bg-[#0c0d12]/92 backdrop-blur-xl border border-gold/35 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(212,175,55,0.08)]">
 
         {/* HEADER SECTION (Banner Image Match) */}
         <div className="relative border-b border-gold/25 overflow-hidden">
@@ -1153,7 +1137,7 @@ export default function RegistrationForm() {
       {/* Bottom widgets row */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* INSTRUCTIONS CARD */}
-        <div className="bg-[#060608]/75 backdrop-blur-md border border-gold/20 rounded-xl p-6 shadow-2xl relative overflow-hidden font-sans">
+        <div className="bg-[#0c0d12]/90 backdrop-blur-xl border border-gold/25 rounded-2xl p-6 shadow-2xl relative overflow-hidden font-sans">
           <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider mb-4 border-b border-gold/10 pb-2">
             REGISTRATION GUIDE
           </h3>
@@ -1178,7 +1162,7 @@ export default function RegistrationForm() {
         </div>
 
         {/* JOIN DISCORD CARD */}
-        <div className="bg-[#060608]/75 backdrop-blur-md border border-gold/20 rounded-xl p-6 shadow-2xl text-center flex flex-col justify-between relative overflow-hidden font-sans">
+        <div className="bg-[#0c0d12]/90 backdrop-blur-xl border border-gold/25 rounded-2xl p-6 shadow-2xl text-center flex flex-col justify-between relative overflow-hidden font-sans">
           <div>
             <h4 className="font-gaming font-black text-xs text-gold-bright uppercase tracking-wider mb-2">
               GLORY AWAITS
@@ -1191,7 +1175,7 @@ export default function RegistrationForm() {
             href="https://discord.gg/MK7eQZayxd"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#D4AF37] hover:bg-[#FFD700] font-gaming text-white font-bold text-xs tracking-wider rounded transition-all cursor-pointer shadow-md"
+            className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#D4AF37] hover:bg-[#FFD700] font-gaming text-black font-black text-xs tracking-wider rounded transition-all cursor-pointer shadow-md"
           >
             Join Discord Community
           </a>
