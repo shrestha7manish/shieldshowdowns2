@@ -390,30 +390,30 @@ export default function RegistrationForm() {
 
   if (successData) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-20 text-center">
+      <div className="max-w-3xl mx-auto px-4 py-20 text-center font-sans">
         <div className="relative inline-block mb-6">
-          <div className="absolute inset-0 bg-gold/30 blur-2xl rounded-full" />
-          <CheckCircle2 className="w-24 h-24 text-gold-bright mx-auto relative filter drop-shadow-[0_0_15px_rgba(255,215,0,0.6)]" />
+          <div className="absolute inset-0 bg-[#E8C766]/30 blur-2xl rounded-full" />
+          <CheckCircle2 className="w-24 h-24 text-[#E8C766] mx-auto relative filter drop-shadow-[0_4px_12px_rgba(232,199,102,0.4)]" />
         </div>
-        <h1 className="font-gaming font-black text-3xl md:text-5xl text-white tracking-wider mb-2 uppercase italic">
-          REGISTRATION <span className="text-gold-bright font-black">SUBMITTED</span>
+        <h1 className="font-gaming font-black text-3xl md:text-5xl text-[#243B53] tracking-wider mb-2 uppercase italic">
+          REGISTRATION <span className="text-[#4F7CAC] font-black">SUBMITTED</span>
         </h1>
-        <p className="text-gray-400 font-sans text-base md:text-lg mb-2">
+        <p className="text-[#243B53]/80 font-sans text-base md:text-lg mb-6">
           Registration Submitted Successfully. Glory Awaits Your Team!
         </p>
 
-
-        <div className="bg-[#121214] border-2 border-gold/40 rounded-xl p-8 max-w-md mx-auto mb-10 shadow-gold-glow">
-          <div className="text-xs uppercase tracking-widest text-gray-500 font-gaming mb-1">Your Registration ID</div>
-          <div className="font-gaming font-black text-4xl text-gold-bright tracking-widest mb-4 glow-text">
+        {/* Success Card */}
+        <div className="bg-[#EEF5FA] border-2 border-[#E8C766] rounded-2xl p-8 max-w-md mx-auto mb-10 shadow-lg">
+          <div className="text-xs uppercase tracking-widest text-[#4F7CAC] font-gaming mb-1 font-bold">Your Registration ID</div>
+          <div className="font-gaming font-black text-4xl text-[#243B53] tracking-widest mb-4">
             {successData.registrationId}
           </div>
-          <div className="h-px bg-gold/20 w-3/4 mx-auto my-3" />
-          <div className="text-sm text-gray-300 font-sans mb-4">
-            Team: <span className="font-bold text-white font-gaming">{successData.teamName}</span>
+          <div className="h-px bg-[#E5E7EB] w-3/4 mx-auto my-3" />
+          <div className="text-sm text-[#243B53] font-sans mb-4">
+            Team: <span className="font-bold text-[#4F7CAC] font-gaming">{successData.teamName}</span>
           </div>
-          <div className="p-3 bg-[#1e1a0f] border border-gold/25 text-gold-bright rounded-lg text-[11px] font-sans leading-relaxed text-center">
-            <span className="font-gaming font-black tracking-wider block mb-1 text-gold-bright">⚠️ ACTION REQUIRED</span>
+          <div className="p-3 bg-[#FAF8F2] border border-[#E8C766] text-[#8C6B14] rounded-xl text-xs font-sans leading-relaxed text-center shadow-sm">
+            <span className="font-gaming font-black tracking-wider block mb-1 text-[#8C6B14]">⚠️ ACTION REQUIRED</span>
             Please screenshot this registration card and submit it in our Discord server for verification.
           </div>
         </div>
@@ -421,7 +421,7 @@ export default function RegistrationForm() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a
             href="https://discord.gg/MK7eQZayxd"
-            className="px-8 py-3 bg-[#5865F2] hover:bg-[#4752C4] font-gaming text-white font-bold tracking-wider rounded transition-all duration-300 shadow-[0_0_15px_rgba(88,101,242,0.4)] transform hover:-translate-y-0.5 cursor-pointer flex items-center gap-2"
+            className="px-8 py-3 bg-[#5865F2] hover:bg-[#4752C4] font-gaming text-white font-bold tracking-wider rounded-xl transition-all duration-300 shadow-md transform hover:-translate-y-0.5 cursor-pointer flex items-center gap-2"
           >
             <svg className="w-5 h-5 fill-current" viewBox="0 0 127.14 96.36">
               <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5c.89-.65,1.76-1.34,2.58-2a75.58,75.58,0,0,0,72.9,0c.82.71,1.69,1.4,2.58,2a68.43,68.43,0,0,1-10.5,5,77.7,77.7,0,0,0,6.63,10.85,105.73,105.73,0,0,0,31.06-18.83C129.87,48.12,122.56,25.29,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.9,46,53.72,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.14,46,96,53,91,65.69,84.69,65.69Z" />
@@ -433,7 +433,7 @@ export default function RegistrationForm() {
             onClick={() => {
               setSuccessData(null);
             }}
-            className="px-8 py-3 bg-slate-800 hover:bg-slate-700 font-gaming text-white font-bold tracking-wider rounded transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+            className="px-8 py-3 bg-[#4F7CAC] hover:bg-[#3D638D] font-gaming text-white font-bold tracking-wider rounded-xl transition-all duration-300 shadow-md transform hover:-translate-y-0.5 cursor-pointer"
           >
             Register Another Team
           </button>
@@ -454,12 +454,12 @@ export default function RegistrationForm() {
   const marqueeItems = getMarqueeItems();
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 flex flex-col items-center gap-6">
-      {/* Main Form Card */}
-      <div className="w-full bg-[#0c0d12]/92 backdrop-blur-xl border border-gold/35 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_30px_rgba(212,175,55,0.08)]">
+    <div className="w-full min-h-screen py-8 px-4 flex flex-col items-center gap-6 font-sans relative z-10">
+      {/* Main Form Container */}
+      <div className="w-full max-w-5xl bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.55),0_0_20px_rgba(232,199,102,0.15)]">
 
-        {/* HEADER SECTION (Banner Image Match) */}
-        <div className="relative border-b border-gold/25 overflow-hidden">
+        {/* HEADER SECTION (Banner Image) */}
+        <div className="relative border-b border-[#E5E7EB] overflow-hidden">
           <img
             src="/banner.jpg"
             alt="The Shield Showdown Banner"
@@ -469,37 +469,37 @@ export default function RegistrationForm() {
 
         {/* TIMER BAR (If enabled) */}
         {timerConfig.isEnabled && (
-          <div className="border-b border-gold/20 bg-black/40 p-5 font-sans relative overflow-hidden">
+          <div className="border-b border-[#E5E7EB] bg-[#EEF5FA] p-5 font-sans relative overflow-hidden">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <h3 className="font-gaming font-bold text-xs text-gold-bright uppercase tracking-wider flex items-center gap-2">
-                <Clock className="w-4 h-4 text-gold-bright" /> {timerConfig.title || 'Registration Closes In'}
+              <h3 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider flex items-center gap-2">
+                <Clock className="w-4 h-4 text-[#E8C766]" /> {timerConfig.title || 'Registration Closes In'}
               </h3>
 
               {isExpired || timerConfig.isClosed ? (
-                <div className="px-4 py-1.5 bg-red-950/20 border border-red-500/30 rounded text-red-500 font-gaming font-black text-xs tracking-wider uppercase">
+                <div className="px-4 py-1.5 bg-rose-50 border border-rose-200 rounded-lg text-rose-600 font-gaming font-black text-xs tracking-wider uppercase">
                   CLOSED
                 </div>
               ) : (
                 <div className="flex flex-wrap items-center gap-3">
                   <div className="grid grid-cols-4 gap-2 text-center min-w-[220px]">
-                    <div className="bg-[#121214] border border-gold/15 rounded p-2 min-w-[50px]">
-                      <span className="block font-gaming font-black text-lg text-gold-bright leading-none">{timeLeft.days}</span>
-                      <span className="text-[7px] uppercase tracking-wider text-gray-500">Days</span>
+                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
+                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.days}</span>
+                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Days</span>
                     </div>
-                    <div className="bg-[#121214] border border-gold/15 rounded p-2 min-w-[50px]">
-                      <span className="block font-gaming font-black text-lg text-gold-bright leading-none">{timeLeft.hours}</span>
-                      <span className="text-[7px] uppercase tracking-wider text-gray-500">Hours</span>
+                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
+                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.hours}</span>
+                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Hours</span>
                     </div>
-                    <div className="bg-[#121214] border border-gold/15 rounded p-2 min-w-[50px]">
-                      <span className="block font-gaming font-black text-lg text-gold-bright leading-none">{timeLeft.minutes}</span>
-                      <span className="text-[7px] uppercase tracking-wider text-gray-500">Min</span>
+                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
+                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.minutes}</span>
+                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Min</span>
                     </div>
-                    <div className="bg-[#121214] border border-gold/15 rounded p-2 min-w-[50px]">
-                      <span className="block font-gaming font-black text-lg text-gold-bright leading-none">{timeLeft.seconds}</span>
-                      <span className="text-[7px] uppercase tracking-wider text-gray-500">Sec</span>
+                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
+                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.seconds}</span>
+                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Sec</span>
                     </div>
                   </div>
-                  <div className="text-[10px] text-gray-400 font-sans font-mono whitespace-nowrap">
+                  <div className="text-[11px] text-[#243B53]/70 font-sans font-mono whitespace-nowrap">
                     Deadline: {new Date(timerConfig.targetDate).toLocaleString()}
                   </div>
                 </div>
@@ -510,22 +510,22 @@ export default function RegistrationForm() {
 
         {/* INVITED TEAMS MARQUEE (If any exist) */}
         {invitedTeams.length > 0 && (
-          <div className="border-b border-gold/20 bg-black/45 p-6 font-sans relative overflow-hidden">
-            <h3 className="font-gaming font-black text-xs text-gold-bright uppercase tracking-widest mb-4 flex items-center justify-center gap-2">
-              <Trophy className="w-4 h-4 text-gold-bright animate-pulse" /> CHAMPIONS & INVITED TEAMS
+          <div className="border-b border-[#E5E7EB] bg-[#F7F9FB] p-6 font-sans relative overflow-hidden">
+            <h3 className="font-gaming font-black text-xs text-[#4F7CAC] uppercase tracking-widest mb-4 flex items-center justify-center gap-2">
+              <Trophy className="w-4 h-4 text-[#E8C766] animate-pulse" /> CHAMPIONS & INVITED TEAMS
             </h3>
 
-            <div className="marquee-container">
+            <div className="marquee-container marquee-container-light">
               <div className="marquee-content">
                 {marqueeItems.map((team, idx) => (
                   <div
                     key={`${team.id}-${idx}`}
-                    className="flex-shrink-0 flex items-center justify-center bg-slate-950/60 border border-gold/20 rounded-xl p-3 w-28 h-20 shadow-[0_0_10px_rgba(212,175,55,0.05)] hover:border-gold-bright hover:shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:scale-105 transition-all duration-300"
+                    className="flex-shrink-0 flex items-center justify-center bg-white border border-[#E5E7EB] rounded-xl p-3 w-28 h-20 shadow-sm hover:border-[#4F7CAC] hover:shadow-md hover:scale-105 transition-all duration-300"
                   >
                     <img
                       src={team.logoUrl}
                       alt="Invited Team Logo"
-                      className="max-w-full max-h-full object-contain filter drop-shadow-[0_0_5px_rgba(255,255,255,0.15)]"
+                      className="max-w-full max-h-full object-contain filter drop-shadow-sm"
                     />
                   </div>
                 ))}
@@ -538,46 +538,45 @@ export default function RegistrationForm() {
         {isFormDisabled ? (
           <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
             <div className="relative mb-8">
-              {/* Glowing auras */}
-              <div className="absolute inset-0 bg-red-600/20 blur-3xl rounded-full scale-125 animate-pulse" />
-              <div className="absolute inset-0 bg-gold/10 blur-2xl rounded-full scale-90" />
+              {/* Subtle Glowing Aura */}
+              <div className="absolute inset-0 bg-[#E8C766]/20 blur-3xl rounded-full scale-125" />
 
-              {/* Inner golden shield/lock frame */}
-              <div className="relative bg-[#0d0d0f]/90 border-2 border-gold/45 rounded-full p-8 shadow-2xl flex items-center justify-center filter drop-shadow-[0_0_20px_rgba(212,175,55,0.25)]">
-                <Shield className="w-20 h-20 text-gold-bright animate-pulse" strokeWidth={1} />
-                <div className="absolute -bottom-1 -right-1 bg-red-650 border border-gold/50 rounded-full p-2.5 shadow-lg">
-                  <Clock className="w-6 h-6 text-white" />
+              {/* Inner Shield frame */}
+              <div className="relative bg-[#EEF5FA] border-2 border-[#E8C766] rounded-full p-8 shadow-lg flex items-center justify-center">
+                <Shield className="w-20 h-20 text-[#E8C766] animate-pulse" strokeWidth={1.5} />
+                <div className="absolute -bottom-1 -right-1 bg-[#4F7CAC] border-2 border-white rounded-full p-2.5 shadow-md">
+                  <Clock className="w-5 h-5 text-white" />
                 </div>
               </div>
             </div>
 
             {/* Title */}
-            <h2 className="font-gaming font-black text-3xl md:text-5xl text-white tracking-widest uppercase italic mb-3">
-              REGISTRATION <span className="text-gold-bright">CLOSED</span>
+            <h2 className="font-gaming font-black text-3xl md:text-5xl text-[#243B53] tracking-widest uppercase italic mb-3">
+              REGISTRATION <span className="text-[#4F7CAC]">CLOSED</span>
             </h2>
 
-            <div className="h-0.5 bg-gradient-to-r from-transparent via-gold/30 to-transparent w-48 mx-auto mb-6" />
+            <div className="h-0.5 bg-gradient-to-r from-transparent via-[#E8C766] to-transparent w-48 mx-auto mb-6" />
 
             {/* Message */}
-            <p className="max-w-xl text-gray-400 font-sans text-sm md:text-base leading-relaxed mb-8">
-              The battle lines are drawn and the arenas are set. Sign-ups for <span className="text-white font-semibold font-gaming tracking-wide">The Shield Showdown</span> have officially ended. We want to thank all of the competitive teams who stepped up to register!
+            <p className="max-w-xl text-[#243B53]/80 font-sans text-sm md:text-base leading-relaxed mb-8">
+              The battle lines are drawn and the arenas are set. Sign-ups for <span className="text-[#243B53] font-bold font-gaming tracking-wide">The Shield Showdown</span> have officially ended. We want to thank all of the competitive teams who stepped up to register!
             </p>
 
             {/* Info Boxes */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl w-full mb-10 font-sans text-left">
-              <div className="bg-[#121214]/60 border border-gold/15 rounded-xl p-5 hover:border-gold/30 transition-all duration-300">
-                <h4 className="font-gaming font-bold text-xs text-gold-bright uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Trophy className="w-4 h-4 text-gold" /> Registered Teams
+              <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 hover:border-[#4F7CAC]/40 transition-all duration-300 shadow-sm">
+                <h4 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <Trophy className="w-4 h-4 text-[#E8C766]" /> Registered Teams
                 </h4>
-                <p className="text-[11px] text-gray-400 leading-relaxed">
+                <p className="text-xs text-[#243B53]/70 leading-relaxed">
                   All submitted registrations are currently undergoing database verification. Verified team brackets will be published soon.
                 </p>
               </div>
-              <div className="bg-[#121214]/60 border border-gold/15 rounded-xl p-5 hover:border-gold/30 transition-all duration-300">
-                <h4 className="font-gaming font-bold text-xs text-gold-bright uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Award className="w-4 h-4 text-gold" /> Discord Verification
+              <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 hover:border-[#4F7CAC]/40 transition-all duration-300 shadow-sm">
+                <h4 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-[#E8C766]" /> Discord Verification
                 </h4>
-                <p className="text-[11px] text-gray-400 leading-relaxed">
+                <p className="text-xs text-[#243B53]/70 leading-relaxed">
                   If you submitted your registration, please check your email and make sure your team leader has submitted verification in our Discord channel.
                 </p>
               </div>
@@ -589,21 +588,21 @@ export default function RegistrationForm() {
                 href="https://discord.gg/MK7eQZayxd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-8 py-3.5 bg-gold-gradient hover:brightness-110 font-gaming text-black font-black text-xs uppercase tracking-widest rounded shadow-gold-glow hover:shadow-gold-glow-btn transition-all duration-300 text-center cursor-pointer font-bold"
+                className="w-full sm:w-auto px-8 py-3.5 bg-[#4F7CAC] hover:bg-[#3D638D] font-gaming text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-md transition-all duration-300 text-center cursor-pointer"
               >
                 Join Discord Server
               </a>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="p-6 md:p-10 space-y-10">
+          <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="p-6 md:p-10 space-y-8 bg-white">
 
             {/* Expired Warning Banner */}
             {isFormDisabled && (
-              <div className="bg-red-950/45 border border-red-500/50 text-red-200 p-4 rounded-lg flex items-center gap-3 font-sans text-sm shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 animate-bounce" />
+              <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl flex items-center gap-3 font-sans text-sm shadow-sm">
+                <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 animate-bounce" />
                 <div className="flex-grow text-left">
-                  <span className="font-gaming font-black tracking-wider block text-white text-base mb-1">REGISTRATION HAS ENDED</span>
+                  <span className="font-gaming font-black tracking-wider block text-rose-900 text-base mb-1">REGISTRATION HAS ENDED</span>
                   <span>The tournament registration window has officially closed. Submissions are no longer accepted.</span>
                 </div>
               </div>
@@ -611,36 +610,36 @@ export default function RegistrationForm() {
 
             {/* Error Message */}
             {errorMsg && (
-              <div className="bg-red-950/45 border border-red-500/50 text-red-200 p-4 rounded-lg flex items-center gap-3 font-sans text-sm">
-                <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 animate-bounce" />
+              <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl flex items-center gap-3 font-sans text-sm shadow-sm">
+                <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 animate-bounce" />
                 <span>{errorMsg}</span>
               </div>
             )}
 
             {/* SECTION 1: TEAM DETAILS */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 border-b border-slate-850 pb-2">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-gold-bright uppercase tracking-wider">
+            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
+              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
+                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
                   TEAM DETAILS
                 </h2>
-                <div className="text-gold/30 font-mono tracking-widest text-sm font-bold">////</div>
+                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
                 {/* Team Name */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-[#243B53] uppercase tracking-wider mb-2">
                     Team Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     disabled={isFormDisabled}
                     {...register('teamName', { required: 'Team Name is required' })}
-                    placeholder={isFormDisabled ? 'Registration Closed' : 'Your answer'}
-                    className={`w-full form-input ${errors.teamName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                    placeholder={isFormDisabled ? 'Registration Closed' : 'Your team name'}
+                    className={`w-full form-input-light ${errors.teamName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                   />
                   {errors.teamName && (
-                    <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                    <p className="text-red-600 text-xs mt-1.5 flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" /> {errors.teamName.message}
                     </p>
                   )}
@@ -648,18 +647,18 @@ export default function RegistrationForm() {
 
                 {/* Team Leader Name */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-[#243B53] uppercase tracking-wider mb-2">
                     Team Leader Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     disabled={isFormDisabled}
                     {...register('teamLeaderName', { required: 'Team Leader Name is required' })}
-                    placeholder={isFormDisabled ? 'Registration Closed' : 'Your answer'}
-                    className={`w-full form-input ${errors.teamLeaderName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                    placeholder={isFormDisabled ? 'Registration Closed' : 'Team leader full name'}
+                    className={`w-full form-input-light ${errors.teamLeaderName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                   />
                   {errors.teamLeaderName && (
-                    <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                    <p className="text-red-600 text-xs mt-1.5 flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" /> {errors.teamLeaderName.message}
                     </p>
                   )}
@@ -667,7 +666,7 @@ export default function RegistrationForm() {
 
                 {/* Email Address */}
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-[#243B53] uppercase tracking-wider mb-2">
                     Email Address <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -680,11 +679,11 @@ export default function RegistrationForm() {
                         message: 'Invalid email address'
                       }
                     })}
-                    placeholder={isFormDisabled ? 'Registration Closed' : 'Your answer'}
-                    className={`w-full form-input ${errors.email ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                    placeholder={isFormDisabled ? 'Registration Closed' : 'official@team.com'}
+                    className={`w-full form-input-light ${errors.email ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                    <p className="text-red-600 text-xs mt-1.5 flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" /> {errors.email.message}
                     </p>
                   )}
@@ -693,36 +692,36 @@ export default function RegistrationForm() {
             </div>
 
             {/* SECTION 2: PLAYER DETAILS (5 PLAYERS) */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 border-b border-gold/10 pb-2">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-gold-bright uppercase tracking-wider">
+            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
+              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
+                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
                   PLAYER DETAILS (5 PLAYERS)
                 </h2>
-                <div className="text-gold/30 font-mono tracking-widest text-sm font-bold">////</div>
+                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
               </div>
 
-              {/* Responsive Cards Grid (Unified for Desktop and Mobile) */}
+              {/* Responsive Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {[0, 1, 2, 3, 4].map((index) => {
                   const isOptional = index === 4;
                   return (
                     <div
                       key={index}
-                      className={`bg-slate-900/40 border rounded-xl p-4 space-y-4 shadow-lg transition-all duration-300 ${isOptional
-                          ? 'border-slate-800 hover:border-gold/30'
-                          : 'border-slate-700 hover:border-gold/50'
+                      className={`bg-[#EEF5FA] border rounded-xl p-4 space-y-4 shadow-sm transition-all duration-300 ${isOptional
+                          ? 'border-[#E5E7EB] hover:border-[#E8C766]'
+                          : 'border-[#E5E7EB] hover:border-[#4F7CAC]/60'
                         }`}
                     >
-                      <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
-                        <h3 className="font-gaming font-black text-xs text-white tracking-widest">
+                      <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-2">
+                        <h3 className="font-gaming font-black text-xs text-[#243B53] tracking-widest">
                           PLAYER {index + 1}
                         </h3>
                         {isOptional ? (
-                          <span className="text-[9px] bg-gold/15 text-gold border border-gold/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider font-gaming">
+                          <span className="text-[9px] bg-[#FAF8F2] text-[#8C6B14] border border-[#E8C766] px-2 py-0.5 rounded font-bold uppercase tracking-wider font-gaming shadow-xs">
                             Optional
                           </span>
                         ) : (
-                          <span className="text-[9px] bg-red-950/40 text-red-400 border border-red-900/30 px-2 py-0.5 rounded font-bold uppercase tracking-wider font-gaming">
+                          <span className="text-[9px] bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded font-bold uppercase tracking-wider font-gaming shadow-xs">
                             Required
                           </span>
                         )}
@@ -730,24 +729,24 @@ export default function RegistrationForm() {
 
                       {/* Player Name */}
                       <div>
-                        <label className="block text-[10px] uppercase font-gaming text-slate-300 mb-1 font-bold">
+                        <label className="block text-[10px] uppercase font-gaming text-[#243B53] mb-1 font-bold">
                           Name In-Game
                         </label>
                         <input
                           type="text"
                           disabled={isFormDisabled}
                           {...register(`players.${index}.playerName`, { required: (index < 4 || isP5Active) ? 'Name In-Game is required' : false })}
-                          placeholder={isFormDisabled ? 'Closed' : 'Your answer'}
-                          className={`w-full form-input-sm ${errors.players?.[index]?.playerName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                          placeholder={isFormDisabled ? 'Closed' : 'IGN'}
+                          className={`w-full form-input-light-sm ${errors.players?.[index]?.playerName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                         />
                         {errors.players?.[index]?.playerName && (
-                          <p className="text-red-500 text-[10px] mt-1 font-sans">Required</p>
+                          <p className="text-red-600 text-[10px] mt-1 font-sans font-medium">Required</p>
                         )}
                       </div>
 
                       {/* Player ID */}
                       <div>
-                        <label className="block text-[10px] uppercase font-gaming text-slate-300 mb-1 font-bold">
+                        <label className="block text-[10px] uppercase font-gaming text-[#243B53] mb-1 font-bold">
                           Player ID (UID)
                         </label>
                         <input
@@ -760,11 +759,11 @@ export default function RegistrationForm() {
                               message: 'Numbers only'
                             }
                           })}
-                          placeholder={isFormDisabled ? 'Closed' : 'Your answer'}
-                          className={`w-full form-input-sm ${errors.players?.[index]?.playerUID ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                          placeholder={isFormDisabled ? 'Closed' : '12345678'}
+                          className={`w-full form-input-light-sm ${errors.players?.[index]?.playerUID ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                         />
                         {errors.players?.[index]?.playerUID && (
-                          <p className="text-red-500 text-[10px] mt-1 font-sans">
+                          <p className="text-red-600 text-[10px] mt-1 font-sans font-medium">
                             {errors.players[index].playerUID.message || 'Required'}
                           </p>
                         )}
@@ -772,13 +771,13 @@ export default function RegistrationForm() {
 
                       {/* Role */}
                       <div>
-                        <label className="block text-[10px] uppercase font-gaming text-slate-300 mb-1 font-bold">
+                        <label className="block text-[10px] uppercase font-gaming text-[#243B53] mb-1 font-bold">
                           Player Role
                         </label>
                         <select
                           disabled={isFormDisabled}
                           {...register(`players.${index}.role`, { required: (index < 4 || isP5Active) ? 'Role is required' : false })}
-                          className={`w-full form-input-sm cursor-pointer ${errors.players?.[index]?.role ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                          className={`w-full form-input-light-sm cursor-pointer ${errors.players?.[index]?.role ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                         >
                           <option value="">Select Role</option>
                           <option value="IGL">IGL</option>
@@ -787,7 +786,7 @@ export default function RegistrationForm() {
                           <option value="Support">Support</option>
                         </select>
                         {errors.players?.[index]?.role && (
-                          <p className="text-red-500 text-[10px] mt-1 font-sans">Required</p>
+                          <p className="text-red-600 text-[10px] mt-1 font-sans font-medium">Required</p>
                         )}
                       </div>
                     </div>
@@ -797,36 +796,36 @@ export default function RegistrationForm() {
             </div>
 
             {/* SECTION 3: SOCIAL MEDIA FOLLOW PROOFS */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 border-b border-gold/10 pb-2">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-gold-bright uppercase tracking-wider">
+            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
+              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
+                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
                   SOCIAL MEDIA FOLLOW PROOFS (MANDATORY)
                 </h2>
-                <div className="text-gold/30 font-mono tracking-widest text-sm font-bold">////</div>
+                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
               </div>
 
-              <p className="text-gray-400 text-xs md:text-sm font-sans">
+              <p className="text-[#243B53]/80 text-xs md:text-sm font-sans">
                 Your team must follow our YouTube and Instagram. Upload screenshots verifying follow/subscription for Player 1 and Player 2.
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
 
                 {/* YOUTUBE PROOF */}
-                <div className="bg-[#0b0b0d] border border-gold/10 rounded-xl p-5 flex flex-col justify-between shadow-lg">
+                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between shadow-sm">
                   <div>
-                    <div className="flex items-start justify-between gap-3 mb-5 pb-3 border-b border-slate-850">
+                    <div className="flex items-start justify-between gap-3 mb-5 pb-3 border-b border-[#E5E7EB]">
                       <div className="flex items-start gap-3">
                         {/* YouTube Icon */}
-                        <div className="w-9 h-9 bg-[#FF0000] rounded flex items-center justify-center shrink-0 shadow">
+                        <div className="w-9 h-9 bg-[#FF0000] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
                           <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
                             <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.388.555a3.002 3.002 0 0 0-2.11 2.108C0 8.03 0 12 0 12s0 3.97.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.48 20.5 12 20.5 12 20.5s7.52 0-9.388-.555a3.002 3.002 0 0 0 2.11-2.108C24 15.97 24 12 24 12s0-3.97-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                           </svg>
                         </div>
                         <div>
-                          <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+                          <h3 className="font-gaming font-bold text-xs text-[#243B53] uppercase tracking-wider flex items-center gap-1.5">
                             YOUTUBE PROOFS <span className="text-red-500">*</span>
                           </h3>
-                          <p className="text-gray-500 text-[10px] leading-relaxed mt-1">
+                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-1">
                             Channel name & Subscribed must be visible.
                           </p>
                         </div>
@@ -837,7 +836,7 @@ export default function RegistrationForm() {
                         href="https://youtu.be/YzaBVJJIxhE?is=kn_qD24OIbDlbKYq"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FF0000] hover:bg-[#CC0000] rounded text-xs font-bold text-white transition-all shadow shrink-0 cursor-pointer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FF0000] hover:bg-[#D90000] rounded-lg text-xs font-bold text-white transition-all shadow-sm shrink-0 cursor-pointer"
                       >
                         Subscribe Channel <ExternalLink className="w-3.5 h-3.5" />
                       </a>
@@ -858,13 +857,13 @@ export default function RegistrationForm() {
                           <div
                             key={idx}
                             id={`yt-file-container-${idx}`}
-                            className={`bg-slate-900/40 border rounded-lg p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs animate-fadeIn transition-colors ${showUploadErrors && !file
-                                ? 'border-red-500/50 bg-red-950/10 shadow-[0_0_10px_rgba(239,68,68,0.15)] animate-pulse'
-                                : 'border-slate-800/80'
+                            className={`bg-white border rounded-lg p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs transition-colors shadow-xs ${showUploadErrors && !file
+                                ? 'border-red-500 bg-rose-50/50'
+                                : 'border-[#E5E7EB]'
                               }`}
                           >
                             <div className="flex items-center gap-2 flex-grow min-w-0">
-                              <User className="w-4 h-4 text-gold-bright shrink-0" />
+                              <User className="w-4 h-4 text-[#4F7CAC] shrink-0" />
                               <div className="flex-grow flex items-center gap-1.5">
                                 <input
                                   type="text"
@@ -872,10 +871,10 @@ export default function RegistrationForm() {
                                   value={playerName}
                                   onChange={(e) => setValue(`players.${idx}.playerName`, e.target.value, { shouldValidate: true })}
                                   placeholder={isFormDisabled ? 'Closed' : `Player ${idx + 1} Name`}
-                                  className={`form-input-sm !py-1 !px-2 ${errors.players?.[idx]?.playerName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                                  className={`form-input-light-sm !py-1 !px-2 ${errors.players?.[idx]?.playerName ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                                 />
                                 {playerRole && (
-                                  <span className="text-[9px] bg-slate-800 text-gold border border-gold/15 px-1.5 py-0.5 rounded font-mono shrink-0">
+                                  <span className="text-[9px] bg-[#DCEAF4] text-[#243B53] border border-[#4F7CAC]/25 px-1.5 py-0.5 rounded font-mono shrink-0 font-bold">
                                     {playerRole}
                                   </span>
                                 )}
@@ -885,7 +884,7 @@ export default function RegistrationForm() {
                             <div className="shrink-0 flex items-center gap-2">
                               {file ? (
                                 <div className="flex items-center gap-2">
-                                  <div className="relative w-8 h-8 rounded border border-slate-750 overflow-hidden bg-black shadow-inner">
+                                  <div className="relative w-8 h-8 rounded border border-[#E5E7EB] overflow-hidden bg-slate-100 shadow-inner">
                                     <img src={preview} alt="Youtube Proof" className="w-full h-full object-cover" />
                                   </div>
                                   <button
@@ -897,7 +896,7 @@ export default function RegistrationForm() {
                                   >
                                     <Trash2 className="w-3.5 h-3.5" />
                                   </button>
-                                  <span className="text-emerald-400 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
+                                  <span className="text-emerald-600 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
                                     <Check className="w-3.5 h-3.5 stroke-[3.5]" /> Done
                                   </span>
                                 </div>
@@ -905,12 +904,12 @@ export default function RegistrationForm() {
                                 <div>
                                   <label
                                     htmlFor={`yt-file-${idx}`}
-                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded border transition-all ${isReady && !isFormDisabled
-                                        ? 'bg-slate-800 hover:bg-slate-700 border-slate-650 text-white cursor-pointer'
-                                        : 'bg-slate-900 border-slate-800 text-slate-500 opacity-40 cursor-not-allowed pointer-events-none'
+                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${isReady && !isFormDisabled
+                                        ? 'bg-[#DCEAF4] hover:bg-[#C9E0EF] border-[#4F7CAC]/30 text-[#243B53] cursor-pointer shadow-xs'
+                                        : 'bg-slate-100 border-[#E5E7EB] text-slate-400 opacity-50 cursor-not-allowed pointer-events-none'
                                       }`}
                                   >
-                                    <Upload className="w-3 h-3" /> Upload
+                                    <Upload className="w-3 h-3 text-[#4F7CAC]" /> Upload
                                   </label>
                                   <input
                                     id={`yt-file-${idx}`}
@@ -931,12 +930,12 @@ export default function RegistrationForm() {
                 </div>
 
                 {/* INSTAGRAM PROOF */}
-                <div className="bg-[#0b0b0d] border border-gold/10 rounded-xl p-5 flex flex-col justify-between shadow-lg">
+                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between shadow-sm">
                   <div>
-                    <div className="flex items-start justify-between gap-3 mb-5 pb-3 border-b border-slate-850">
+                    <div className="flex items-start justify-between gap-3 mb-5 pb-3 border-b border-[#E5E7EB]">
                       <div className="flex items-start gap-3">
                         {/* Instagram Icon */}
-                        <div className="w-9 h-9 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded flex items-center justify-center shrink-0 shadow">
+                        <div className="w-9 h-9 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
                           <svg className="w-5 h-5 text-white stroke-current fill-none stroke-[2]" viewBox="0 0 24 24">
                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -944,10 +943,10 @@ export default function RegistrationForm() {
                           </svg>
                         </div>
                         <div>
-                          <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
+                          <h3 className="font-gaming font-bold text-xs text-[#243B53] uppercase tracking-wider flex items-center gap-1.5">
                             INSTAGRAM PROOFS <span className="text-red-500">*</span>
                           </h3>
-                          <p className="text-gray-500 text-[10px] leading-relaxed mt-1">
+                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-1">
                             Username & Followed status must be visible.
                           </p>
                         </div>
@@ -958,7 +957,7 @@ export default function RegistrationForm() {
                         href="https://www.instagram.com/theshieldesports10/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 rounded text-xs font-bold text-white transition-all shadow shrink-0 cursor-pointer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 rounded-lg text-xs font-bold text-white transition-all shadow-sm shrink-0 cursor-pointer"
                       >
                         Follow Instagram <ExternalLink className="w-3.5 h-3.5" />
                       </a>
@@ -979,13 +978,13 @@ export default function RegistrationForm() {
                           <div
                             key={idx}
                             id={`ig-file-container-${idx}`}
-                            className={`bg-slate-900/40 border rounded-lg p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs animate-fadeIn transition-colors ${showUploadErrors && !file
-                                ? 'border-red-500/50 bg-red-950/10 shadow-[0_0_10px_rgba(239,68,68,0.15)] animate-pulse'
-                                : 'border-slate-800/80'
+                            className={`bg-white border rounded-lg p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs transition-colors shadow-xs ${showUploadErrors && !file
+                                ? 'border-red-500 bg-rose-50/50'
+                                : 'border-[#E5E7EB]'
                               }`}
                           >
                             <div className="flex items-center gap-2 flex-grow min-w-0">
-                              <User className="w-4 h-4 text-gold-bright shrink-0" />
+                              <User className="w-4 h-4 text-[#4F7CAC] shrink-0" />
                               <div className="flex-grow flex items-center gap-1.5">
                                 <input
                                   type="text"
@@ -993,10 +992,10 @@ export default function RegistrationForm() {
                                   value={playerName}
                                   onChange={(e) => setValue(`players.${idx}.playerName`, e.target.value, { shouldValidate: true })}
                                   placeholder={isFormDisabled ? 'Closed' : `Player ${idx + 1} Name`}
-                                  className={`form-input-sm !py-1 !px-2 ${errors.players?.[idx]?.playerName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900/20 border-slate-800' : ''}`}
+                                  className={`form-input-light-sm !py-1 !px-2 ${errors.players?.[idx]?.playerName ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
                                 />
                                 {playerRole && (
-                                  <span className="text-[9px] bg-slate-800 text-gold border border-gold/15 px-1.5 py-0.5 rounded font-mono shrink-0">
+                                  <span className="text-[9px] bg-[#DCEAF4] text-[#243B53] border border-[#4F7CAC]/25 px-1.5 py-0.5 rounded font-mono shrink-0 font-bold">
                                     {playerRole}
                                   </span>
                                 )}
@@ -1006,7 +1005,7 @@ export default function RegistrationForm() {
                             <div className="shrink-0 flex items-center gap-2">
                               {file ? (
                                 <div className="flex items-center gap-2">
-                                  <div className="relative w-8 h-8 rounded border border-slate-750 overflow-hidden bg-black shadow-inner">
+                                  <div className="relative w-8 h-8 rounded border border-[#E5E7EB] overflow-hidden bg-slate-100 shadow-inner">
                                     <img src={preview} alt="Instagram Proof" className="w-full h-full object-cover" />
                                   </div>
                                   <button
@@ -1018,7 +1017,7 @@ export default function RegistrationForm() {
                                   >
                                     <Trash2 className="w-3.5 h-3.5" />
                                   </button>
-                                  <span className="text-emerald-400 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
+                                  <span className="text-emerald-600 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
                                     <Check className="w-3.5 h-3.5 stroke-[3.5]" /> Done
                                   </span>
                                 </div>
@@ -1026,12 +1025,12 @@ export default function RegistrationForm() {
                                 <div>
                                   <label
                                     htmlFor={`ig-file-${idx}`}
-                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded border transition-all ${isReady && !isFormDisabled
-                                        ? 'bg-slate-800 hover:bg-slate-700 border-slate-650 text-white cursor-pointer'
-                                        : 'bg-slate-900 border-slate-800 text-slate-500 opacity-40 cursor-not-allowed pointer-events-none'
+                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${isReady && !isFormDisabled
+                                        ? 'bg-[#DCEAF4] hover:bg-[#C9E0EF] border-[#4F7CAC]/30 text-[#243B53] cursor-pointer shadow-xs'
+                                        : 'bg-slate-100 border-[#E5E7EB] text-slate-400 opacity-50 cursor-not-allowed pointer-events-none'
                                       }`}
                                   >
-                                    <Upload className="w-3 h-3" /> Upload
+                                    <Upload className="w-3 h-3 text-[#4F7CAC]" /> Upload
                                   </label>
                                   <input
                                     id={`ig-file-${idx}`}
@@ -1053,25 +1052,25 @@ export default function RegistrationForm() {
               </div>
 
               {/* Warning Banner */}
-              <div className="bg-[#121214] border border-gold/30 rounded p-3 text-center shadow-inner">
-                <p className="text-gold-bright text-xs md:text-sm font-gaming font-bold tracking-widest flex items-center justify-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-gold-bright animate-pulse" />
+              <div className="bg-[#FAF8F2] border border-[#E8C766] rounded-xl p-3.5 text-center shadow-xs">
+                <p className="text-[#8C6B14] text-xs md:text-sm font-gaming font-bold tracking-widest flex items-center justify-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-[#8C6B14] animate-pulse" />
                   WITHOUT PROOFS, YOUR TEAM WILL NOT BE REGISTERED.
                 </p>
               </div>
             </div>
 
             {/* SECTION 4: TERMS & CONDITIONS */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 border-b border-gold/10 pb-2">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-gold-bright uppercase tracking-wider">
+            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
+              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
+                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
                   TERMS & CONDITIONS
                 </h2>
-                <div className="text-gold/30 font-mono tracking-widest text-sm font-bold">////</div>
+                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
               </div>
 
               <div id="terms-container" className="flex items-start gap-3 cursor-pointer select-none font-sans">
-                <div className="relative flex items-center mt-1">
+                <div className="relative flex items-center mt-0.5">
                   <input
                     type="checkbox"
                     {...register('termsAccepted', { required: 'You must accept the terms and conditions' })}
@@ -1081,52 +1080,52 @@ export default function RegistrationForm() {
                   />
                   <label
                     htmlFor="terms-check"
-                    className={`w-5 h-5 bg-[#0b0c10] border-2 rounded flex items-center justify-center transition-all ${isFormDisabled ? 'border-slate-800 cursor-not-allowed opacity-55' : 'cursor-pointer'
-                      } ${watchTerms && !isFormDisabled ? 'border-[#FFD700] bg-black shadow-[0_0_10px_rgba(255,215,0,0.6)]' : 'border-slate-700 hover:border-slate-600'
+                    className={`w-5 h-5 bg-white border-2 rounded-md flex items-center justify-center transition-all ${isFormDisabled ? 'border-[#E5E7EB] cursor-not-allowed opacity-55' : 'cursor-pointer'
+                      } ${watchTerms && !isFormDisabled ? 'border-[#4F7CAC] bg-[#4F7CAC] shadow-sm' : 'border-[#E5E7EB] hover:border-[#4F7CAC]'
                       }`}
                   >
-                    {watchTerms && !isFormDisabled && <Check className="w-3.5 h-3.5 text-[#FFD700] font-black stroke-[4]" />}
+                    {watchTerms && !isFormDisabled && <Check className="w-3.5 h-3.5 text-white font-black stroke-[3.5]" />}
                   </label>
                 </div>
-                <label htmlFor="terms-check" className={`text-xs md:text-sm transition-colors leading-relaxed ${isFormDisabled ? 'text-gray-500 cursor-not-allowed' : 'text-gray-400 hover:text-gray-300 cursor-pointer'
+                <label htmlFor="terms-check" className={`text-xs md:text-sm transition-colors leading-relaxed ${isFormDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-[#243B53] hover:text-[#4F7CAC] cursor-pointer'
                   }`}>
                   I agree to all the rules and regulations of The Shield Showdown. All details provided are correct and my team is ready to participate.
                 </label>
               </div>
               {errors.termsAccepted && (
-                <p className="text-red-500 text-xs flex items-center gap-1 font-medium -mt-2 pl-8 font-sans">
+                <p className="text-red-600 text-xs flex items-center gap-1 font-medium -mt-2 pl-8 font-sans">
                   <AlertTriangle className="w-3.5 h-3.5" /> {errors.termsAccepted.message}
                 </p>
               )}
             </div>
 
             {/* SUBMIT BUTTON */}
-            <div className="flex flex-col items-center pt-4">
+            <div className="flex flex-col items-center pt-2">
               {/* Submit Requirements State message */}
               {!allProofsUploaded && !loading && !isFormDisabled && (
-                <p className="text-gray-500 text-[10px] md:text-xs font-gaming uppercase tracking-wide text-center mb-4 leading-relaxed max-w-md animate-pulse">
-                  <span className="text-gold-bright font-black">Upload Proof Status:</span> YouTube ({activeYtFiles.filter(Boolean).length}/{proofRequiredCount}) &bull; Instagram ({activeIgFiles.filter(Boolean).length}/{proofRequiredCount})<br />
-                  <span className="text-red-400 text-[9px] lowercase">(please upload follow screenshots for Player 1 and Player 2 before submitting)</span>
+                <p className="text-[#243B53]/70 text-[11px] md:text-xs font-gaming uppercase tracking-wide text-center mb-4 leading-relaxed max-w-md animate-pulse">
+                  <span className="text-[#4F7CAC] font-black">Upload Proof Status:</span> YouTube ({activeYtFiles.filter(Boolean).length}/{proofRequiredCount}) &bull; Instagram ({activeIgFiles.filter(Boolean).length}/{proofRequiredCount})<br />
+                  <span className="text-rose-600 text-[10px] font-sans lowercase font-medium">(please upload follow screenshots for Player 1 and Player 2 before submitting)</span>
                 </p>
               )}
 
               <button
                 type="submit"
                 disabled={isSubmitDisabled}
-                className={`w-full max-w-sm font-gaming font-black text-white uppercase text-sm md:text-base tracking-widest py-3 px-8 rounded transition-all duration-300 flex items-center justify-center gap-2 group ${isSubmitDisabled
-                    ? 'bg-gray-750 text-gray-500 border border-gray-800 opacity-45 cursor-not-allowed'
-                    : 'bg-gold-gradient hover:brightness-110 cursor-pointer transform hover:-translate-y-0.5'
+                className={`w-full max-w-sm font-gaming font-black uppercase text-sm md:text-base tracking-widest py-3.5 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group shadow-md ${isSubmitDisabled
+                    ? 'bg-slate-200 text-slate-400 border border-[#E5E7EB] opacity-60 cursor-not-allowed'
+                    : 'bg-softgold-gradient hover:brightness-105 text-[#243B53] cursor-pointer transform hover:-translate-y-0.5 shadow-[0_4px_15px_rgba(232,199,102,0.4)] hover:shadow-[0_6px_20px_rgba(232,199,102,0.6)]'
                   }`}
               >
                 {loading ? (
                   <>
-                    <RefreshCw className="w-5 h-5 text-white animate-spin" />
+                    <RefreshCw className="w-5 h-5 text-[#243B53] animate-spin" />
                     Submitting...
                   </>
                 ) : isFormDisabled ? (
                   'REGISTRATION CLOSED'
                 ) : (
-                  'SUBMIT'
+                  'SUBMIT REGISTRATION'
                 )}
               </button>
             </div>
@@ -1135,39 +1134,39 @@ export default function RegistrationForm() {
       </div>
 
       {/* Bottom widgets row */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* INSTRUCTIONS CARD */}
-        <div className="bg-[#0c0d12]/90 backdrop-blur-xl border border-gold/25 rounded-2xl p-6 shadow-2xl relative overflow-hidden font-sans">
-          <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider mb-4 border-b border-gold/10 pb-2">
+        <div className="bg-[#EEF5FA]/95 backdrop-blur-md border border-[#E5E7EB] rounded-2xl p-6 shadow-[0_10px_25px_rgba(0,0,0,0.35)] relative overflow-hidden font-sans">
+          <h3 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider mb-4 border-b border-[#E5E7EB] pb-2">
             REGISTRATION GUIDE
           </h3>
-          <ul className="text-xs text-gray-400 space-y-3 list-none pl-0">
+          <ul className="text-xs text-[#243B53] space-y-3 list-none pl-0">
             <li className="flex gap-2">
-              <span className="text-gold-bright font-gaming font-black">01.</span>
+              <span className="text-[#E8C766] font-gaming font-black text-sm">01.</span>
               <span>Input your Team Name, Leader Name, Leader UID and Discord.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gold-bright font-gaming font-black">02.</span>
+              <span className="text-[#E8C766] font-gaming font-black text-sm">02.</span>
               <span>Provide information for at least 4 squad members (Player 5 is optional).</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gold-bright font-gaming font-black">03.</span>
+              <span className="text-[#E8C766] font-gaming font-black text-sm">03.</span>
               <span>Upload social screenshots verifying subscription/follows for each player.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gold-bright font-gaming font-black">04.</span>
-              <span>Check "Agree" to the terms, click Submit and wait for redirect.</span>
+              <span className="text-[#E8C766] font-gaming font-black text-sm">04.</span>
+              <span>Check "Agree" to the terms, click Submit and wait for confirmation.</span>
             </li>
           </ul>
         </div>
 
         {/* JOIN DISCORD CARD */}
-        <div className="bg-[#0c0d12]/90 backdrop-blur-xl border border-gold/25 rounded-2xl p-6 shadow-2xl text-center flex flex-col justify-between relative overflow-hidden font-sans">
+        <div className="bg-[#EEF5FA]/95 backdrop-blur-md border border-[#E5E7EB] rounded-2xl p-6 shadow-[0_10px_25px_rgba(0,0,0,0.35)] text-center flex flex-col justify-between relative overflow-hidden font-sans">
           <div>
-            <h4 className="font-gaming font-black text-xs text-gold-bright uppercase tracking-wider mb-2">
+            <h4 className="font-gaming font-black text-xs text-[#4F7CAC] uppercase tracking-wider mb-2">
               GLORY AWAITS
             </h4>
-            <p className="text-[11px] text-gray-400 mb-4 font-sans leading-relaxed">
+            <p className="text-xs text-[#243B53]/80 mb-4 font-sans leading-relaxed">
               Need support or have tournament questions? Connect with our administration team directly.
             </p>
           </div>
@@ -1175,7 +1174,7 @@ export default function RegistrationForm() {
             href="https://discord.gg/MK7eQZayxd"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 bg-[#D4AF37] hover:bg-[#FFD700] font-gaming text-black font-black text-xs tracking-wider rounded transition-all cursor-pointer shadow-md"
+            className="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-[#5865F2] hover:bg-[#4752C4] font-gaming text-white font-bold text-xs tracking-wider rounded-xl transition-all cursor-pointer shadow-sm transform hover:-translate-y-0.5"
           >
             Join Discord Community
           </a>

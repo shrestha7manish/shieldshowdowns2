@@ -18,9 +18,20 @@ export default {
           700: '#a16207',
           800: '#854d0e',
           900: '#713f12',
-          DEFAULT: '#D4AF37', // metallic gold
-          bright: '#FFD700', // vibrant gold
+          DEFAULT: '#E8C766', // Soft Gold
+          bright: '#E8C766', // Soft Gold
           glow: '#F5A623',
+        },
+        light: {
+          bg: '#FFFFFF',        // Soft White - Main background
+          card: '#EEF5FA',      // Ice Blue - Highlight boxes / stats
+          sky: '#DCEAF4',       // Light Sky Blue - Section backgrounds
+          section: '#F7F9FB',   // Pale Gray - Tables / secondary areas
+          border: '#E5E7EB',    // Soft Silver - Borders / dividers
+          heading: '#4F7CAC',   // Slate Blue - Headings & accents
+          text: '#243B53',      // Dark Navy - Main text
+          gold: '#E8C766',      // Soft Gold - Small premium highlights
+          warm: '#FAF8F2',      // Light Beige - Warm background
         },
         dark: {
           card: '#121214',
