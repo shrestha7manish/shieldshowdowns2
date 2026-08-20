@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 96" fill="none">
+  <defs>
+    <linearGradient id="vkGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8D6" />
+      <stop offset="50%" stop-color="#E8C766" />
+      <stop offset="100%" stop-color="#C29214" />
+    </linearGradient>
+    <linearGradient id="vkRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF2E44" />
+      <stop offset="100%" stop-color="#800010" />
+    </linearGradient>
+    <filter id="vkGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Left Valkyrie Emblem -->
+  <g transform="translate(16, 14)">
+    <polygon points="34,0 66,14 60,56 34,68 8,56 2,14" fill="#0C0D14" stroke="url(#vkRed)" stroke-width="2" />
+    <path d="M12,20 L26,28 L14,44 Z" fill="url(#vkGold)" opacity="0.95" />
+    <path d="M56,20 L42,28 L54,44 Z" fill="url(#vkGold)" opacity="0.95" />
+    <!-- Dynamic Lightning Bolt -->
+    <polygon points="38,10 22,35 33,35 28,58 46,29 35,29" fill="#FFF8D6" filter="url(#vkGlow)" />
+  </g>
+
+  <!-- Typography -->
+  <text x="100" y="46" font-family="'Orbitron', 'Inter', sans-serif" font-weight="900" font-size="25" letter-spacing="3.5" fill="#FFFFFF">
+    VALKYRIE
+  </text>
+  <text x="264" y="46" font-family="'Orbitron', sans-serif" font-weight="900" font-size="26" fill="url(#vkRed)">
+    +
+  </text>
+  <text x="102" y="66" font-family="'Inter', sans-serif" font-weight="800" font-size="9.5" letter-spacing="6" fill="url(#vkGold)">
+    ESPORTS ENERGY
+  </text>
+  <!-- Accent Line -->
+  <line x1="100" y1="74" x2="310" y2="74" stroke="#FF2E44" stroke-opacity="0.45" stroke-width="1.5" />
+  <circle cx="310" cy="74" r="2" fill="#E8C766" />
+</svg>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { Shield, Upload, CheckCircle2, AlertTriangle, Users, Award, Camera, User, Check, RefreshCw, Trophy, Trash2, Eye, ExternalLink, Clock } from 'lucide-react';
+import SponsorsSection from '../components/SponsorsSection';
 
 export default function RegistrationForm() {
   const [loading, setLoading] = useState(false);
@@ -811,10 +812,10 @@ export default function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
 
                 {/* YOUTUBE PROOF */}
-                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between shadow-sm">
+                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-4 sm:p-5 flex flex-col justify-between shadow-sm">
                   <div>
-                    <div className="flex items-start justify-between gap-3 mb-5 pb-3 border-b border-[#E5E7EB]">
-                      <div className="flex items-start gap-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E5E7EB]">
+                      <div className="flex items-center gap-3">
                         {/* YouTube Icon */}
                         <div className="w-9 h-9 bg-[#FF0000] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
                           <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
@@ -825,7 +826,7 @@ export default function RegistrationForm() {
                           <h3 className="font-gaming font-bold text-xs text-[#243B53] uppercase tracking-wider flex items-center gap-1.5">
                             YOUTUBE PROOFS <span className="text-red-500">*</span>
                           </h3>
-                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-1">
+                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-0.5">
                             Channel name & Subscribed must be visible.
                           </p>
                         </div>
@@ -836,7 +837,7 @@ export default function RegistrationForm() {
                         href="https://youtu.be/YzaBVJJIxhE?is=kn_qD24OIbDlbKYq"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FF0000] hover:bg-[#D90000] rounded-lg text-xs font-bold text-white transition-all shadow-sm shrink-0 cursor-pointer"
+                        className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-[#FF0000] hover:bg-[#D90000] rounded-lg text-xs font-bold text-white transition-all shadow-sm w-full sm:w-auto shrink-0 cursor-pointer"
                       >
                         Subscribe Channel <ExternalLink className="w-3.5 h-3.5" />
                       </a>
@@ -930,10 +931,10 @@ export default function RegistrationForm() {
                 </div>
 
                 {/* INSTAGRAM PROOF */}
-                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between shadow-sm">
+                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-4 sm:p-5 flex flex-col justify-between shadow-sm">
                   <div>
-                    <div className="flex items-start justify-between gap-3 mb-5 pb-3 border-b border-[#E5E7EB]">
-                      <div className="flex items-start gap-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E5E7EB]">
+                      <div className="flex items-center gap-3">
                         {/* Instagram Icon */}
                         <div className="w-9 h-9 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
                           <svg className="w-5 h-5 text-white stroke-current fill-none stroke-[2]" viewBox="0 0 24 24">
@@ -946,7 +947,7 @@ export default function RegistrationForm() {
                           <h3 className="font-gaming font-bold text-xs text-[#243B53] uppercase tracking-wider flex items-center gap-1.5">
                             INSTAGRAM PROOFS <span className="text-red-500">*</span>
                           </h3>
-                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-1">
+                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-0.5">
                             Username & Followed status must be visible.
                           </p>
                         </div>
@@ -957,7 +958,7 @@ export default function RegistrationForm() {
                         href="https://www.instagram.com/theshieldesports10/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 rounded-lg text-xs font-bold text-white transition-all shadow-sm shrink-0 cursor-pointer"
+                        className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg text-xs font-bold text-white transition-all shadow-sm w-full sm:w-auto shrink-0 cursor-pointer"
                       >
                         Follow Instagram <ExternalLink className="w-3.5 h-3.5" />
                       </a>
@@ -1180,6 +1181,9 @@ export default function RegistrationForm() {
           </a>
         </div>
       </div>
+
+      {/* DEDICATED SPONSORS & PARTNERS SECTION */}
+      <SponsorsSection />
     </div>
   );
 }

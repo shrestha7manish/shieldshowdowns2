@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RegistrationForm from './pages/RegistrationForm';
 import AdminDashboard from './pages/AdminDashboard';
 import RegistrationDetails from './pages/RegistrationDetails';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
             <Route path="/admin/registration/:id" element={<RegistrationDetails />} />
           </Routes>
         </main>
+
+        <Footer />
       </div>
     </Router>
   );

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 96" fill="none">
+  <defs>
+    <linearGradient id="hpGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8D6" />
+      <stop offset="45%" stop-color="#E8C766" />
+      <stop offset="100%" stop-color="#C29214" />
+    </linearGradient>
+    <linearGradient id="hpRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF3838" />
+      <stop offset="100%" stop-color="#8B0000" />
+    </linearGradient>
+    <filter id="hpGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Left Cyber Shield Emblem -->
+  <g transform="translate(16, 14)">
+    <!-- Outer Angular Shield Frame -->
+    <polygon points="34,0 68,16 68,52 34,68 0,52 0,16" fill="#0C0D14" stroke="url(#hpGold)" stroke-width="2" />
+    <!-- Crimson Power Core -->
+    <polygon points="34,10 56,21 56,47 34,58 12,47 12,21" fill="url(#hpRed)" opacity="0.9" />
+    <!-- Inner Cyber Wings -->
+    <path d="M22,26 L34,18 L46,26 L46,42 L34,50 L22,42 Z" fill="#06070A" stroke="#FFF8D6" stroke-width="1.5" />
+    <polygon points="34,24 40,32 34,44 28,32" fill="url(#hpGold)" filter="url(#hpGlow)" />
+  </g>
+
+  <!-- Typography -->
+  <text x="100" y="46" font-family="'Orbitron', 'Inter', sans-serif" font-weight="900" font-size="25" letter-spacing="4" fill="url(#hpGold)">
+    HYPERION
+  </text>
+  <text x="102" y="66" font-family="'Inter', sans-serif" font-weight="800" font-size="9.5" letter-spacing="6" fill="#E2E8F0">
+    PRO GAMING GEAR
+  </text>
+  <!-- Accent Red Dot & Rule -->
+  <line x1="100" y1="74" x2="310" y2="74" stroke="#E8C766" stroke-opacity="0.3" stroke-width="1.5" />
+  <circle cx="310" cy="74" r="2" fill="#FF3838" />
+</svg>

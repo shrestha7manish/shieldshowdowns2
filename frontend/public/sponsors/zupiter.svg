@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 96" fill="none">
+  <defs>
+    <linearGradient id="zpDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <linearGradient id="zpGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37" />
+      <stop offset="50%" stop-color="#B8860B" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+    <linearGradient id="zpRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E11D48" />
+      <stop offset="100%" stop-color="#BE123C" />
+    </linearGradient>
+  </defs>
+
+  <!-- Left Zupiter Orbital Emblem -->
+  <g transform="translate(16, 14)">
+    <!-- Hexagon Frame -->
+    <polygon points="34,0 68,16 68,52 34,68 0,52 0,16" fill="#1E293B" stroke="url(#zpGold)" stroke-width="2" />
+    <!-- Dynamic 'Z' Bolt Core -->
+    <path d="M22,22 L46,22 L24,46 L48,46" stroke="url(#zpRed)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Orbit Arc -->
+    <ellipse cx="34" cy="34" rx="26" ry="11" fill="none" stroke="#E8C766" stroke-width="1.5" transform="rotate(-25 34 34)" />
+    <!-- Center Dot -->
+    <circle cx="34" cy="34" r="3" fill="#FFFFFF" />
+  </g>
+
+  <!-- Typography (High Contrast for Light Mode) -->
+  <text x="100" y="46" font-family="'Orbitron', sans-serif" font-weight="900" font-size="26" letter-spacing="3.5" fill="#1E293B">
+    ZUPITER
+  </text>
+  <text x="102" y="66" font-family="'Inter', sans-serif" font-weight="700" font-size="10" letter-spacing="4" fill="#4F7CAC">
+    GAMING ACCESSORIES
+  </text>
+  <!-- Subtle Line Accent -->
+  <line x1="100" y1="74" x2="310" y2="74" stroke="#E2E8F0" stroke-width="1.5" />
+  <circle cx="310" cy="74" r="2.5" fill="#E11D48" />
+</svg>
