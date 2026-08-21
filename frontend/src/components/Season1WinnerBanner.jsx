@@ -79,7 +79,7 @@ export default function Season1WinnerBanner() {
             onClick={() => setModalOpen(true)}
             className="group relative w-full rounded-2xl overflow-hidden border border-slate-800 hover:border-slate-700 transition-all duration-300 shadow-xl cursor-pointer bg-[#0c0c10]"
           >
-            <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden flex items-center justify-center bg-black">
+            <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full overflow-hidden flex items-center justify-center bg-black">
               {/* Blurred atmospheric background */}
               <img
                 src={imgSrc}
@@ -89,20 +89,20 @@ export default function Season1WinnerBanner() {
               />
 
               {/* Darkening vignette overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60 pointer-events-none z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/50 pointer-events-none z-10" />
 
               {/* Crisp Centered Champion Poster */}
               <img
                 src={imgSrc}
                 onError={handleImageError}
                 alt="Season 1 Winner Banner"
-                className="relative z-10 max-w-full max-h-full object-contain filter drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] group-hover:scale-[1.03] transition-transform duration-500 rounded-lg"
+                className="relative z-10 w-full h-full object-cover sm:object-contain filter drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] group-hover:scale-[1.02] transition-transform duration-500 rounded-lg"
               />
 
               {/* Hover overlay with zoom hint */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 z-20">
                 <span className="px-4 py-2 rounded-xl bg-black/85 border border-gold/60 text-gold font-gaming font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-gold-glow backdrop-blur-md transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                  <Maximize2 className="w-4 h-4" /> Click to Expand Poster
+                  <Maximize2 className="w-4 h-4" /> Click to Expand Banner
                 </span>
               </div>
 
@@ -126,7 +126,7 @@ export default function Season1WinnerBanner() {
           {/* Click Backdrop to close */}
           <div className="absolute inset-0 cursor-default" onClick={() => setModalOpen(false)} />
 
-          <div className="relative w-full max-w-xl md:max-w-2xl bg-[#121214] border border-gold/40 rounded-2xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(232,199,102,0.25)] flex flex-col max-h-[92vh] z-10 my-auto">
+          <div className="relative w-full max-w-4xl bg-[#121214] border border-gold/40 rounded-2xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(232,199,102,0.25)] flex flex-col max-h-[92vh] z-10 my-auto">
             {/* Modal Header */}
             <div className="flex items-center justify-between bg-[#16161a] border-b border-slate-800 px-5 py-3.5">
               <div className="flex items-center gap-2.5">
