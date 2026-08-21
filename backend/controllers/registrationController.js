@@ -36,15 +36,19 @@ const deleteCloudinaryFile = async (imageUrl) => {
 exports.createRegistration = async (req, res) => {
   const cleanUploadedFiles = async (files) => {
     if (files) {
-      const allFileArrays = [files.tiktokProofs, files.youtubeProofs, files.instagramProofs].filter(Boolean);
-      for (const fileArray of allFileArrays) {
-        for (const f of fileArray) {
-          if (f.path) {
-            if (f.path.includes('cloudinary.com')) {
-              await deleteCloudinaryFile(f.path);
-            } else {
-              fs.unlink(f.path, () => {});
-            }
+      let fileList = [];
+      if (Array.isArray(files)) {
+        fileList = files;
+      } else {
+        const allFileArrays = [files.tiktokProofs, files.youtubeProofs, files.instagramProofs].filter(Boolean);
+        fileList = allFileArrays.flat();
+      }
+      for (const f of fileList) {
+        if (f && f.path) {
+          if (f.path.includes('cloudinary.com')) {
+            await deleteCloudinaryFile(f.path);
+          } else {
+            fs.unlink(f.path, () => {});
           }
         }
       }
@@ -68,11 +72,26 @@ exports.createRegistration = async (req, res) => {
       }
     }
 
+    // Normalize uploaded files whether coming from upload.any() or upload.fields()
+    let tiktokProofs = [];
+    let instagramProofs = [];
+    let youtubeProofs = [];
+
+    if (Array.isArray(req.files)) {
+      tiktokProofs = req.files.filter(f => f.fieldname === 'tiktokProofs');
+      instagramProofs = req.files.filter(f => f.fieldname === 'instagramProofs');
+      youtubeProofs = req.files.filter(f => f.fieldname === 'youtubeProofs');
+    } else if (req.files) {
+      tiktokProofs = req.files.tiktokProofs || [];
+      instagramProofs = req.files.instagramProofs || [];
+      youtubeProofs = req.files.youtubeProofs || [];
+    }
+
     // Determine primary video platform proof array (tiktokProofs or youtubeProofs)
-    const primaryVideoProofs = req.files?.tiktokProofs || req.files?.youtubeProofs;
+    const primaryVideoProofs = tiktokProofs.length > 0 ? tiktokProofs : youtubeProofs;
 
     // If files are missing, clean up any uploaded files and return error
-    if (!req.files || !primaryVideoProofs || !req.files.instagramProofs) {
+    if (!req.files || primaryVideoProofs.length === 0 || instagramProofs.length === 0) {
       await cleanUploadedFiles(req.files);
       return res.status(400).json({ message: 'Both TikTok and Instagram follow screenshots are required.' });
     }
@@ -123,7 +142,7 @@ exports.createRegistration = async (req, res) => {
 
     // Validate required proof count: exactly 3 proofs required (for Player 1, Player 2, and Player 3)
     const requiredProofCount = 3;
-    if (primaryVideoProofs.length !== requiredProofCount || req.files.instagramProofs.length !== requiredProofCount) {
+    if (primaryVideoProofs.length !== requiredProofCount || instagramProofs.length !== requiredProofCount) {
       await cleanUploadedFiles(req.files);
       return res.status(400).json({
         message: `Dynamic upload mismatch: You must upload exactly ${requiredProofCount} TikTok follow screenshots and exactly ${requiredProofCount} Instagram follow screenshots (one screenshot per member for Player 1, Player 2, and Player 3).`
@@ -134,7 +153,7 @@ exports.createRegistration = async (req, res) => {
     const registrationId = await getNextSequenceValue('registrationId');
 
     const videoProofPaths = primaryVideoProofs.map(f => f.path);
-    const igProofPaths = req.files.instagramProofs.map(f => f.path);
+    const igProofPaths = instagramProofs.map(f => f.path);
 
     const registration = new Registration({
       registrationId,

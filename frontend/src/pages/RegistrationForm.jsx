@@ -323,7 +323,6 @@ export default function RegistrationForm() {
       // Append arrays of files to the correct fields
       activeTiktokFiles.forEach(file => {
         formData.append('tiktokProofs', file);
-        formData.append('youtubeProofs', file); // For backwards compatibility
       });
       activeIgFiles.forEach(file => {
         formData.append('instagramProofs', file);
