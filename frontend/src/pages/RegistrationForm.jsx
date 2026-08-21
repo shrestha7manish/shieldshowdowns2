@@ -1767,6 +1767,9 @@ export default function RegistrationForm() {
               )}
             </div>
 
+            {/* OFFICIAL TOURNAMENT SPONSORS & PARTNERS (Placed right above submit area) */}
+            <SponsorsSection />
+
             {/* BOTTOM ERROR SUMMARY BOX (Before Submit Button) */}
             {formAttempted && activeErrorsList.length > 0 && (
               <div className="p-4 md:p-5 rounded-xl bg-gradient-to-b from-[#220d11] to-[#160a0d] border border-rose-500/60 shadow-[0_0_20px_rgba(244,63,94,0.2)] font-sans space-y-3">
@@ -1891,9 +1894,6 @@ export default function RegistrationForm() {
           </a>
         </div>
       </div>
-
-      {/* DEDICATED SPONSORS & PARTNERS SECTION */}
-      <SponsorsSection />
     </div>
   );
 }
