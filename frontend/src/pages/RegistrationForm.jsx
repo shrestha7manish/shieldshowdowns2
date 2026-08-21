@@ -1472,7 +1472,7 @@ export default function RegistrationForm() {
                       Social Verification
                     </h2>
                     <p className="text-[11px] text-slate-400 font-sans mt-0.5">
-                      Upload proof of follow for Player 1, Player 2 & Player 3 (3 screenshots per platform).
+                      Upload 3 follow screenshots for TikTok & 3 follow screenshots for Instagram (from any squad members).
                     </p>
                   </div>
                 </div>
@@ -1494,7 +1494,7 @@ export default function RegistrationForm() {
                         <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider">
                           TikTok Page
                         </h3>
-                        <p className="text-[10px] text-slate-400">Follow & take screenshot</p>
+                        <p className="text-[10px] text-slate-400">3 Screenshots Required</p>
                       </div>
                     </div>
 
@@ -1513,8 +1513,8 @@ export default function RegistrationForm() {
                     {[...Array(proofRequiredCount)].map((_, idx) => {
                       const file = tiktokFiles[idx];
                       const preview = tiktokPreviews[idx];
-                      const playerName = watch(`players.${idx}.playerName`) || `Player ${idx + 1}`;
-                      const isReady = watch(`players.${idx}.playerName`)?.trim();
+                      const typedName = watch(`players.${idx}.playerName`)?.trim();
+                      const slotLabel = typedName ? `Proof #${idx + 1} (${typedName})` : `Screenshot Proof #${idx + 1}`;
                       const isMissing = showUploadErrors && !file;
 
                       return (
@@ -1529,10 +1529,10 @@ export default function RegistrationForm() {
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <span className="w-5 h-5 rounded bg-slate-800 text-slate-300 font-gaming font-bold text-[10px] flex items-center justify-center shrink-0">
-                              P{idx + 1}
+                              #{idx + 1}
                             </span>
                             <span className="text-xs text-slate-300 font-medium truncate">
-                              {playerName}
+                              {slotLabel}
                             </span>
                             {isMissing && (
                               <span className="text-[9px] px-1.5 py-0.5 rounded bg-rose-900/80 text-rose-300 font-gaming font-bold uppercase tracking-wider flex items-center gap-1 shrink-0">
@@ -1565,7 +1565,7 @@ export default function RegistrationForm() {
                                 <label
                                   htmlFor={`tiktok-file-${idx}`}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
-                                    isReady && !isFormDisabled
+                                    !isFormDisabled
                                       ? isMissing
                                         ? 'bg-rose-900 hover:bg-rose-800 border-rose-500 text-white cursor-pointer animate-pulse'
                                         : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
@@ -1580,7 +1580,7 @@ export default function RegistrationForm() {
                                   accept="image/*"
                                   onChange={(e) => handleSlotFileChange(e, idx, 'tiktok')}
                                   className="hidden"
-                                  disabled={!isReady || isFormDisabled}
+                                  disabled={isFormDisabled}
                                 />
                               </div>
                             )}
@@ -1606,7 +1606,7 @@ export default function RegistrationForm() {
                         <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider">
                           Instagram Page
                         </h3>
-                        <p className="text-[10px] text-slate-400">Follow & take screenshot</p>
+                        <p className="text-[10px] text-slate-400">3 Screenshots Required</p>
                       </div>
                     </div>
 
@@ -1625,8 +1625,8 @@ export default function RegistrationForm() {
                     {[...Array(proofRequiredCount)].map((_, idx) => {
                       const file = igFiles[idx];
                       const preview = igPreviews[idx];
-                      const playerName = watch(`players.${idx}.playerName`) || `Player ${idx + 1}`;
-                      const isReady = watch(`players.${idx}.playerName`)?.trim();
+                      const typedName = watch(`players.${idx}.playerName`)?.trim();
+                      const slotLabel = typedName ? `Proof #${idx + 1} (${typedName})` : `Screenshot Proof #${idx + 1}`;
                       const isMissing = showUploadErrors && !file;
 
                       return (
@@ -1641,10 +1641,10 @@ export default function RegistrationForm() {
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <span className="w-5 h-5 rounded bg-slate-800 text-slate-300 font-gaming font-bold text-[10px] flex items-center justify-center shrink-0">
-                              P{idx + 1}
+                              #{idx + 1}
                             </span>
                             <span className="text-xs text-slate-300 font-medium truncate">
-                              {playerName}
+                              {slotLabel}
                             </span>
                             {isMissing && (
                               <span className="text-[9px] px-1.5 py-0.5 rounded bg-rose-900/80 text-rose-300 font-gaming font-bold uppercase tracking-wider flex items-center gap-1 shrink-0">
@@ -1677,7 +1677,7 @@ export default function RegistrationForm() {
                                 <label
                                   htmlFor={`ig-file-${idx}`}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
-                                    isReady && !isFormDisabled
+                                    !isFormDisabled
                                       ? isMissing
                                         ? 'bg-rose-900 hover:bg-rose-800 border-rose-500 text-white cursor-pointer animate-pulse'
                                         : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
@@ -1692,7 +1692,7 @@ export default function RegistrationForm() {
                                   accept="image/*"
                                   onChange={(e) => handleSlotFileChange(e, idx, 'instagram')}
                                   className="hidden"
-                                  disabled={!isReady || isFormDisabled}
+                                  disabled={isFormDisabled}
                                 />
                               </div>
                             )}
@@ -1702,6 +1702,7 @@ export default function RegistrationForm() {
                     })}
                   </div>
                 </div>
+
               </div>
 
               <div className="text-[11px] text-slate-400 text-center font-sans">

@@ -147,12 +147,11 @@ exports.createRegistration = async (req, res) => {
       }
     }
 
-    // Validate required proof count: exactly 3 proofs required (for Player 1, Player 2, and Player 3)
-    const requiredProofCount = 3;
-    if (primaryVideoProofs.length !== requiredProofCount || instagramProofs.length !== requiredProofCount) {
+    // Validate required proof count: requires 3 screenshots each (accepts >= 2 up to 5)
+    if (primaryVideoProofs.length < 2 || instagramProofs.length < 2) {
       await cleanUploadedFiles(req.files);
       return res.status(400).json({
-        message: `Upload mismatch: You must upload exactly ${requiredProofCount} TikTok follow screenshots and exactly ${requiredProofCount} Instagram follow screenshots (one screenshot per member for Player 1, Player 2, and Player 3).`
+        message: 'Upload mismatch: You must upload 3 TikTok follow screenshots and 3 Instagram follow screenshots.'
       });
     }
 
