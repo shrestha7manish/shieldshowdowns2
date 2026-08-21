@@ -317,7 +317,7 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
         'Email': reg.email || '',
         'Submission Date': reg.submittedAt ? new Date(reg.submittedAt).toLocaleString() : '',
         'Total Players': reg.players ? reg.players.length : 0,
-        'YouTube Proofs Count': reg.youtubeProofs ? reg.youtubeProofs.length : 0,
+        'TikTok Proofs Count': (reg.tiktokProofs || reg.youtubeProofs) ? (reg.tiktokProofs || reg.youtubeProofs).length : 0,
         'Instagram Proofs Count': reg.instagramProofs ? reg.instagramProofs.length : 0
       };
 
@@ -1282,26 +1282,27 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 {/* YOUTUBE PROOFS */}
+                {/* TIKTOK PROOFS */}
                 <div className="bg-[#13141c] border border-gold/15 rounded-xl p-5 space-y-4">
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-[#FF0000] rounded flex items-center justify-center">
+                      <div className="w-6 h-6 bg-black border border-slate-750 rounded flex items-center justify-center">
                         <svg className="w-3.5 h-3.5 text-white fill-current" viewBox="0 0 24 24">
-                          <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.388.555a3.002 3.002 0 0 0-2.11 2.108C0 8.03 0 12 0 12s0 3.97.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.48 20.5 12 20.5 12 20.5s7.52 0-9.388-.555a3.002 3.002 0 0 0 2.11-2.108C24 15.97 24 12 24 12s0-3.97-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.5 6.27 6.27 0 0 0 1.96-4.52V8.92a8.28 8.28 0 0 0 4.81 1.52v-3.45a4.85 4.85 0 0 1-1-.3z" />
                         </svg>
                       </div>
                       <h4 className="font-gaming font-bold text-xs text-white uppercase tracking-wider">
-                        YouTube Proofs ({activeReviewItem.youtubeProofs?.length || 0})
+                        TikTok Proofs ({(activeReviewItem.tiktokProofs || activeReviewItem.youtubeProofs)?.length || 0})
                       </h4>
                     </div>
                     <span className="text-[10px] text-gray-400 font-sans">Click screenshot to zoom</span>
                   </div>
 
-                  {(!activeReviewItem.youtubeProofs || activeReviewItem.youtubeProofs.length === 0) ? (
-                    <p className="text-xs text-red-400 italic py-4 text-center">No YouTube proof uploaded.</p>
+                  {(!(activeReviewItem.tiktokProofs || activeReviewItem.youtubeProofs) || (activeReviewItem.tiktokProofs || activeReviewItem.youtubeProofs).length === 0) ? (
+                    <p className="text-xs text-red-400 italic py-4 text-center">No TikTok proof uploaded.</p>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {activeReviewItem.youtubeProofs.map((proof, idx) => (
+                      {(activeReviewItem.tiktokProofs || activeReviewItem.youtubeProofs).map((proof, idx) => (
                         <div
                           key={idx}
                           className="bg-[#0b0c10] border border-slate-800 hover:border-gold/40 rounded-lg p-2 space-y-1.5 transition-all group/card"
@@ -1309,19 +1310,19 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                           <div className="flex justify-between items-center text-[10px] text-gray-400">
                             <span className="font-gaming font-bold text-gold-bright">Player {idx + 1}</span>
                             <button
-                              onClick={() => openImageZoom(proof, `${activeReviewItem.teamName} - YT Proof ${idx + 1}`)}
+                              onClick={() => openImageZoom(proof, `${activeReviewItem.teamName} - TikTok Proof ${idx + 1}`)}
                               className="text-gray-400 hover:text-white flex items-center gap-1 cursor-pointer"
                             >
                               <ZoomIn className="w-3 h-3" /> Zoom
                             </button>
                           </div>
                           <div
-                            onClick={() => openImageZoom(proof, `${activeReviewItem.teamName} - YT Proof ${idx + 1}`)}
+                            onClick={() => openImageZoom(proof, `${activeReviewItem.teamName} - TikTok Proof ${idx + 1}`)}
                             className="aspect-video bg-black rounded overflow-hidden relative cursor-zoom-in border border-slate-850"
                           >
                             <img
                               src={getImageUrl(proof)}
-                              alt="YouTube Proof"
+                              alt="TikTok Proof"
                               className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-200"
                             />
                           </div>

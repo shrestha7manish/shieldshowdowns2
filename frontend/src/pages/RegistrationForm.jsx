@@ -75,8 +75,8 @@ export default function RegistrationForm() {
   }, [timerConfig]);
 
   // File uploads & previews state arrays (pre-allocated to size 5 for dynamic player slots)
-  const [ytFiles, setYtFiles] = useState([null, null, null, null, null]);
-  const [ytPreviews, setYtPreviews] = useState([null, null, null, null, null]);
+  const [tiktokFiles, setTiktokFiles] = useState([null, null, null, null, null]);
+  const [tiktokPreviews, setTiktokPreviews] = useState([null, null, null, null, null]);
   const [igFiles, setIgFiles] = useState([null, null, null, null, null]);
   const [igPreviews, setIgPreviews] = useState([null, null, null, null, null]);
 
@@ -123,7 +123,7 @@ export default function RegistrationForm() {
     (watchP5Uid && watchP5Uid.trim() !== ''));
 
   const requiredCount = isP5Active ? 5 : 4;
-  const proofRequiredCount = 2;
+  const proofRequiredCount = 3;
   const watchTerms = watch('termsAccepted');
 
   const formValues = watch();
@@ -138,12 +138,12 @@ export default function RegistrationForm() {
   // Clean 5th player upload slot files if player 5 details are cleared
   useEffect(() => {
     if (!isP5Active) {
-      setYtFiles(prev => {
+      setTiktokFiles(prev => {
         const next = [...prev];
         next[4] = null;
         return next;
       });
-      setYtPreviews(prev => {
+      setTiktokPreviews(prev => {
         const next = [...prev];
         next[4] = null;
         return next;
@@ -179,13 +179,13 @@ export default function RegistrationForm() {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      if (type === 'youtube') {
-        setYtFiles(prev => {
+      if (type === 'tiktok' || type === 'youtube') {
+        setTiktokFiles(prev => {
           const next = [...prev];
           next[idx] = file;
           return next;
         });
-        setYtPreviews(prev => {
+        setTiktokPreviews(prev => {
           const next = [...prev];
           next[idx] = reader.result;
           return next;
@@ -207,13 +207,13 @@ export default function RegistrationForm() {
   };
 
   const removeSlotFile = (idx, type) => {
-    if (type === 'youtube') {
-      setYtFiles(prev => {
+    if (type === 'tiktok' || type === 'youtube') {
+      setTiktokFiles(prev => {
         const next = [...prev];
         next[idx] = null;
         return next;
       });
-      setYtPreviews(prev => {
+      setTiktokPreviews(prev => {
         const next = [...prev];
         next[idx] = null;
         return next;
@@ -281,19 +281,19 @@ export default function RegistrationForm() {
   const onSubmit = async (data) => {
     setErrorMsg('');
 
-    const activeYtFiles = ytFiles.slice(0, proofRequiredCount);
+    const activeTiktokFiles = tiktokFiles.slice(0, proofRequiredCount);
     const activeIgFiles = igFiles.slice(0, proofRequiredCount);
 
-    const firstMissingYtIdx = activeYtFiles.findIndex(f => !f);
+    const firstMissingTiktokIdx = activeTiktokFiles.findIndex(f => !f);
     const firstMissingIgIdx = activeIgFiles.findIndex(f => !f);
 
-    if (firstMissingYtIdx !== -1 || firstMissingIgIdx !== -1) {
-      setErrorMsg(`Please upload screenshot proofs for Player 1 and Player 2.`);
+    if (firstMissingTiktokIdx !== -1 || firstMissingIgIdx !== -1) {
+      setErrorMsg(`Please upload follow screenshot proofs for Player 1, Player 2, and Player 3.`);
       setShowUploadErrors(true);
 
       let elementToScroll = null;
-      if (firstMissingYtIdx !== -1) {
-        elementToScroll = document.getElementById(`yt-file-container-${firstMissingYtIdx}`);
+      if (firstMissingTiktokIdx !== -1) {
+        elementToScroll = document.getElementById(`tiktok-file-container-${firstMissingTiktokIdx}`);
       } else if (firstMissingIgIdx !== -1) {
         elementToScroll = document.getElementById(`ig-file-container-${firstMissingIgIdx}`);
       }
@@ -321,8 +321,9 @@ export default function RegistrationForm() {
       formData.append('players', JSON.stringify(cleanPlayers));
 
       // Append arrays of files to the correct fields
-      activeYtFiles.forEach(file => {
-        formData.append('youtubeProofs', file);
+      activeTiktokFiles.forEach(file => {
+        formData.append('tiktokProofs', file);
+        formData.append('youtubeProofs', file); // For backwards compatibility
       });
       activeIgFiles.forEach(file => {
         formData.append('instagramProofs', file);
@@ -354,8 +355,8 @@ export default function RegistrationForm() {
           ],
           termsAccepted: false
         });
-        setYtFiles([null, null, null, null, null]);
-        setYtPreviews([null, null, null, null, null]);
+        setTiktokFiles([null, null, null, null, null]);
+        setTiktokPreviews([null, null, null, null, null]);
         setIgFiles([null, null, null, null, null]);
         setIgPreviews([null, null, null, null, null]);
         setShowUploadErrors(false);
@@ -383,10 +384,10 @@ export default function RegistrationForm() {
   const isFormDisabled = timerConfig.isClosed || (timerConfig.isEnabled && isExpired);
 
   // Submit button active state rule
-  const activeYtFiles = ytFiles.slice(0, proofRequiredCount);
+  const activeTiktokFiles = tiktokFiles.slice(0, proofRequiredCount);
   const activeIgFiles = igFiles.slice(0, proofRequiredCount);
   const isSubmitDisabled = loading || isFormDisabled;
-  const allProofsUploaded = activeYtFiles.every(Boolean) && activeIgFiles.every(Boolean);
+  const allProofsUploaded = activeTiktokFiles.every(Boolean) && activeIgFiles.every(Boolean);
 
 
 
@@ -915,7 +916,7 @@ export default function RegistrationForm() {
                       Social Verification
                     </h2>
                     <p className="text-[11px] text-slate-400 font-sans mt-0.5">
-                      Upload proof of follow/subscription for Player 1 & Player 2.
+                      Upload proof of follow for Player 1, Player 2 & Player 3 (3 screenshots per platform).
                     </p>
                   </div>
                 </div>
@@ -923,44 +924,46 @@ export default function RegistrationForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
 
-                {/* YOUTUBE PROOFS CARD */}
+                {/* TIKTOK PROOFS CARD */}
                 <div className="bg-[#1a1a20] border border-slate-800 rounded-xl p-5 flex flex-col justify-between shadow-sm space-y-4">
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-2">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 bg-[#FF0000] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                      <div className="w-8 h-8 bg-black border border-slate-700 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                        {/* TikTok Icon */}
                         <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 24 24">
-                          <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.388.555a3.002 3.002 0 0 0-2.11 2.108C0 8.03 0 12 0 12s0 3.97.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.48 20.5 12 20.5 12 20.5s7.52 0-9.388-.555a3.002 3.002 0 0 0 2.11-2.108C24 15.97 24 12 24 12s0-3.97-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.5 6.27 6.27 0 0 0 1.96-4.52V8.92a8.28 8.28 0 0 0 4.81 1.52v-3.45a4.85 4.85 0 0 1-1-.3z" />
                         </svg>
                       </div>
                       <div>
                         <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider">
-                          YouTube Channel
+                          TikTok Page
                         </h3>
-                        <p className="text-[10px] text-slate-400">Subscribe & take screenshot</p>
+                        <p className="text-[10px] text-slate-400">Follow & take screenshot</p>
                       </div>
                     </div>
 
                     <a
-                      href="https://youtu.be/YzaBVJJIxhE?is=kn_qD24OIbDlbKYq"
+                      href="https://www.tiktok.com/@theshieldesportsofficial?_r=1&_t=ZP-993bGn6qdUU"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#FF0000] hover:bg-[#D90000] text-white rounded-lg text-xs font-bold transition-all shadow-sm shrink-0 cursor-pointer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#010101] hover:bg-slate-900 border border-slate-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm shrink-0 cursor-pointer"
                     >
-                      Subscribe <ExternalLink className="w-3 h-3" />
+                      Follow TikTok <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
 
                   {/* Upload Rows */}
                   <div className="space-y-2.5">
                     {[...Array(proofRequiredCount)].map((_, idx) => {
-                      const file = ytFiles[idx];
-                      const preview = ytPreviews[idx];
+                      const file = tiktokFiles[idx];
+                      const preview = tiktokPreviews[idx];
                       const playerName = watch(`players.${idx}.playerName`) || `Player ${idx + 1}`;
                       const isReady = watch(`players.${idx}.playerName`)?.trim();
 
                       return (
                         <div
                           key={idx}
+                          id={`tiktok-file-container-${idx}`}
                           className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-colors ${
                             showUploadErrors && !file ? 'border-rose-500/70 bg-rose-950/20' : 'border-slate-800'
                           }`}
@@ -983,7 +986,7 @@ export default function RegistrationForm() {
                                 <button
                                   type="button"
                                   disabled={isFormDisabled}
-                                  onClick={() => removeSlotFile(idx, 'youtube')}
+                                  onClick={() => removeSlotFile(idx, 'tiktok')}
                                   className="p-1 bg-slate-800 hover:bg-red-900/80 text-slate-400 hover:text-red-200 rounded cursor-pointer transition-colors"
                                   title="Remove File"
                                 >
@@ -996,7 +999,7 @@ export default function RegistrationForm() {
                             ) : (
                               <div>
                                 <label
-                                  htmlFor={`yt-file-${idx}`}
+                                  htmlFor={`tiktok-file-${idx}`}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
                                     isReady && !isFormDisabled
                                       ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
@@ -1006,10 +1009,10 @@ export default function RegistrationForm() {
                                   <Upload className="w-3 h-3 text-gold" /> Upload
                                 </label>
                                 <input
-                                  id={`yt-file-${idx}`}
+                                  id={`tiktok-file-${idx}`}
                                   type="file"
                                   accept="image/*"
-                                  onChange={(e) => handleSlotFileChange(e, idx, 'youtube')}
+                                  onChange={(e) => handleSlotFileChange(e, idx, 'tiktok')}
                                   className="hidden"
                                   disabled={!isReady || isFormDisabled}
                                 />
@@ -1062,6 +1065,7 @@ export default function RegistrationForm() {
                       return (
                         <div
                           key={idx}
+                          id={`ig-file-container-${idx}`}
                           className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-colors ${
                             showUploadErrors && !file ? 'border-rose-500/70 bg-rose-950/20' : 'border-slate-800'
                           }`}
@@ -1180,7 +1184,7 @@ export default function RegistrationForm() {
               {!allProofsUploaded && !loading && !isFormDisabled && (
                 <div className="px-4 py-2 rounded-full bg-[#16161a] border border-slate-800 text-[11px] text-slate-400 font-gaming uppercase tracking-wider flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-                  <span>Upload Status: YouTube ({activeYtFiles.filter(Boolean).length}/{proofRequiredCount}) &bull; Instagram ({activeIgFiles.filter(Boolean).length}/{proofRequiredCount})</span>
+                  <span>Upload Status: TikTok ({activeTiktokFiles.filter(Boolean).length}/{proofRequiredCount}) &bull; Instagram ({activeIgFiles.filter(Boolean).length}/{proofRequiredCount})</span>
                 </div>
               )}
 
@@ -1227,7 +1231,7 @@ export default function RegistrationForm() {
             </li>
             <li className="flex gap-2.5 items-start">
               <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">03.</span>
-              <span>Upload YouTube & Instagram screenshots for Player 1 and Player 2.</span>
+              <span>Upload TikTok & Instagram screenshots for Player 1, Player 2, and Player 3.</span>
             </li>
             <li className="flex gap-2.5 items-start">
               <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">04.</span>

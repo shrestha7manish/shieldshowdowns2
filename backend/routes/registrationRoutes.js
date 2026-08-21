@@ -5,6 +5,7 @@ const registrationController = require('../controllers/registrationController');
 
 // Multer fields configuration for handling upload proof keys
 const uploadFields = upload.fields([
+  { name: 'tiktokProofs', maxCount: 5 },
   { name: 'youtubeProofs', maxCount: 5 },
   { name: 'instagramProofs', maxCount: 5 }
 ]);

@@ -16,8 +16,9 @@ const registrationSchema = new mongoose.Schema({
     type: [playerSchema],
     validate: [val => val.length >= 4 && val.length <= 5, 'Tournament requires between 4 and 5 players']
   },
-  youtubeProofs: { type: [String], required: true }, // array of filenames
-  instagramProofs: { type: [String], required: true }, // array of filenames
+  tiktokProofs: { type: [String], default: [] },
+  youtubeProofs: { type: [String], default: [] },
+  instagramProofs: { type: [String], required: true },
   submittedAt: { type: Date, default: Date.now }
 });
 

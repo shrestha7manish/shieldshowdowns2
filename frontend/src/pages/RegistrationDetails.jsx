@@ -206,27 +206,27 @@ export default function RegistrationDetails() {
             </h2>
 
             <div className="space-y-8">
-              {/* YouTube Card Gallery */}
+              {/* TikTok Card Gallery */}
               <div className="bg-[#0d0d0f] border border-gold/10 rounded-xl p-4 space-y-4">
                 <span className="font-gaming font-bold text-xs text-white uppercase tracking-wider block border-b border-gold/5 pb-2">
-                  YouTube Follow Proofs ({registration.youtubeProofs?.length || 0})
+                  TikTok Follow Proofs ({(registration.tiktokProofs || registration.youtubeProofs)?.length || 0})
                 </span>
 
                 <div className="grid grid-cols-1 gap-4">
-                  {registration.youtubeProofs?.map((proof, idx) => (
+                  {(registration.tiktokProofs || registration.youtubeProofs)?.map((proof, idx) => (
                     <div key={idx} className="bg-[#121214] border border-gold/5 rounded-lg p-2.5 space-y-2">
                       <div className="flex justify-between items-center text-xs">
                         <span className="font-gaming font-bold text-gold-bright">Member #{idx + 1} Proof</span>
                         <div className="flex gap-1.5">
                           <button
-                            onClick={() => openImageModal(proof, `${registration.teamName} YouTube Proof #${idx + 1}`)}
+                            onClick={() => openImageModal(proof, `${registration.teamName} TikTok Proof #${idx + 1}`)}
                             className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white rounded transition-colors cursor-pointer"
                             title="Zoom View"
                           >
                             <ZoomIn className="w-3.5 h-3.5" />
                           </button>
                           <button
-                            onClick={() => handleDownload(proof, `${registration.teamName} YouTube #${idx + 1}`)}
+                            onClick={() => handleDownload(proof, `${registration.teamName} TikTok #${idx + 1}`)}
                             className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white rounded transition-colors cursor-pointer"
                             title="Download Screenshot"
                           >
@@ -235,12 +235,12 @@ export default function RegistrationDetails() {
                         </div>
                       </div>
                       <div
-                        onClick={() => openImageModal(proof, `${registration.teamName} YouTube Proof #${idx + 1}`)}
+                        onClick={() => openImageModal(proof, `${registration.teamName} TikTok Proof #${idx + 1}`)}
                         className="relative group aspect-video rounded overflow-hidden border border-gold/10 bg-black flex items-center justify-center cursor-zoom-in"
                       >
                         <img
                           src={getImageUrl(proof)}
-                          alt={`YouTube Proof ${idx + 1}`}
+                          alt={`TikTok Proof ${idx + 1}`}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">

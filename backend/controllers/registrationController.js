@@ -36,19 +36,9 @@ const deleteCloudinaryFile = async (imageUrl) => {
 exports.createRegistration = async (req, res) => {
   const cleanUploadedFiles = async (files) => {
     if (files) {
-      if (files.youtubeProofs) {
-        for (const f of files.youtubeProofs) {
-          if (f.path) {
-            if (f.path.includes('cloudinary.com')) {
-              await deleteCloudinaryFile(f.path);
-            } else {
-              fs.unlink(f.path, () => {});
-            }
-          }
-        }
-      }
-      if (files.instagramProofs) {
-        for (const f of files.instagramProofs) {
+      const allFileArrays = [files.tiktokProofs, files.youtubeProofs, files.instagramProofs].filter(Boolean);
+      for (const fileArray of allFileArrays) {
+        for (const f of fileArray) {
           if (f.path) {
             if (f.path.includes('cloudinary.com')) {
               await deleteCloudinaryFile(f.path);
@@ -78,10 +68,13 @@ exports.createRegistration = async (req, res) => {
       }
     }
 
+    // Determine primary video platform proof array (tiktokProofs or youtubeProofs)
+    const primaryVideoProofs = req.files?.tiktokProofs || req.files?.youtubeProofs;
+
     // If files are missing, clean up any uploaded files and return error
-    if (!req.files || !req.files.youtubeProofs || !req.files.instagramProofs) {
+    if (!req.files || !primaryVideoProofs || !req.files.instagramProofs) {
       await cleanUploadedFiles(req.files);
-      return res.status(400).json({ message: 'Both YouTube and Instagram follow screenshots are required.' });
+      return res.status(400).json({ message: 'Both TikTok and Instagram follow screenshots are required.' });
     }
 
     const { teamName, teamLeaderName, email, discordUsername, players } = req.body;
@@ -128,17 +121,20 @@ exports.createRegistration = async (req, res) => {
       }
     }
 
-    // Validate required proof count: exactly 2 proofs required (for Player 1 and Player 2)
-    const requiredProofCount = 2;
-    if (req.files.youtubeProofs.length !== requiredProofCount || req.files.instagramProofs.length !== requiredProofCount) {
+    // Validate required proof count: exactly 3 proofs required (for Player 1, Player 2, and Player 3)
+    const requiredProofCount = 3;
+    if (primaryVideoProofs.length !== requiredProofCount || req.files.instagramProofs.length !== requiredProofCount) {
       await cleanUploadedFiles(req.files);
       return res.status(400).json({
-        message: `Dynamic upload mismatch: You must upload exactly ${requiredProofCount} YouTube follow screenshots and exactly ${requiredProofCount} Instagram follow screenshots (one screenshot per member for Player 1 and Player 2).`
+        message: `Dynamic upload mismatch: You must upload exactly ${requiredProofCount} TikTok follow screenshots and exactly ${requiredProofCount} Instagram follow screenshots (one screenshot per member for Player 1, Player 2, and Player 3).`
       });
     }
 
     // Auto-generate sequential ID
     const registrationId = await getNextSequenceValue('registrationId');
+
+    const videoProofPaths = primaryVideoProofs.map(f => f.path);
+    const igProofPaths = req.files.instagramProofs.map(f => f.path);
 
     const registration = new Registration({
       registrationId,
@@ -147,8 +143,9 @@ exports.createRegistration = async (req, res) => {
       email,
       discordUsername,
       players: parsedPlayers,
-      youtubeProofs: req.files.youtubeProofs.map(f => f.path),
-      instagramProofs: req.files.instagramProofs.map(f => f.path)
+      tiktokProofs: videoProofPaths,
+      youtubeProofs: videoProofPaths,
+      instagramProofs: igProofPaths
     });
 
     const saved = await registration.save();
@@ -261,15 +258,16 @@ exports.deleteRegistration = async (req, res) => {
     // Delete static screenshot files if they exist
     const uploadsDir = path.join(__dirname, '../uploads');
     
-    if (Array.isArray(registration.youtubeProofs)) {
-      for (const proof of registration.youtubeProofs) {
+    const videoProofs = registration.tiktokProofs || registration.youtubeProofs;
+    if (Array.isArray(videoProofs)) {
+      for (const proof of videoProofs) {
         if (proof.includes('cloudinary.com')) {
           await deleteCloudinaryFile(proof);
         } else {
           const filePath = path.join(uploadsDir, proof);
           if (fs.existsSync(filePath)) {
             fs.unlink(filePath, (err) => {
-              if (err) console.error('Error deleting youtube screenshot file:', err);
+              if (err) console.error('Error deleting video screenshot file:', err);
             });
           }
         }
