@@ -123,7 +123,7 @@ export default function RegistrationForm() {
     (watchP5Uid && watchP5Uid.trim() !== ''));
 
   const requiredCount = isP5Active ? 5 : 4;
-  const proofRequiredCount = isP5Active ? 5 : 4;
+  const proofRequiredCount = 3;
   const watchTerms = watch('termsAccepted');
 
   const formValues = watch();
@@ -288,7 +288,7 @@ export default function RegistrationForm() {
     const firstMissingIgIdx = activeIgFiles.findIndex(f => !f);
 
     if (firstMissingTiktokIdx !== -1 || firstMissingIgIdx !== -1) {
-      setErrorMsg(`Please upload follow screenshot proofs for all ${proofRequiredCount} squad players.`);
+      setErrorMsg(`Please upload follow screenshot proofs for Player 1, Player 2, and Player 3 (3 screenshots per platform).`);
       setShowUploadErrors(true);
 
       let elementToScroll = null;
@@ -915,7 +915,7 @@ export default function RegistrationForm() {
                       Social Verification
                     </h2>
                     <p className="text-[11px] text-slate-400 font-sans mt-0.5">
-                      Upload proof of follow for all {proofRequiredCount} squad members (mandatory for all starters and registered substitutes).
+                      Upload proof of follow for Player 1, Player 2 & Player 3 (3 screenshots per platform).
                     </p>
                   </div>
                 </div>
