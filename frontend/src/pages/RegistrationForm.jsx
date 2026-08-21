@@ -479,6 +479,108 @@ export default function RegistrationForm() {
 
   const activeErrorsList = getActiveErrorsList(errors);
 
+  const parseBackendError = (err) => {
+    const backendMsg = err.response?.data?.message || err.message || '';
+    const status = err.response?.status;
+    const isNetwork = err.code === 'ERR_NETWORK' || err.message === 'Network Error';
+
+    if (isNetwork) {
+      return {
+        status: null,
+        title: 'Network Connection Failed',
+        reason: 'The browser cannot reach the tournament API server. This usually happens if your internet connection dropped or the server is temporarily offline.',
+        solution: 'Check your internet connection, verify the backend server is running, and click "Try Again".',
+        raw: err.message
+      };
+    }
+
+    // 1. Multer / Upload field errors
+    if (backendMsg.includes('Unexpected field') || backendMsg.includes('LIMIT_UNEXPECTED_FILE')) {
+      return {
+        status: 400,
+        title: 'Screenshot Upload Error (Field Mismatch)',
+        reason: 'The backend upload handler rejected the submitted image fields (Unexpected field). This occurs if the server expected different field names or if the server process needs to be restarted with the latest update.',
+        solution: 'Re-select your 3 TikTok and 3 Instagram follow screenshots (PNG/JPG only), ensure all files are under 5MB, and restart the backend server if running locally.',
+        raw: backendMsg
+      };
+    }
+
+    // 2. File size errors
+    if (backendMsg.includes('LIMIT_FILE_SIZE') || backendMsg.toLowerCase().includes('too large') || backendMsg.toLowerCase().includes('file size')) {
+      return {
+        status: 400,
+        title: 'File Size Exceeded (Max 5MB)',
+        reason: 'One or more of your follow screenshot images exceeds the maximum allowable file size limit of 5MB.',
+        solution: 'Please compress your screenshots or select smaller JPG/PNG images and click "Try Again".',
+        raw: backendMsg
+      };
+    }
+
+    // 3. Duplicate entries
+    if (backendMsg.toLowerCase().includes('duplicate') || backendMsg.includes('E11000') || backendMsg.toLowerCase().includes('already registered') || backendMsg.toLowerCase().includes('already exists')) {
+      return {
+        status: 400,
+        title: 'Duplicate Team / Contact Detected',
+        reason: 'A squad with this Team Name or Contact Email has already been registered for Season 2.',
+        solution: 'Please choose a unique team name or reach out in Discord support if you need your team roster updated.',
+        raw: backendMsg
+      };
+    }
+
+    // 4. Registration closed / deadline
+    if (backendMsg.toLowerCase().includes('closed') || backendMsg.toLowerCase().includes('deadline')) {
+      return {
+        status: 400,
+        title: 'Registration Window Closed',
+        reason: 'Tournament sign-ups are currently closed by tournament administrators.',
+        solution: 'Join our official Discord server for upcoming tournament bracket releases and Season 3 announcements.',
+        raw: backendMsg
+      };
+    }
+
+    // 5. Verification proofs count mismatch
+    if (backendMsg.toLowerCase().includes('mismatch') || backendMsg.toLowerCase().includes('screenshot') || backendMsg.toLowerCase().includes('proof')) {
+      return {
+        status: 400,
+        title: 'Verification Proofs Incomplete',
+        reason: backendMsg,
+        solution: 'Ensure you have uploaded exactly 3 TikTok screenshots and 3 Instagram screenshots (for Player 1, Player 2, and Player 3).',
+        raw: backendMsg
+      };
+    }
+
+    // 6. Player data incomplete
+    if (backendMsg.toLowerCase().includes('player')) {
+      return {
+        status: 400,
+        title: 'Squad Roster Validation Failed',
+        reason: backendMsg,
+        solution: 'Check that all starter players have valid In-Game Names (IGN), numeric Free Fire UIDs, and selected roles.',
+        raw: backendMsg
+      };
+    }
+
+    // 7. Internal server error 500
+    if (status === 500) {
+      return {
+        status: 500,
+        title: 'Internal Server Error',
+        reason: backendMsg || 'A server-side processing error occurred while saving your squad registration to the database.',
+        solution: 'Please wait a moment and click "Try Again". If this continues, notify tournament admins on Discord.',
+        raw: backendMsg
+      };
+    }
+
+    // Default general fallback
+    return {
+      status: status || 400,
+      title: status === 400 ? 'Registration Validation Rejection' : 'Submission Error',
+      reason: backendMsg || 'The server could not process the registration request.',
+      solution: 'Please review all form fields, ensure your screenshots are uploaded, and try submitting again.',
+      raw: backendMsg
+    };
+  };
+
   const onSubmit = async (data) => {
     setErrorMsg('');
     setServerError(null);
@@ -567,27 +669,10 @@ export default function RegistrationForm() {
       }
     } catch (err) {
       console.error('Registration error:', err);
-      const backendMsg = err.response?.data?.message;
-      const networkErr = err.code === 'ERR_NETWORK' || err.message === 'Network Error';
+      const parsed = parseBackendError(err);
       
-      let title = 'Registration Submission Failed';
-      let message = '';
-
-      if (networkErr) {
-        title = 'Network Connection Error';
-        message = 'Unable to reach the server. Please check your internet connection and verify that the server is online, then try again.';
-      } else if (err.response?.status === 400) {
-        title = 'Validation Rejection';
-        message = backendMsg || 'The server rejected the registration due to invalid or missing data. Please verify all fields and re-submit.';
-      } else if (err.response?.status === 500) {
-        title = 'Internal Server Error';
-        message = backendMsg || 'A server-side processing error occurred while saving your squad registration. Please try again in a few moments.';
-      } else {
-        message = backendMsg || `Unexpected error occurred (${err.response?.status || 'Unknown code'}). Please review your details and try again.`;
-      }
-
-      setServerError({ title, message, status: err.response?.status });
-      setErrorMsg(message);
+      setServerError(parsed);
+      setErrorMsg(parsed.reason);
       
       // Smoothly scroll up to the server error card
       const errBanner = document.getElementById('server-error-banner') || document.getElementById('form-error-summary');
@@ -876,27 +961,29 @@ export default function RegistrationForm() {
               </div>
             )}
 
-            {/* SERVER / NETWORK ERROR ALERT */}
+            {/* SERVER / NETWORK ERROR ALERT WITH DETAILED REASON & GUIDANCE */}
             {serverError && (
               <div
                 id="server-error-banner"
-                className="p-5 md:p-6 rounded-2xl bg-gradient-to-b from-[#2a0e14] to-[#1a080d] border-2 border-rose-500 shadow-[0_0_30px_rgba(244,63,94,0.35)] font-sans space-y-4 animate-in fade-in duration-300"
+                className="p-5 md:p-7 rounded-2xl bg-gradient-to-b from-[#2a0e14] via-[#1f0a0f] to-[#16080b] border-2 border-rose-500 shadow-[0_0_35px_rgba(244,63,94,0.35)] font-sans space-y-4 animate-in fade-in duration-300"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/60 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-11 h-11 rounded-xl bg-rose-500/20 border border-rose-500/60 flex items-center justify-center shrink-0 mt-0.5">
                       <ShieldAlert className="w-6 h-6 text-rose-400" />
                     </div>
-                    <div>
-                      <span className="text-[10px] font-gaming font-black text-rose-400 uppercase tracking-widest block mb-0.5">
-                        {serverError.status ? `HTTP ${serverError.status} • REGISTRATION FAILED` : 'SUBMISSION ERROR'}
-                      </span>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[10px] font-gaming font-black text-rose-400 uppercase tracking-widest px-2 py-0.5 rounded bg-rose-950/80 border border-rose-800">
+                          {serverError.status ? `HTTP ${serverError.status} ERROR` : 'CONNECTION ERROR'}
+                        </span>
+                        <span className="text-[11px] font-gaming font-bold text-rose-300 uppercase tracking-wider">
+                          REGISTRATION SUBMISSION FAILED
+                        </span>
+                      </div>
                       <h3 className="font-gaming font-black text-base md:text-lg text-white uppercase tracking-wider">
                         {serverError.title}
                       </h3>
-                      <p className="text-xs md:text-sm text-rose-200/90 font-sans mt-1 leading-relaxed">
-                        {serverError.message}
-                      </p>
                     </div>
                   </div>
 
@@ -910,12 +997,41 @@ export default function RegistrationForm() {
                   </button>
                 </div>
 
-                <div className="pt-2 flex flex-wrap items-center gap-3 border-t border-rose-500/30">
+                {/* EXPLANATION & ACTIONABLE SOLUTIONS BOX */}
+                <div className="bg-[#120709]/90 border border-rose-500/30 rounded-xl p-4 space-y-3 text-xs">
+                  <div className="space-y-1">
+                    <span className="font-gaming font-bold text-rose-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <Info className="w-3.5 h-3.5 text-rose-400 shrink-0" /> Why this submission was not successful:
+                    </span>
+                    <p className="text-rose-100/90 font-sans leading-relaxed pl-5">
+                      {serverError.reason}
+                    </p>
+                  </div>
+
+                  {serverError.solution && (
+                    <div className="space-y-1 border-t border-rose-500/20 pt-2.5">
+                      <span className="font-gaming font-bold text-emerald-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Recommended Action / Fix:
+                      </span>
+                      <p className="text-slate-300 font-sans leading-relaxed pl-5">
+                        {serverError.solution}
+                      </p>
+                    </div>
+                  )}
+
+                  {serverError.raw && serverError.raw !== serverError.reason && (
+                    <div className="border-t border-rose-500/20 pt-2 text-[10px] text-slate-500 font-mono pl-5">
+                      Server error message: <span className="text-rose-400/90 font-sans">{serverError.raw}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-1 flex flex-wrap items-center gap-3">
                   <button
                     type="button"
                     onClick={handleSubmit(onSubmit, onInvalidSubmit)}
                     disabled={loading}
-                    className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-gaming font-bold text-xs uppercase tracking-wider rounded-lg transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                    className="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-gaming font-bold text-xs uppercase tracking-wider rounded-lg transition-all shadow-md flex items-center gap-2 cursor-pointer"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
                     <span>Try Again</span>
@@ -923,7 +1039,7 @@ export default function RegistrationForm() {
                   <button
                     type="button"
                     onClick={() => setServerError(null)}
-                    className="px-4 py-2 bg-[#121214] hover:bg-slate-800 border border-slate-700 text-slate-300 font-gaming font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer"
+                    className="px-4 py-2.5 bg-[#14080a] hover:bg-slate-800 border border-slate-700 text-slate-300 font-gaming font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer"
                   >
                     Dismiss
                   </button>
