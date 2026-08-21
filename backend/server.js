@@ -33,7 +33,10 @@ app.get('/', (req, res) => {
 // Multer Size Limit and Custom Error handler
 app.use((err, req, res, next) => {
   if (err.code === 'LIMIT_FILE_SIZE') {
-    return res.status(400).json({ message: 'File is too large. Maximum file size allowed is 5MB.' });
+    return res.status(400).json({ message: 'File is too large. Maximum file size allowed is 5MB per screenshot.' });
+  }
+  if (err.code === 'LIMIT_UNEXPECTED_FILE' || err.name === 'MulterError' || (err.message && err.message.includes('Unexpected field'))) {
+    return res.status(400).json({ message: 'Upload field mismatch. Please ensure you are uploading valid JPG or PNG screenshots.' });
   }
   res.status(400).json({ message: err.message || 'An unexpected error occurred.' });
 });

@@ -78,13 +78,20 @@ exports.createRegistration = async (req, res) => {
     let youtubeProofs = [];
 
     if (Array.isArray(req.files)) {
-      tiktokProofs = req.files.filter(f => f.fieldname === 'tiktokProofs');
-      instagramProofs = req.files.filter(f => f.fieldname === 'instagramProofs');
-      youtubeProofs = req.files.filter(f => f.fieldname === 'youtubeProofs');
+      tiktokProofs = req.files.filter(f => f.fieldname && f.fieldname.toLowerCase().includes('tiktok'));
+      instagramProofs = req.files.filter(f => f.fieldname && (f.fieldname.toLowerCase().includes('instagram') || f.fieldname.toLowerCase().includes('ig')));
+      youtubeProofs = req.files.filter(f => f.fieldname && f.fieldname.toLowerCase().includes('youtube'));
+      
+      // Fallback: If field names don't match keywords but files exist, split into two equal batches
+      if (tiktokProofs.length === 0 && instagramProofs.length === 0 && req.files.length >= 2) {
+        const half = Math.floor(req.files.length / 2);
+        tiktokProofs = req.files.slice(0, half);
+        instagramProofs = req.files.slice(half);
+      }
     } else if (req.files) {
-      tiktokProofs = req.files.tiktokProofs || [];
-      instagramProofs = req.files.instagramProofs || [];
-      youtubeProofs = req.files.youtubeProofs || [];
+      tiktokProofs = req.files.tiktokProofs || req.files.tiktokProof || req.files.tiktok || [];
+      instagramProofs = req.files.instagramProofs || req.files.instagramProof || req.files.instagram || req.files.igProofs || req.files.igProof || [];
+      youtubeProofs = req.files.youtubeProofs || req.files.youtubeProof || req.files.youtube || [];
     }
 
     // Determine primary video platform proof array (tiktokProofs or youtubeProofs)
