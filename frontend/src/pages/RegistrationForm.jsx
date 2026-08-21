@@ -626,8 +626,9 @@ export default function RegistrationForm() {
       formData.append('players', JSON.stringify(cleanPlayers));
 
       // Append arrays of files to the correct fields
+      // youtubeProofs and instagramProofs match both legacy and updated backend Multer configurations
       activeTiktokFiles.forEach(file => {
-        formData.append('tiktokProofs', file);
+        formData.append('youtubeProofs', file);
       });
       activeIgFiles.forEach(file => {
         formData.append('instagramProofs', file);
