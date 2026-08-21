@@ -1,12 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { Shield, Upload, CheckCircle2, AlertTriangle, Users, Award, Camera, User, Check, RefreshCw, Trophy, Trash2, Eye, ExternalLink, Clock } from 'lucide-react';
+import { 
+  Shield, 
+  Upload, 
+  CheckCircle2, 
+  AlertTriangle, 
+  AlertCircle,
+  XCircle,
+  Users, 
+  Award, 
+  Camera, 
+  User, 
+  Check, 
+  RefreshCw, 
+  Trophy, 
+  Trash2, 
+  Eye, 
+  ExternalLink, 
+  Clock,
+  ChevronRight,
+  ArrowRight,
+  X,
+  Info,
+  ShieldAlert
+} from 'lucide-react';
 import SponsorsSection from '../components/SponsorsSection';
 import Season1WinnerBanner from '../components/Season1WinnerBanner';
 
 export default function RegistrationForm() {
   const [loading, setLoading] = useState(false);
+  const [submitElapsedSec, setSubmitElapsedSec] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [successData, setSuccessData] = useState(null);
 
@@ -14,6 +38,22 @@ export default function RegistrationForm() {
   const [timerConfig, setTimerConfig] = useState({ isEnabled: false, targetDate: null, title: 'Registration Closes In' });
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isExpired, setIsExpired] = useState(false);
+
+  // Track submission elapsed time (seconds)
+  useEffect(() => {
+    let timer;
+    if (loading) {
+      setSubmitElapsedSec(0);
+      timer = setInterval(() => {
+        setSubmitElapsedSec(prev => prev + 1);
+      }, 1000);
+    } else {
+      setSubmitElapsedSec(0);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [loading]);
 
   // Invited Teams State
   const [invitedTeams, setInvitedTeams] = useState([]);
@@ -232,6 +272,9 @@ export default function RegistrationForm() {
     }
   };
 
+  const [formAttempted, setFormAttempted] = useState(false);
+  const [serverError, setServerError] = useState(null);
+
   const formFieldOrder = [
     'teamName',
     'teamLeaderName',
@@ -244,9 +287,9 @@ export default function RegistrationForm() {
     'termsAccepted'
   ];
 
-  const getNestedError = (errors, path) => {
+  const getNestedError = (formErrors, path) => {
     const parts = path.split('.');
-    let current = errors;
+    let current = formErrors;
     for (const part of parts) {
       if (!current) return undefined;
       current = current[part];
@@ -254,32 +297,192 @@ export default function RegistrationForm() {
     return current;
   };
 
-  const scrollToFirstError = (errors) => {
-    for (const path of formFieldOrder) {
-      if (getNestedError(errors, path)) {
-        const element = document.querySelector(`[name="${path}"]`);
-        if (element) {
-          if (path === 'termsAccepted') {
-            const termsContainer = document.getElementById('terms-container');
-            if (termsContainer) {
-              termsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              return;
-            }
-          }
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const focusAndHighlightElement = (targetId, focusName) => {
+    let el = null;
+    if (targetId) {
+      el = document.getElementById(targetId);
+    }
+    if (!el && focusName) {
+      el = document.querySelector(`[name="${focusName}"]`);
+    }
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.remove('error-highlight-pulse');
+      // Trigger reflow to restart animation if already applied
+      void el.offsetWidth;
+      el.classList.add('error-highlight-pulse');
+      setTimeout(() => {
+        el.classList.remove('error-highlight-pulse');
+      }, 3800);
+
+      if (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'BUTTON') {
+        try {
+          el.focus({ preventScroll: true });
+        } catch (e) {}
+      } else {
+        const innerInput = el.querySelector('input, select, button');
+        if (innerInput) {
           try {
-            element.focus({ preventScroll: true });
-          } catch (e) {
-            console.error(e);
-          }
-          return;
+            innerInput.focus({ preventScroll: true });
+          } catch (e) {}
         }
       }
     }
   };
 
+  // Compile detailed, structured list of all active errors
+  const getActiveErrorsList = (formErrors) => {
+    const list = [];
+
+    // 1. Team Info
+    if (formErrors.teamName) {
+      list.push({
+        id: 'teamName',
+        section: 'Team Info',
+        field: 'Team Name',
+        message: formErrors.teamName.message || 'Team Name is required',
+        targetId: 'input-teamName',
+        focusName: 'teamName'
+      });
+    }
+    if (formErrors.teamLeaderName) {
+      list.push({
+        id: 'teamLeaderName',
+        section: 'Team Info',
+        field: 'Captain Name',
+        message: formErrors.teamLeaderName.message || 'Team Captain / Leader Name is required',
+        targetId: 'input-teamLeaderName',
+        focusName: 'teamLeaderName'
+      });
+    }
+    if (formErrors.email) {
+      list.push({
+        id: 'email',
+        section: 'Team Info',
+        field: 'Email',
+        message: formErrors.email.message || 'Valid Contact Email is required',
+        targetId: 'input-email',
+        focusName: 'email'
+      });
+    }
+
+    // 2. Squad Roster (Starters 1 to 4)
+    for (let i = 0; i < 4; i++) {
+      const playerErrors = formErrors.players?.[i];
+      const roleLabel = i === 0 ? 'Captain' : `Starter`;
+      if (playerErrors?.playerName) {
+        list.push({
+          id: `players.${i}.playerName`,
+          section: `Player ${i + 1} (${roleLabel})`,
+          field: `Player ${i + 1} IGN`,
+          message: 'In-Game Name (IGN) is required',
+          targetId: `input-player-${i}-name`,
+          focusName: `players.${i}.playerName`
+        });
+      }
+      if (playerErrors?.playerUID) {
+        list.push({
+          id: `players.${i}.playerUID`,
+          section: `Player ${i + 1} (${roleLabel})`,
+          field: `Player ${i + 1} UID`,
+          message: playerErrors.playerUID.message || 'Free Fire UID is required (Numbers only)',
+          targetId: `input-player-${i}-uid`,
+          focusName: `players.${i}.playerUID`
+        });
+      }
+      if (playerErrors?.role) {
+        list.push({
+          id: `players.${i}.role`,
+          section: `Player ${i + 1} (${roleLabel})`,
+          field: `Player ${i + 1} Role`,
+          message: 'Player Role must be selected',
+          targetId: `input-player-${i}-role`,
+          focusName: `players.${i}.role`
+        });
+      }
+    }
+
+    // 3. Player 5 (Substitute)
+    if (isP5Active) {
+      const p5Errors = formErrors.players?.[4];
+      if (p5Errors?.playerName) {
+        list.push({
+          id: 'players.4.playerName',
+          section: 'Player 5 (Substitute)',
+          field: 'Substitute IGN',
+          message: 'Substitute IGN is required when substitute details are entered',
+          targetId: 'input-player-4-name',
+          focusName: 'players.4.playerName'
+        });
+      }
+      if (p5Errors?.playerUID) {
+        list.push({
+          id: 'players.4.playerUID',
+          section: 'Player 5 (Substitute)',
+          field: 'Substitute UID',
+          message: p5Errors.playerUID.message || 'Substitute UID must contain numbers only',
+          targetId: 'input-player-4-uid',
+          focusName: 'players.4.playerUID'
+        });
+      }
+      if (p5Errors?.role) {
+        list.push({
+          id: 'players.4.role',
+          section: 'Player 5 (Substitute)',
+          field: 'Substitute Role',
+          message: 'Substitute Role must be selected',
+          targetId: 'input-player-4-role',
+          focusName: 'players.4.role'
+        });
+      }
+    }
+
+    // 4. Social Proofs Uploads (Checked if showUploadErrors is true)
+    if (showUploadErrors) {
+      for (let i = 0; i < proofRequiredCount; i++) {
+        const playerName = watch(`players.${i}.playerName`) || `Player ${i + 1}`;
+        if (!tiktokFiles[i]) {
+          list.push({
+            id: `tiktok-${i}`,
+            section: 'TikTok Verification',
+            field: `P${i + 1} TikTok Proof`,
+            message: `Missing TikTok follow screenshot for ${playerName} (Player ${i + 1})`,
+            targetId: `tiktok-file-container-${i}`
+          });
+        }
+        if (!igFiles[i]) {
+          list.push({
+            id: `ig-${i}`,
+            section: 'Instagram Verification',
+            field: `P${i + 1} Instagram Proof`,
+            message: `Missing Instagram follow screenshot for ${playerName} (Player ${i + 1})`,
+            targetId: `ig-file-container-${i}`
+          });
+        }
+      }
+    }
+
+    // 5. Terms
+    if (formErrors.termsAccepted) {
+      list.push({
+        id: 'termsAccepted',
+        section: 'Tournament Agreement',
+        field: 'Terms & Agreement',
+        message: 'You must confirm and accept the tournament rules & terms',
+        targetId: 'terms-container',
+        focusName: 'termsAccepted'
+      });
+    }
+
+    return list;
+  };
+
+  const activeErrorsList = getActiveErrorsList(errors);
+
   const onSubmit = async (data) => {
     setErrorMsg('');
+    setServerError(null);
+    setFormAttempted(true);
 
     const activeTiktokFiles = tiktokFiles.slice(0, proofRequiredCount);
     const activeIgFiles = igFiles.slice(0, proofRequiredCount);
@@ -288,18 +491,18 @@ export default function RegistrationForm() {
     const firstMissingIgIdx = activeIgFiles.findIndex(f => !f);
 
     if (firstMissingTiktokIdx !== -1 || firstMissingIgIdx !== -1) {
-      setErrorMsg(`Please upload follow screenshot proofs for Player 1, Player 2, and Player 3 (3 screenshots per platform).`);
       setShowUploadErrors(true);
+      setErrorMsg(`Missing screenshot verification proofs. Please upload follow proofs for Player 1, Player 2, and Player 3.`);
 
-      let elementToScroll = null;
+      let targetContainerId = null;
       if (firstMissingTiktokIdx !== -1) {
-        elementToScroll = document.getElementById(`tiktok-file-container-${firstMissingTiktokIdx}`);
+        targetContainerId = `tiktok-file-container-${firstMissingTiktokIdx}`;
       } else if (firstMissingIgIdx !== -1) {
-        elementToScroll = document.getElementById(`ig-file-container-${firstMissingIgIdx}`);
+        targetContainerId = `ig-file-container-${firstMissingIgIdx}`;
       }
 
-      if (elementToScroll) {
-        elementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (targetContainerId) {
+        focusAndHighlightElement(targetContainerId);
       }
       return;
     }
@@ -359,25 +562,86 @@ export default function RegistrationForm() {
         setIgFiles([null, null, null, null, null]);
         setIgPreviews([null, null, null, null, null]);
         setShowUploadErrors(false);
+        setFormAttempted(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } catch (err) {
       console.error('Registration error:', err);
       const backendMsg = err.response?.data?.message;
       const networkErr = err.code === 'ERR_NETWORK' || err.message === 'Network Error';
+      
+      let title = 'Registration Submission Failed';
+      let message = '';
+
       if (networkErr) {
-        setErrorMsg('Network error: Cannot reach the server. Please check your internet connection and try again.');
+        title = 'Network Connection Error';
+        message = 'Unable to reach the server. Please check your internet connection and verify that the server is online, then try again.';
+      } else if (err.response?.status === 400) {
+        title = 'Validation Rejection';
+        message = backendMsg || 'The server rejected the registration due to invalid or missing data. Please verify all fields and re-submit.';
+      } else if (err.response?.status === 500) {
+        title = 'Internal Server Error';
+        message = backendMsg || 'A server-side processing error occurred while saving your squad registration. Please try again in a few moments.';
       } else {
-        setErrorMsg(backendMsg || `Server error (${err.response?.status || 'unknown'}). Please try again.`);
+        message = backendMsg || `Unexpected error occurred (${err.response?.status || 'Unknown code'}). Please review your details and try again.`;
+      }
+
+      setServerError({ title, message, status: err.response?.status });
+      setErrorMsg(message);
+      
+      // Smoothly scroll up to the server error card
+      const errBanner = document.getElementById('server-error-banner') || document.getElementById('form-error-summary');
+      if (errBanner) {
+        errBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        window.scrollTo({ top: 200, behavior: 'smooth' });
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const onInvalidSubmit = (errors) => {
-    console.error("Form Validation Errors:", errors);
-    setErrorMsg("Form submission failed. Please fill out all required fields (highlighted in red) and accept the terms.");
-    scrollToFirstError(errors);
+  const onInvalidSubmit = (formErrors) => {
+    console.error("Form Validation Errors:", formErrors);
+    setFormAttempted(true);
+    setServerError(null);
+
+    // Also check uploads
+    const activeTiktokFiles = tiktokFiles.slice(0, proofRequiredCount);
+    const activeIgFiles = igFiles.slice(0, proofRequiredCount);
+    const hasMissingUploads = activeTiktokFiles.some(f => !f) || activeIgFiles.some(f => !f);
+
+    if (hasMissingUploads) {
+      setShowUploadErrors(true);
+    }
+
+    const currentErrors = getActiveErrorsList(formErrors);
+    const errorCount = currentErrors.length;
+
+    setErrorMsg(`Please resolve ${errorCount} highlighted issue${errorCount > 1 ? 's' : ''} in the form before submitting.`);
+
+    // Scroll to the first problematic field
+    for (const path of formFieldOrder) {
+      if (getNestedError(formErrors, path)) {
+        if (path === 'termsAccepted') {
+          focusAndHighlightElement('terms-container', 'termsAccepted');
+          return;
+        }
+        focusAndHighlightElement(null, path);
+        return;
+      }
+    }
+
+    // If no form input error but upload error exists
+    if (hasMissingUploads) {
+      const firstMissingTiktokIdx = activeTiktokFiles.findIndex(f => !f);
+      const firstMissingIgIdx = activeIgFiles.findIndex(f => !f);
+      if (firstMissingTiktokIdx !== -1) {
+        focusAndHighlightElement(`tiktok-file-container-${firstMissingTiktokIdx}`);
+      } else if (firstMissingIgIdx !== -1) {
+        focusAndHighlightElement(`ig-file-container-${firstMissingIgIdx}`);
+      }
+    }
   };
 
   const isFormDisabled = timerConfig.isClosed || (timerConfig.isEnabled && isExpired);
@@ -387,6 +651,7 @@ export default function RegistrationForm() {
   const activeIgFiles = igFiles.slice(0, proofRequiredCount);
   const isSubmitDisabled = loading || isFormDisabled;
   const allProofsUploaded = activeTiktokFiles.every(Boolean) && activeIgFiles.every(Boolean);
+
 
 
 
@@ -611,11 +876,118 @@ export default function RegistrationForm() {
               </div>
             )}
 
-            {/* Error Message */}
-            {errorMsg && (
-              <div className="bg-rose-950/60 border border-rose-800/60 text-rose-200 p-4 rounded-xl flex items-center gap-3 font-sans text-sm shadow-sm">
-                <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0" />
-                <span className="text-xs">{errorMsg}</span>
+            {/* SERVER / NETWORK ERROR ALERT */}
+            {serverError && (
+              <div
+                id="server-error-banner"
+                className="p-5 md:p-6 rounded-2xl bg-gradient-to-b from-[#2a0e14] to-[#1a080d] border-2 border-rose-500 shadow-[0_0_30px_rgba(244,63,94,0.35)] font-sans space-y-4 animate-in fade-in duration-300"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/60 flex items-center justify-center shrink-0 mt-0.5">
+                      <ShieldAlert className="w-6 h-6 text-rose-400" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-gaming font-black text-rose-400 uppercase tracking-widest block mb-0.5">
+                        {serverError.status ? `HTTP ${serverError.status} • REGISTRATION FAILED` : 'SUBMISSION ERROR'}
+                      </span>
+                      <h3 className="font-gaming font-black text-base md:text-lg text-white uppercase tracking-wider">
+                        {serverError.title}
+                      </h3>
+                      <p className="text-xs md:text-sm text-rose-200/90 font-sans mt-1 leading-relaxed">
+                        {serverError.message}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setServerError(null)}
+                    className="p-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 hover:text-white transition-colors cursor-pointer"
+                    title="Dismiss notification"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="pt-2 flex flex-wrap items-center gap-3 border-t border-rose-500/30">
+                  <button
+                    type="button"
+                    onClick={handleSubmit(onSubmit, onInvalidSubmit)}
+                    disabled={loading}
+                    className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-gaming font-bold text-xs uppercase tracking-wider rounded-lg transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+                    <span>Try Again</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setServerError(null)}
+                    className="px-4 py-2 bg-[#121214] hover:bg-slate-800 border border-slate-700 text-slate-300 font-gaming font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TOP VALIDATION ERROR SUMMARY (Shows when submit was clicked with errors) */}
+            {formAttempted && activeErrorsList.length > 0 && (
+              <div
+                id="form-error-summary"
+                className="p-5 md:p-6 rounded-2xl bg-gradient-to-b from-[#240f14] via-[#1a0a0e] to-[#14080a] border-2 border-rose-500/80 shadow-[0_0_30px_rgba(244,63,94,0.25)] font-sans space-y-4"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rose-500/30 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/50 flex items-center justify-center shrink-0">
+                      <AlertTriangle className="w-5 h-5 text-rose-400 animate-pulse" />
+                    </div>
+                    <div>
+                      <h3 className="font-gaming font-black text-sm md:text-base text-white uppercase tracking-wider flex items-center gap-2">
+                        <span>Form Submission Incomplete</span>
+                        <span className="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 text-[10px] border border-rose-700 font-gaming font-bold">
+                          {activeErrorsList.length} {activeErrorsList.length === 1 ? 'Error' : 'Errors'}
+                        </span>
+                      </h3>
+                      <p className="text-xs text-rose-200/80 font-sans mt-0.5">
+                        Please resolve the highlighted item{activeErrorsList.length > 1 ? 's' : ''} below. Click any item to jump straight to that field:
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => focusAndHighlightElement(activeErrorsList[0].targetId, activeErrorsList[0].focusName)}
+                    className="self-start sm:self-auto px-3.5 py-1.5 bg-rose-900/70 hover:bg-rose-800 border border-rose-500/60 text-white font-gaming text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.02]"
+                  >
+                    <span>Jump to First Issue</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-rose-300" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                  {activeErrorsList.map((err, idx) => (
+                    <button
+                      key={err.id || idx}
+                      type="button"
+                      onClick={() => focusAndHighlightElement(err.targetId, err.focusName)}
+                      className="flex items-center justify-between text-left p-3 rounded-xl bg-[#160a0d]/90 hover:bg-[#251016] border border-rose-500/30 hover:border-rose-400 transition-all text-xs group cursor-pointer shadow-sm hover:shadow-[0_0_15px_rgba(244,63,94,0.15)] hover:scale-[1.01]"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                        <span className="px-2 py-0.5 rounded-md text-[9px] font-gaming font-black uppercase tracking-wider bg-rose-950 text-rose-300 border border-rose-800 shrink-0">
+                          {err.section}
+                        </span>
+                        <span className="font-sans font-medium text-rose-200 group-hover:text-white transition-colors truncate">
+                          {err.message}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 text-rose-400 group-hover:text-rose-200 font-gaming font-bold text-[10px] uppercase tracking-wider shrink-0 pl-1">
+                        <span>Fix</span>
+                        <ChevronRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform text-rose-400" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -639,64 +1011,82 @@ export default function RegistrationForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 font-sans">
                 {/* Team Name */}
-                <div>
+                <div id="container-teamName">
                   <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                     Team Name <span className="text-rose-400">*</span>
                   </label>
                   <input
+                    id="input-teamName"
                     type="text"
                     disabled={isFormDisabled}
-                    {...register('teamName', { required: 'Team Name is required' })}
+                    {...register('teamName', { 
+                      required: 'Official Team Name is required',
+                      minLength: { value: 2, message: 'Team Name must be at least 2 characters' }
+                    })}
                     placeholder={isFormDisabled ? 'Registration Closed' : 'e.g. Team Phoenix'}
-                    className={`w-full form-input ${errors.teamName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                    className={`w-full form-input transition-all ${
+                      errors.teamName 
+                        ? '!border-red-500 !bg-red-950/20 focus:!ring-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.15)]' 
+                        : ''
+                    } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                   />
                   {errors.teamName && (
-                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
-                      <AlertTriangle className="w-3.5 h-3.5" /> {errors.teamName.message}
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1.5 font-medium">
+                      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 text-red-400" /> {errors.teamName.message}
                     </p>
                   )}
                 </div>
 
                 {/* Team Leader Name */}
-                <div>
+                <div id="container-teamLeaderName">
                   <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                     Team Captain / Leader Name <span className="text-rose-400">*</span>
                   </label>
                   <input
+                    id="input-teamLeaderName"
                     type="text"
                     disabled={isFormDisabled}
-                    {...register('teamLeaderName', { required: 'Team Leader Name is required' })}
+                    {...register('teamLeaderName', { required: 'Team Captain / Leader Name is required' })}
                     placeholder={isFormDisabled ? 'Registration Closed' : 'e.g. John Doe'}
-                    className={`w-full form-input ${errors.teamLeaderName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                    className={`w-full form-input transition-all ${
+                      errors.teamLeaderName 
+                        ? '!border-red-500 !bg-red-950/20 focus:!ring-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.15)]' 
+                        : ''
+                    } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                   />
                   {errors.teamLeaderName && (
-                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
-                      <AlertTriangle className="w-3.5 h-3.5" /> {errors.teamLeaderName.message}
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1.5 font-medium">
+                      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 text-red-400" /> {errors.teamLeaderName.message}
                     </p>
                   )}
                 </div>
 
                 {/* Email Address */}
-                <div className="md:col-span-2">
+                <div id="container-email" className="md:col-span-2">
                   <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                     Official Contact Email <span className="text-rose-400">*</span>
                   </label>
                   <input
+                    id="input-email"
                     type="email"
                     disabled={isFormDisabled}
                     {...register('email', {
-                      required: 'Email Address is required',
+                      required: 'Official Contact Email is required',
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'Please enter a valid email address'
+                        message: 'Please enter a valid email address (e.g. captain@gmail.com)'
                       }
                     })}
                     placeholder={isFormDisabled ? 'Registration Closed' : 'captain@team.com'}
-                    className={`w-full form-input ${errors.email ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                    className={`w-full form-input transition-all ${
+                      errors.email 
+                        ? '!border-red-500 !bg-red-950/20 focus:!ring-red-500/40 shadow-[0_0_10px_rgba(239,68,68,0.15)]' 
+                        : ''
+                    } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                   />
                   {errors.email && (
-                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
-                      <AlertTriangle className="w-3.5 h-3.5" /> {errors.email.message}
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1.5 font-medium">
+                      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 text-red-400" /> {errors.email.message}
                     </p>
                   )}
                 </div>
@@ -725,10 +1115,16 @@ export default function RegistrationForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[0, 1, 2, 3].map((index) => {
                   const isCaptain = index === 0;
+                  const hasPlayerError = !!(errors.players?.[index]?.playerName || errors.players?.[index]?.playerUID || errors.players?.[index]?.role);
                   return (
                     <div
                       key={index}
-                      className="bg-[#1a1a20] border border-slate-800 hover:border-slate-700 rounded-xl p-4 space-y-3.5 shadow-sm transition-all duration-200"
+                      id={`container-player-${index}`}
+                      className={`bg-[#1a1a20] border rounded-xl p-4 space-y-3.5 shadow-sm transition-all duration-200 ${
+                        hasPlayerError 
+                          ? 'border-rose-500/60 bg-[#1e1518]' 
+                          : 'border-slate-800 hover:border-slate-700'
+                      }`}
                     >
                       <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
                         <div className="flex items-center gap-1.5">
@@ -752,14 +1148,21 @@ export default function RegistrationForm() {
                           In-Game Name (IGN) <span className="text-rose-400">*</span>
                         </label>
                         <input
+                          id={`input-player-${index}-name`}
                           type="text"
                           disabled={isFormDisabled}
                           {...register(`players.${index}.playerName`, { required: 'IGN is required' })}
                           placeholder={isFormDisabled ? 'Closed' : 'e.g. Shadow7'}
-                          className={`w-full form-input-sm ${errors.players?.[index]?.playerName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                          className={`w-full form-input-sm transition-all ${
+                            errors.players?.[index]?.playerName 
+                              ? '!border-red-500 !bg-red-950/20 focus:!ring-red-500/30' 
+                              : ''
+                          } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                         />
                         {errors.players?.[index]?.playerName && (
-                          <p className="text-red-400 text-[10px] mt-1 font-sans">IGN required</p>
+                          <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
+                            <AlertCircle className="w-3 h-3 flex-shrink-0" /> IGN is required
+                          </p>
                         )}
                       </div>
 
@@ -769,21 +1172,26 @@ export default function RegistrationForm() {
                           Free Fire UID <span className="text-rose-400">*</span>
                         </label>
                         <input
+                          id={`input-player-${index}-uid`}
                           type="text"
                           disabled={isFormDisabled}
                           {...register(`players.${index}.playerUID`, {
-                            required: 'UID is required',
+                            required: 'Free Fire UID is required',
                             pattern: {
                               value: /^[0-9]+$/,
                               message: 'Numbers only'
                             }
                           })}
                           placeholder={isFormDisabled ? 'Closed' : 'e.g. 192837465'}
-                          className={`w-full form-input-sm ${errors.players?.[index]?.playerUID ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                          className={`w-full form-input-sm transition-all ${
+                            errors.players?.[index]?.playerUID 
+                              ? '!border-red-500 !bg-red-950/20 focus:!ring-red-500/30' 
+                              : ''
+                          } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                         />
                         {errors.players?.[index]?.playerUID && (
-                          <p className="text-red-400 text-[10px] mt-1 font-sans">
-                            {errors.players[index].playerUID.message || 'UID required'}
+                          <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
+                            <AlertCircle className="w-3 h-3 flex-shrink-0" /> {errors.players[index].playerUID.message || 'UID required'}
                           </p>
                         )}
                       </div>
@@ -794,9 +1202,14 @@ export default function RegistrationForm() {
                           Player Role <span className="text-rose-400">*</span>
                         </label>
                         <select
+                          id={`input-player-${index}-role`}
                           disabled={isFormDisabled}
-                          {...register(`players.${index}.role`, { required: 'Role is required' })}
-                          className={`w-full form-input-sm cursor-pointer ${errors.players?.[index]?.role ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                          {...register(`players.${index}.role`, { required: 'Please select a role' })}
+                          className={`w-full form-input-sm cursor-pointer transition-all ${
+                            errors.players?.[index]?.role 
+                              ? '!border-red-500 !bg-red-950/20 focus:!ring-red-500/30' 
+                              : ''
+                          } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                         >
                           <option value="" className="bg-[#16161a] text-slate-400">Select Role</option>
                           <option value="IGL" className="bg-[#16161a] text-slate-100">IGL (In-Game Leader)</option>
@@ -805,7 +1218,9 @@ export default function RegistrationForm() {
                           <option value="Support" className="bg-[#16161a] text-slate-100">Support / Flanker</option>
                         </select>
                         {errors.players?.[index]?.role && (
-                          <p className="text-red-400 text-[10px] mt-1 font-sans">Role required</p>
+                          <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
+                            <AlertCircle className="w-3 h-3 flex-shrink-0" /> Role required
+                          </p>
                         )}
                       </div>
                     </div>
@@ -814,11 +1229,16 @@ export default function RegistrationForm() {
               </div>
 
               {/* Substitute Player 5 Card (Spacious & Clearly Identified) */}
-              <div className={`p-4 sm:p-5 rounded-xl border transition-all duration-200 ${
-                isP5Active 
-                  ? 'bg-[#1a1a20] border-gold/40 shadow-sm' 
-                  : 'bg-[#141418] border-slate-800/80 hover:border-slate-700'
-              }`}>
+              <div 
+                id="container-player-4"
+                className={`p-4 sm:p-5 rounded-xl border transition-all duration-200 ${
+                  errors.players?.[4]?.playerName || errors.players?.[4]?.playerUID || errors.players?.[4]?.role
+                    ? 'bg-[#1e1518] border-rose-500/60 shadow-sm'
+                    : isP5Active 
+                    ? 'bg-[#1a1a20] border-gold/40 shadow-sm' 
+                    : 'bg-[#141418] border-slate-800/80 hover:border-slate-700'
+                }`}
+              >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3 mb-4">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-slate-400" />
@@ -827,7 +1247,7 @@ export default function RegistrationForm() {
                         Player 5 — Substitute Roster
                       </h3>
                       <p className="text-[11px] text-slate-400 font-sans">
-                        Optional reserve player who can substitute during matches.
+                        Optional reserve player. If filled, IGN, numeric UID, and Role are required.
                       </p>
                     </div>
                   </div>
@@ -843,14 +1263,21 @@ export default function RegistrationForm() {
                       Substitute IGN
                     </label>
                     <input
+                      id="input-player-4-name"
                       type="text"
                       disabled={isFormDisabled}
-                      {...register('players.4.playerName', { required: isP5Active ? 'IGN required if substitute is added' : false })}
+                      {...register('players.4.playerName', { required: isP5Active ? 'Substitute IGN required' : false })}
                       placeholder={isFormDisabled ? 'Closed' : 'Optional IGN'}
-                      className={`w-full form-input-sm ${errors.players?.[4]?.playerName ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                      className={`w-full form-input-sm transition-all ${
+                        errors.players?.[4]?.playerName 
+                          ? '!border-red-500 !bg-red-950/20' 
+                          : ''
+                      } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                     />
                     {errors.players?.[4]?.playerName && (
-                      <p className="text-red-400 text-[10px] mt-1 font-sans">Required</p>
+                      <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
+                        <AlertCircle className="w-3 h-3 flex-shrink-0" /> {errors.players[4].playerName.message || 'IGN required'}
+                      </p>
                     )}
                   </div>
 
@@ -860,21 +1287,27 @@ export default function RegistrationForm() {
                       Substitute UID
                     </label>
                     <input
+                      id="input-player-4-uid"
                       type="text"
                       disabled={isFormDisabled}
                       {...register('players.4.playerUID', {
-                        required: isP5Active ? 'UID required if substitute is added' : false,
+                        required: isP5Active ? 'Substitute UID required' : false,
                         pattern: {
                           value: /^(|[0-9]+)$/,
                           message: 'Numbers only'
                         }
                       })}
                       placeholder={isFormDisabled ? 'Closed' : 'Optional UID'}
-                      className={`w-full form-input-sm ${errors.players?.[4]?.playerUID ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                      className={`w-full form-input-sm transition-all ${
+                        errors.players?.[4]?.playerUID 
+                          ? '!border-red-500 !bg-red-950/20' 
+                          : ''
+                      } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                     />
                     {errors.players?.[4]?.playerUID && (
-                      <p className="text-red-400 text-[10px] mt-1 font-sans">
-                        {errors.players[4].playerUID.message || 'Required'}
+                      <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
+                        <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                        {errors.players[4].playerUID.message || 'UID required'}
                       </p>
                     )}
                   </div>
@@ -885,9 +1318,14 @@ export default function RegistrationForm() {
                       Substitute Role
                     </label>
                     <select
+                      id="input-player-4-role"
                       disabled={isFormDisabled}
-                      {...register('players.4.role', { required: isP5Active ? 'Role required if substitute is added' : false })}
-                      className={`w-full form-input-sm cursor-pointer ${errors.players?.[4]?.role ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                      {...register('players.4.role', { required: isP5Active ? 'Substitute Role required' : false })}
+                      className={`w-full form-input-sm cursor-pointer transition-all ${
+                        errors.players?.[4]?.role 
+                          ? '!border-red-500 !bg-red-950/20' 
+                          : ''
+                      } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                     >
                       <option value="" className="bg-[#16161a] text-slate-400">Select Role (Optional)</option>
                       <option value="Substitute" className="bg-[#16161a] text-slate-100">Substitute (All-Rounder)</option>
@@ -896,7 +1334,9 @@ export default function RegistrationForm() {
                       <option value="Support" className="bg-[#16161a] text-slate-100">Support</option>
                     </select>
                     {errors.players?.[4]?.role && (
-                      <p className="text-red-400 text-[10px] mt-1 font-sans">Required</p>
+                      <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
+                        <AlertCircle className="w-3 h-3 flex-shrink-0" /> Role required
+                      </p>
                     )}
                   </div>
                 </div>
@@ -958,13 +1398,16 @@ export default function RegistrationForm() {
                       const preview = tiktokPreviews[idx];
                       const playerName = watch(`players.${idx}.playerName`) || `Player ${idx + 1}`;
                       const isReady = watch(`players.${idx}.playerName`)?.trim();
+                      const isMissing = showUploadErrors && !file;
 
                       return (
                         <div
                           key={idx}
                           id={`tiktok-file-container-${idx}`}
-                          className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-colors ${
-                            showUploadErrors && !file ? 'border-rose-500/70 bg-rose-950/20' : 'border-slate-800'
+                          className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-all ${
+                            isMissing 
+                              ? 'border-rose-500 bg-rose-950/30 ring-1 ring-rose-500/50 shadow-[0_0_12px_rgba(244,63,94,0.2)]' 
+                              : 'border-slate-800'
                           }`}
                         >
                           <div className="flex items-center gap-2 min-w-0">
@@ -974,6 +1417,11 @@ export default function RegistrationForm() {
                             <span className="text-xs text-slate-300 font-medium truncate">
                               {playerName}
                             </span>
+                            {isMissing && (
+                              <span className="text-[9px] px-1.5 py-0.5 rounded bg-rose-900/80 text-rose-300 font-gaming font-bold uppercase tracking-wider flex items-center gap-1 shrink-0">
+                                <AlertTriangle className="w-2.5 h-2.5 text-rose-300" /> Missing
+                              </span>
+                            )}
                           </div>
 
                           <div className="shrink-0 flex items-center gap-2">
@@ -1001,7 +1449,9 @@ export default function RegistrationForm() {
                                   htmlFor={`tiktok-file-${idx}`}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
                                     isReady && !isFormDisabled
-                                      ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
+                                      ? isMissing
+                                        ? 'bg-rose-900 hover:bg-rose-800 border-rose-500 text-white cursor-pointer animate-pulse'
+                                        : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
                                       : 'bg-slate-900 border-slate-800 text-slate-600 opacity-50 cursor-not-allowed pointer-events-none'
                                   }`}
                                 >
@@ -1060,13 +1510,16 @@ export default function RegistrationForm() {
                       const preview = igPreviews[idx];
                       const playerName = watch(`players.${idx}.playerName`) || `Player ${idx + 1}`;
                       const isReady = watch(`players.${idx}.playerName`)?.trim();
+                      const isMissing = showUploadErrors && !file;
 
                       return (
                         <div
                           key={idx}
                           id={`ig-file-container-${idx}`}
-                          className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-colors ${
-                            showUploadErrors && !file ? 'border-rose-500/70 bg-rose-950/20' : 'border-slate-800'
+                          className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-all ${
+                            isMissing 
+                              ? 'border-rose-500 bg-rose-950/30 ring-1 ring-rose-500/50 shadow-[0_0_12px_rgba(244,63,94,0.2)]' 
+                              : 'border-slate-800'
                           }`}
                         >
                           <div className="flex items-center gap-2 min-w-0">
@@ -1076,6 +1529,11 @@ export default function RegistrationForm() {
                             <span className="text-xs text-slate-300 font-medium truncate">
                               {playerName}
                             </span>
+                            {isMissing && (
+                              <span className="text-[9px] px-1.5 py-0.5 rounded bg-rose-900/80 text-rose-300 font-gaming font-bold uppercase tracking-wider flex items-center gap-1 shrink-0">
+                                <AlertTriangle className="w-2.5 h-2.5 text-rose-300" /> Missing
+                              </span>
+                            )}
                           </div>
 
                           <div className="shrink-0 flex items-center gap-2">
@@ -1103,7 +1561,9 @@ export default function RegistrationForm() {
                                   htmlFor={`ig-file-${idx}`}
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
                                     isReady && !isFormDisabled
-                                      ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
+                                      ? isMissing
+                                        ? 'bg-rose-900 hover:bg-rose-800 border-rose-500 text-white cursor-pointer animate-pulse'
+                                        : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
                                       : 'bg-slate-900 border-slate-800 text-slate-600 opacity-50 cursor-not-allowed pointer-events-none'
                                   }`}
                                 >
@@ -1133,7 +1593,12 @@ export default function RegistrationForm() {
             </div>
 
             {/* SECTION 4: TERMS & CONDITIONS */}
-            <div className="bg-[#16161a] border border-slate-800 rounded-2xl p-5 md:p-7 space-y-4 shadow-sm">
+            <div 
+              id="terms-container" 
+              className={`bg-[#16161a] border rounded-2xl p-5 md:p-7 space-y-4 shadow-sm transition-all duration-200 ${
+                errors.termsAccepted ? 'border-rose-500/70 bg-[#1e1417]' : 'border-slate-800'
+              }`}
+            >
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-3">
                   <span className="w-6 h-6 rounded-md bg-gold/15 border border-gold/30 flex items-center justify-center font-gaming font-black text-xs text-gold">
@@ -1147,11 +1612,11 @@ export default function RegistrationForm() {
                 </div>
               </div>
 
-              <div id="terms-container" className="flex items-start gap-3 cursor-pointer select-none font-sans pt-1">
+              <div className="flex items-start gap-3 cursor-pointer select-none font-sans pt-1">
                 <div className="relative flex items-center mt-0.5">
                   <input
                     type="checkbox"
-                    {...register('termsAccepted', { required: 'You must accept the terms to participate' })}
+                    {...register('termsAccepted', { required: 'You must agree to official tournament rules to register' })}
                     className="sr-only peer"
                     id="terms-check"
                     disabled={isFormDisabled}
@@ -1160,7 +1625,13 @@ export default function RegistrationForm() {
                     htmlFor="terms-check"
                     className={`w-5 h-5 bg-[#1a1a20] border-2 rounded-md flex items-center justify-center transition-all ${
                       isFormDisabled ? 'border-slate-800 cursor-not-allowed opacity-50' : 'cursor-pointer'
-                    } ${watchTerms && !isFormDisabled ? 'border-gold bg-gold text-black shadow-gold-glow' : 'border-slate-600 hover:border-gold'}`}
+                    } ${
+                      errors.termsAccepted && !watchTerms 
+                        ? 'border-rose-500 ring-2 ring-rose-500/30' 
+                        : watchTerms && !isFormDisabled 
+                        ? 'border-gold bg-gold text-black shadow-gold-glow' 
+                        : 'border-slate-600 hover:border-gold'
+                    }`}
                   >
                     {watchTerms && !isFormDisabled && <Check className="w-3.5 h-3.5 text-black font-black stroke-[3.5]" />}
                   </label>
@@ -1172,14 +1643,50 @@ export default function RegistrationForm() {
                 </label>
               </div>
               {errors.termsAccepted && (
-                <p className="text-red-400 text-xs flex items-center gap-1 font-medium pl-8 font-sans">
-                  <AlertTriangle className="w-3.5 h-3.5" /> {errors.termsAccepted.message}
+                <p className="text-red-400 text-xs flex items-center gap-1.5 font-medium pl-8 font-sans">
+                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 text-red-400" /> {errors.termsAccepted.message}
                 </p>
               )}
             </div>
 
-            {/* SUBMIT BUTTON */}
-            <div className="flex flex-col items-center pt-2 space-y-4">
+            {/* BOTTOM ERROR SUMMARY BOX (Before Submit Button) */}
+            {formAttempted && activeErrorsList.length > 0 && (
+              <div className="p-4 md:p-5 rounded-xl bg-gradient-to-b from-[#220d11] to-[#160a0d] border border-rose-500/60 shadow-[0_0_20px_rgba(244,63,94,0.2)] font-sans space-y-3">
+                <div className="flex items-center justify-between gap-2 border-b border-rose-500/30 pb-2">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-rose-400" />
+                    <span className="font-gaming font-bold text-xs text-rose-200 uppercase tracking-wider">
+                      {activeErrorsList.length} Missing / Incomplete {activeErrorsList.length === 1 ? 'Field' : 'Fields'}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => focusAndHighlightElement(activeErrorsList[0].targetId, activeErrorsList[0].focusName)}
+                    className="text-[11px] text-rose-300 hover:text-white font-gaming font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                  >
+                    <span>Fix First Issue</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {activeErrorsList.map((err, idx) => (
+                    <button
+                      key={err.id || idx}
+                      type="button"
+                      onClick={() => focusAndHighlightElement(err.targetId, err.focusName)}
+                      className="px-2.5 py-1 rounded-lg bg-[#2d1117] hover:bg-rose-900/80 border border-rose-500/40 hover:border-rose-400 text-[11px] text-rose-200 flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
+                      <span className="font-semibold">{err.field || err.section}:</span>
+                      <span className="text-rose-300/90">{err.message}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* SUBMIT BUTTON SECTION */}
+            <div className="flex flex-col items-center pt-2 space-y-3">
               {!allProofsUploaded && !loading && !isFormDisabled && (
                 <div className="px-4 py-2 rounded-full bg-[#16161a] border border-slate-800 text-[11px] text-slate-400 font-gaming uppercase tracking-wider flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
@@ -1190,7 +1697,7 @@ export default function RegistrationForm() {
               <button
                 type="submit"
                 disabled={isSubmitDisabled}
-                className={`w-full max-w-sm font-gaming font-black uppercase text-xs md:text-sm tracking-widest py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group shadow-md ${
+                className={`w-full max-w-sm font-gaming font-black uppercase text-xs md:text-sm tracking-widest py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5 group shadow-md ${
                   isSubmitDisabled
                     ? 'bg-slate-800 text-slate-500 border border-slate-700 opacity-60 cursor-not-allowed'
                     : 'bg-softgold-gradient hover:brightness-110 text-black cursor-pointer transform hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(232,199,102,0.35)] hover:shadow-[0_6px_25px_rgba(232,199,102,0.5)]'
@@ -1198,8 +1705,8 @@ export default function RegistrationForm() {
               >
                 {loading ? (
                   <>
-                    <RefreshCw className="w-4 h-4 text-black animate-spin" />
-                    Submitting Registration...
+                    <RefreshCw className="w-4 h-4 text-black animate-spin shrink-0" />
+                    <span>SUBMITTING REGISTRATION... ({submitElapsedSec}s)</span>
                   </>
                 ) : isFormDisabled ? (
                   'REGISTRATION CLOSED'
@@ -1207,6 +1714,13 @@ export default function RegistrationForm() {
                   'SUBMIT REGISTRATION'
                 )}
               </button>
+
+              {loading && (
+                <div className="px-4 py-1.5 rounded-full bg-[#16161a] border border-gold/30 text-[11px] text-gold font-gaming uppercase tracking-wider flex items-center gap-2 animate-pulse">
+                  <Clock className="w-3.5 h-3.5 text-gold" />
+                  <span>Uploading screenshots & verifying squad... ({submitElapsedSec}s)</span>
+                </div>
+              )}
             </div>
           </form>
         )}

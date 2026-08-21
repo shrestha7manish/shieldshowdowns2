@@ -173,3 +173,19 @@ input[type=number] {
     transform: translateX(-50%);
   }
 }
+
+/* Form Error Highlighting */
+@keyframes errorPulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    border-color: #ef4444;
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.2);
+    border-color: #f87171;
+  }
+}
+
+.error-highlight-pulse {
+  animation: errorPulseGlow 1.2s ease-in-out 3;
+}
