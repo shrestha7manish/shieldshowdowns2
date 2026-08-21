@@ -15,11 +15,11 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(238, 245, 250, 0.6);
+  background: rgba(18, 18, 20, 0.8);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4F7CAC;
+  background: #334155;
   border-radius: 4px;
 }
 
@@ -58,90 +58,19 @@
 }
 
 .softgold-text-gradient {
-  background: linear-gradient(135deg, #243B53 0%, #4F7CAC 50%, #E8C766 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #E8C766 50%, #D4AF37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.gaming-grid-light {
-  background-image:
-    linear-gradient(rgba(79, 124, 172, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(79, 124, 172, 0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* Light Theme Inputs */
-.form-input-light {
-  background-color: #FFFFFF;
-  border: 1.5px solid #E5E7EB;
+/* Custom High Contrast inputs for esports dark theme */
+.form-input {
+  background-color: #1a1a20;
+  border: 1.5px solid #334155;
   border-radius: 0.5rem;
   padding: 0.75rem;
-  color: #243B53;
-  font-size: 0.875rem;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-  width: 100%;
-}
-
-.form-input-light::placeholder {
-  color: #94A3B8;
-}
-
-.form-input-light:focus {
-  outline: 2px solid transparent;
-  border-color: #4F7CAC;
-  box-shadow: 0 0 0 3px rgba(79, 124, 172, 0.15);
-  background-color: #FFFFFF;
-}
-
-.form-input-light-sm {
-  background-color: #FFFFFF;
-  border: 1.5px solid #E5E7EB;
-  border-radius: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  color: #243B53;
-  font-size: 0.75rem;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-  width: 100%;
-}
-
-.form-input-light-sm::placeholder {
-  color: #94A3B8;
-}
-
-.form-input-light-sm:focus {
-  outline: 2px solid transparent;
-  border-color: #4F7CAC;
-  box-shadow: 0 0 0 3px rgba(79, 124, 172, 0.15);
-  background-color: #FFFFFF;
-}
-
-/* Light Theme Marquee Masks */
-.marquee-container-light::before {
-  left: 0;
-  background: linear-gradient(to right, #F7F9FB 0%, rgba(247, 249, 251, 0) 100%);
-}
-
-.marquee-container-light::after {
-  right: 0;
-  background: linear-gradient(to left, #F7F9FB 0%, rgba(247, 249, 251, 0) 100%);
-}
-
-
-/* Custom High Contrast inputs for form simplicity & user friendliness */
-.form-input {
-  background-color: #0b0c10;
-  border: 1px solid #334155;
-  /* border-slate-700 */
-  border-radius: 0.375rem;
-  padding: 0.75rem;
   color: #f8fafc;
-  /* text-slate-50 */
   font-size: 0.875rem;
-  /* text-sm */
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 200ms;
@@ -150,25 +79,22 @@
 
 .form-input::placeholder {
   color: #64748b;
-  /* placeholder-slate-500 */
 }
 
 .form-input:focus {
   outline: 2px solid transparent;
-  border-color: #FFD700;
-  /* gold-bright */
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
-  background-color: #0d0e15;
+  border-color: #E8C766;
+  box-shadow: 0 0 0 3px rgba(232, 199, 102, 0.2);
+  background-color: #1c1c24;
 }
 
 .form-input-sm {
-  background-color: #0b0c10;
-  border: 1px solid #334155;
+  background-color: #1a1a20;
+  border: 1.5px solid #334155;
   border-radius: 0.375rem;
   padding: 0.5rem 0.75rem;
   color: #f8fafc;
   font-size: 0.75rem;
-  /* text-xs */
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 200ms;
@@ -181,9 +107,9 @@
 
 .form-input-sm:focus {
   outline: 2px solid transparent;
-  border-color: #FFD700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
-  background-color: #0d0e15;
+  border-color: #E8C766;
+  box-shadow: 0 0 0 3px rgba(232, 199, 102, 0.2);
+  background-color: #1c1c24;
 }
 
 /* Chrome, Safari, Edge, Opera: Hide number input spinners */
@@ -219,12 +145,12 @@ input[type=number] {
 
 .marquee-container::before {
   left: 0;
-  background: linear-gradient(to right, #F7F9FB 0%, rgba(247, 249, 251, 0) 100%);
+  background: linear-gradient(to right, #16161a 0%, rgba(22, 22, 26, 0) 100%);
 }
 
 .marquee-container::after {
   right: 0;
-  background: linear-gradient(to left, #F7F9FB 0%, rgba(247, 249, 251, 0) 100%);
+  background: linear-gradient(to left, #16161a 0%, rgba(22, 22, 26, 0) 100%);
 }
 
 .marquee-content {

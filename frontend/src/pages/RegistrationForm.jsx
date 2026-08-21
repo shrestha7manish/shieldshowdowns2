@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { Shield, Upload, CheckCircle2, AlertTriangle, Users, Award, Camera, User, Check, RefreshCw, Trophy, Trash2, Eye, ExternalLink, Clock } from 'lucide-react';
 import SponsorsSection from '../components/SponsorsSection';
+import Season1WinnerBanner from '../components/Season1WinnerBanner';
 
 export default function RegistrationForm() {
   const [loading, setLoading] = useState(false);
@@ -394,27 +395,27 @@ export default function RegistrationForm() {
       <div className="max-w-3xl mx-auto px-4 py-20 text-center font-sans">
         <div className="relative inline-block mb-6">
           <div className="absolute inset-0 bg-[#E8C766]/30 blur-2xl rounded-full" />
-          <CheckCircle2 className="w-24 h-24 text-[#E8C766] mx-auto relative filter drop-shadow-[0_4px_12px_rgba(232,199,102,0.4)]" />
+          <CheckCircle2 className="w-24 h-24 text-gold mx-auto relative filter drop-shadow-[0_4px_12px_rgba(232,199,102,0.4)]" />
         </div>
-        <h1 className="font-gaming font-black text-3xl md:text-5xl text-[#243B53] tracking-wider mb-2 uppercase italic">
-          REGISTRATION <span className="text-[#4F7CAC] font-black">SUBMITTED</span>
+        <h1 className="font-gaming font-black text-3xl md:text-5xl text-white tracking-wider mb-2 uppercase italic">
+          REGISTRATION <span className="text-gold font-black">SUBMITTED</span>
         </h1>
-        <p className="text-[#243B53]/80 font-sans text-base md:text-lg mb-6">
+        <p className="text-slate-300 font-sans text-base md:text-lg mb-6">
           Registration Submitted Successfully. Glory Awaits Your Team!
         </p>
 
         {/* Success Card */}
-        <div className="bg-[#EEF5FA] border-2 border-[#E8C766] rounded-2xl p-8 max-w-md mx-auto mb-10 shadow-lg">
-          <div className="text-xs uppercase tracking-widest text-[#4F7CAC] font-gaming mb-1 font-bold">Your Registration ID</div>
-          <div className="font-gaming font-black text-4xl text-[#243B53] tracking-widest mb-4">
+        <div className="bg-[#121214] border-2 border-gold rounded-2xl p-8 max-w-md mx-auto mb-10 shadow-[0_0_30px_rgba(232,199,102,0.2)]">
+          <div className="text-xs uppercase tracking-widest text-gold font-gaming mb-1 font-bold">Your Registration ID</div>
+          <div className="font-gaming font-black text-4xl text-white tracking-widest mb-4">
             {successData.registrationId}
           </div>
-          <div className="h-px bg-[#E5E7EB] w-3/4 mx-auto my-3" />
-          <div className="text-sm text-[#243B53] font-sans mb-4">
-            Team: <span className="font-bold text-[#4F7CAC] font-gaming">{successData.teamName}</span>
+          <div className="h-px bg-slate-800 w-3/4 mx-auto my-3" />
+          <div className="text-sm text-slate-300 font-sans mb-4">
+            Team: <span className="font-bold text-gold font-gaming">{successData.teamName}</span>
           </div>
-          <div className="p-3 bg-[#FAF8F2] border border-[#E8C766] text-[#8C6B14] rounded-xl text-xs font-sans leading-relaxed text-center shadow-sm">
-            <span className="font-gaming font-black tracking-wider block mb-1 text-[#8C6B14]">⚠️ ACTION REQUIRED</span>
+          <div className="p-3 bg-[#1a170d] border border-gold/40 text-gold rounded-xl text-xs font-sans leading-relaxed text-center shadow-sm">
+            <span className="font-gaming font-black tracking-wider block mb-1 text-gold">⚠️ ACTION REQUIRED</span>
             Please screenshot this registration card and submit it in our Discord server for verification.
           </div>
         </div>
@@ -434,7 +435,7 @@ export default function RegistrationForm() {
             onClick={() => {
               setSuccessData(null);
             }}
-            className="px-8 py-3 bg-[#4F7CAC] hover:bg-[#3D638D] font-gaming text-white font-bold tracking-wider rounded-xl transition-all duration-300 shadow-md transform hover:-translate-y-0.5 cursor-pointer"
+            className="px-8 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-600 font-gaming text-white font-bold tracking-wider rounded-xl transition-all duration-300 shadow-md transform hover:-translate-y-0.5 cursor-pointer"
           >
             Register Another Team
           </button>
@@ -457,10 +458,10 @@ export default function RegistrationForm() {
   return (
     <div className="w-full min-h-screen py-8 px-4 flex flex-col items-center gap-6 font-sans relative z-10">
       {/* Main Form Container */}
-      <div className="w-full max-w-5xl bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.55),0_0_20px_rgba(232,199,102,0.15)]">
+      <div className="w-full max-w-5xl bg-[#121214]/95 backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
 
         {/* HEADER SECTION (Banner Image) */}
-        <div className="relative border-b border-[#E5E7EB] overflow-hidden">
+        <div className="relative border-b border-slate-800 overflow-hidden">
           <img
             src="/banner.jpg"
             alt="The Shield Showdown Banner"
@@ -470,37 +471,37 @@ export default function RegistrationForm() {
 
         {/* TIMER BAR (If enabled) */}
         {timerConfig.isEnabled && (
-          <div className="border-b border-[#E5E7EB] bg-[#EEF5FA] p-5 font-sans relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <h3 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#E8C766]" /> {timerConfig.title || 'Registration Closes In'}
+          <div className="border-b border-slate-800 bg-[#16161a] p-5 sm:p-6 font-sans relative overflow-hidden text-center">
+            <div className="flex flex-col items-center justify-center gap-3 max-w-md mx-auto">
+              <h3 className="font-gaming font-bold text-xs sm:text-sm text-gold uppercase tracking-wider flex items-center justify-center gap-2">
+                <Clock className="w-4 h-4 text-gold" /> {timerConfig.title || 'Registration Closes In'}
               </h3>
 
               {isExpired || timerConfig.isClosed ? (
-                <div className="px-4 py-1.5 bg-rose-50 border border-rose-200 rounded-lg text-rose-600 font-gaming font-black text-xs tracking-wider uppercase">
+                <div className="px-4 py-1.5 bg-rose-950/70 border border-rose-800/60 text-rose-400 font-gaming font-black text-xs tracking-wider uppercase rounded-lg">
                   CLOSED
                 </div>
               ) : (
-                <div className="flex flex-wrap items-center gap-3">
-                  <div className="grid grid-cols-4 gap-2 text-center min-w-[220px]">
-                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
-                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.days}</span>
-                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Days</span>
+                <div className="flex flex-col items-center gap-2.5 w-full">
+                  <div className="grid grid-cols-4 gap-2.5 sm:gap-3 w-full max-w-xs">
+                    <div className="bg-[#1a1a20] border border-slate-700/80 rounded-xl p-2.5 shadow-sm text-center">
+                      <span className="block font-gaming font-black text-lg sm:text-xl text-white leading-tight">{timeLeft.days}</span>
+                      <span className="text-[9px] uppercase tracking-wider text-gold font-bold font-gaming">Days</span>
                     </div>
-                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
-                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.hours}</span>
-                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Hours</span>
+                    <div className="bg-[#1a1a20] border border-slate-700/80 rounded-xl p-2.5 shadow-sm text-center">
+                      <span className="block font-gaming font-black text-lg sm:text-xl text-white leading-tight">{timeLeft.hours}</span>
+                      <span className="text-[9px] uppercase tracking-wider text-gold font-bold font-gaming">Hours</span>
                     </div>
-                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
-                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.minutes}</span>
-                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Min</span>
+                    <div className="bg-[#1a1a20] border border-slate-700/80 rounded-xl p-2.5 shadow-sm text-center">
+                      <span className="block font-gaming font-black text-lg sm:text-xl text-white leading-tight">{timeLeft.minutes}</span>
+                      <span className="text-[9px] uppercase tracking-wider text-gold font-bold font-gaming">Min</span>
                     </div>
-                    <div className="bg-white border border-[#E5E7EB] rounded-lg p-2 min-w-[50px] shadow-sm">
-                      <span className="block font-gaming font-black text-lg text-[#243B53] leading-none">{timeLeft.seconds}</span>
-                      <span className="text-[8px] uppercase tracking-wider text-[#4F7CAC] font-bold">Sec</span>
+                    <div className="bg-[#1a1a20] border border-slate-700/80 rounded-xl p-2.5 shadow-sm text-center">
+                      <span className="block font-gaming font-black text-lg sm:text-xl text-white leading-tight">{timeLeft.seconds}</span>
+                      <span className="text-[9px] uppercase tracking-wider text-gold font-bold font-gaming">Sec</span>
                     </div>
                   </div>
-                  <div className="text-[11px] text-[#243B53]/70 font-sans font-mono whitespace-nowrap">
+                  <div className="text-[11px] text-slate-400 font-sans font-mono">
                     Deadline: {new Date(timerConfig.targetDate).toLocaleString()}
                   </div>
                 </div>
@@ -511,17 +512,17 @@ export default function RegistrationForm() {
 
         {/* INVITED TEAMS MARQUEE (If any exist) */}
         {invitedTeams.length > 0 && (
-          <div className="border-b border-[#E5E7EB] bg-[#F7F9FB] p-6 font-sans relative overflow-hidden">
-            <h3 className="font-gaming font-black text-xs text-[#4F7CAC] uppercase tracking-widest mb-4 flex items-center justify-center gap-2">
-              <Trophy className="w-4 h-4 text-[#E8C766] animate-pulse" /> CHAMPIONS & INVITED TEAMS
+          <div className="border-b border-slate-800 bg-[#16161a] p-6 font-sans relative overflow-hidden">
+            <h3 className="font-gaming font-black text-xs text-gold uppercase tracking-widest mb-4 flex items-center justify-center gap-2">
+              <Trophy className="w-4 h-4 text-gold animate-pulse" /> TOP 6 INVITED FROM SEASON 1
             </h3>
 
-            <div className="marquee-container marquee-container-light">
+            <div className="marquee-container">
               <div className="marquee-content">
                 {marqueeItems.map((team, idx) => (
                   <div
                     key={`${team.id}-${idx}`}
-                    className="flex-shrink-0 flex items-center justify-center bg-white border border-[#E5E7EB] rounded-xl p-3 w-28 h-20 shadow-sm hover:border-[#4F7CAC] hover:shadow-md hover:scale-105 transition-all duration-300"
+                    className="flex-shrink-0 flex items-center justify-center bg-[#1a1a20] border border-slate-800 rounded-xl p-3 w-28 h-20 shadow-sm hover:border-gold hover:shadow-gold-glow hover:scale-105 transition-all duration-300"
                   >
                     <img
                       src={team.logoUrl}
@@ -535,50 +536,51 @@ export default function RegistrationForm() {
           </div>
         )}
 
+        {/* SEASON 1 WINNER BANNER (Option 1 Inline Top Banner + Option 4 Expandable Modal) */}
+        <Season1WinnerBanner />
+
         {/* FORM FIELDS */}
         {isFormDisabled ? (
           <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
             <div className="relative mb-8">
               {/* Subtle Glowing Aura */}
-              <div className="absolute inset-0 bg-[#E8C766]/20 blur-3xl rounded-full scale-125" />
+              <div className="absolute inset-0 bg-gold/20 blur-3xl rounded-full scale-125" />
 
               {/* Inner Shield frame */}
-              <div className="relative bg-[#EEF5FA] border-2 border-[#E8C766] rounded-full p-8 shadow-lg flex items-center justify-center">
-                <Shield className="w-20 h-20 text-[#E8C766] animate-pulse" strokeWidth={1.5} />
-                <div className="absolute -bottom-1 -right-1 bg-[#4F7CAC] border-2 border-white rounded-full p-2.5 shadow-md">
-                  <Clock className="w-5 h-5 text-white" />
+              <div className="relative bg-[#16161a] border-2 border-gold rounded-full p-8 shadow-lg flex items-center justify-center">
+                <Shield className="w-20 h-20 text-gold" strokeWidth={1.5} />
+                <div className="absolute -bottom-1 -right-1 bg-gold border-2 border-black rounded-full p-2.5 shadow-md">
+                  <Clock className="w-5 h-5 text-black" />
                 </div>
               </div>
             </div>
 
             {/* Title */}
-            <h2 className="font-gaming font-black text-3xl md:text-5xl text-[#243B53] tracking-widest uppercase italic mb-3">
-              REGISTRATION <span className="text-[#4F7CAC]">CLOSED</span>
+            <h2 className="font-gaming font-black text-3xl md:text-4xl text-white tracking-wider uppercase italic mb-3">
+              REGISTRATION <span className="text-gold">CLOSED</span>
             </h2>
 
-            <div className="h-0.5 bg-gradient-to-r from-transparent via-[#E8C766] to-transparent w-48 mx-auto mb-6" />
-
             {/* Message */}
-            <p className="max-w-xl text-[#243B53]/80 font-sans text-sm md:text-base leading-relaxed mb-8">
-              The battle lines are drawn and the arenas are set. Sign-ups for <span className="text-[#243B53] font-bold font-gaming tracking-wide">The Shield Showdown</span> have officially ended. We want to thank all of the competitive teams who stepped up to register!
+            <p className="max-w-xl text-slate-300 font-sans text-sm md:text-base leading-relaxed mb-8">
+              The sign-up window for <span className="text-gold font-bold font-gaming tracking-wide">The Shield Showdown</span> is currently closed. Thank you to all registered teams!
             </p>
 
             {/* Info Boxes */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl w-full mb-10 font-sans text-left">
-              <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 hover:border-[#4F7CAC]/40 transition-all duration-300 shadow-sm">
-                <h4 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Trophy className="w-4 h-4 text-[#E8C766]" /> Registered Teams
+              <div className="bg-[#16161a] border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition-all duration-300 shadow-sm">
+                <h4 className="font-gaming font-bold text-xs text-gold uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <Trophy className="w-4 h-4 text-gold" /> Registered Teams
                 </h4>
-                <p className="text-xs text-[#243B53]/70 leading-relaxed">
+                <p className="text-xs text-slate-400 leading-relaxed">
                   All submitted registrations are currently undergoing database verification. Verified team brackets will be published soon.
                 </p>
               </div>
-              <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-5 hover:border-[#4F7CAC]/40 transition-all duration-300 shadow-sm">
-                <h4 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Award className="w-4 h-4 text-[#E8C766]" /> Discord Verification
+              <div className="bg-[#16161a] border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition-all duration-300 shadow-sm">
+                <h4 className="font-gaming font-bold text-xs text-gold uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-gold" /> Discord Verification
                 </h4>
-                <p className="text-xs text-[#243B53]/70 leading-relaxed">
-                  If you submitted your registration, please check your email and make sure your team leader has submitted verification in our Discord channel.
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Make sure your team captain is present in our official Discord server for match room credentials and bracket updates.
                 </p>
               </div>
             </div>
@@ -589,58 +591,67 @@ export default function RegistrationForm() {
                 href="https://discord.gg/MK7eQZayxd"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-8 py-3.5 bg-[#4F7CAC] hover:bg-[#3D638D] font-gaming text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-md transition-all duration-300 text-center cursor-pointer"
+                className="w-full sm:w-auto px-8 py-3.5 bg-gold-gradient hover:brightness-110 text-black font-gaming font-black text-xs uppercase tracking-widest rounded-xl shadow-gold-glow transition-all duration-300 text-center cursor-pointer"
               >
                 Join Discord Server
               </a>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="p-6 md:p-10 space-y-8 bg-white">
+          <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="p-6 md:p-10 space-y-8 bg-[#121214]">
 
             {/* Expired Warning Banner */}
             {isFormDisabled && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl flex items-center gap-3 font-sans text-sm shadow-sm">
-                <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 animate-bounce" />
+              <div className="bg-rose-950/60 border border-rose-800/60 text-rose-200 p-4 rounded-xl flex items-center gap-3 font-sans text-sm shadow-sm">
+                <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0" />
                 <div className="flex-grow text-left">
-                  <span className="font-gaming font-black tracking-wider block text-rose-900 text-base mb-1">REGISTRATION HAS ENDED</span>
-                  <span>The tournament registration window has officially closed. Submissions are no longer accepted.</span>
+                  <span className="font-gaming font-black tracking-wider block text-rose-100 text-sm mb-0.5">REGISTRATION WINDOW CLOSED</span>
+                  <span className="text-xs text-rose-300/90">Submissions are currently closed. Check Discord for tournament announcements.</span>
                 </div>
               </div>
             )}
 
             {/* Error Message */}
             {errorMsg && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl flex items-center gap-3 font-sans text-sm shadow-sm">
-                <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 animate-bounce" />
-                <span>{errorMsg}</span>
+              <div className="bg-rose-950/60 border border-rose-800/60 text-rose-200 p-4 rounded-xl flex items-center gap-3 font-sans text-sm shadow-sm">
+                <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0" />
+                <span className="text-xs">{errorMsg}</span>
               </div>
             )}
 
-            {/* SECTION 1: TEAM DETAILS */}
-            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
-              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
-                  TEAM DETAILS
-                </h2>
-                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
+            {/* SECTION 1: TEAM INFORMATION */}
+            <div className="bg-[#16161a] border border-slate-800 rounded-2xl p-5 md:p-7 space-y-6 shadow-sm">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-md bg-gold/15 border border-gold/30 flex items-center justify-center font-gaming font-black text-xs text-gold">
+                    01
+                  </span>
+                  <div>
+                    <h2 className="font-gaming font-bold text-sm md:text-base text-white tracking-wider uppercase">
+                      Team Information
+                    </h2>
+                    <p className="text-[11px] text-slate-400 font-sans mt-0.5">
+                      Enter your official team name and captain contact details.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 font-sans">
                 {/* Team Name */}
                 <div>
-                  <label className="block text-xs font-bold text-[#243B53] uppercase tracking-wider mb-2">
-                    Team Name <span className="text-red-500">*</span>
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    Team Name <span className="text-rose-400">*</span>
                   </label>
                   <input
                     type="text"
                     disabled={isFormDisabled}
                     {...register('teamName', { required: 'Team Name is required' })}
-                    placeholder={isFormDisabled ? 'Registration Closed' : 'Your team name'}
-                    className={`w-full form-input-light ${errors.teamName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
+                    placeholder={isFormDisabled ? 'Registration Closed' : 'e.g. Team Phoenix'}
+                    className={`w-full form-input ${errors.teamName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                   />
                   {errors.teamName && (
-                    <p className="text-red-600 text-xs mt-1.5 flex items-center gap-1">
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" /> {errors.teamName.message}
                     </p>
                   )}
@@ -648,18 +659,18 @@ export default function RegistrationForm() {
 
                 {/* Team Leader Name */}
                 <div>
-                  <label className="block text-xs font-bold text-[#243B53] uppercase tracking-wider mb-2">
-                    Team Leader Name <span className="text-red-500">*</span>
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    Team Captain / Leader Name <span className="text-rose-400">*</span>
                   </label>
                   <input
                     type="text"
                     disabled={isFormDisabled}
                     {...register('teamLeaderName', { required: 'Team Leader Name is required' })}
-                    placeholder={isFormDisabled ? 'Registration Closed' : 'Team leader full name'}
-                    className={`w-full form-input-light ${errors.teamLeaderName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
+                    placeholder={isFormDisabled ? 'Registration Closed' : 'e.g. John Doe'}
+                    className={`w-full form-input ${errors.teamLeaderName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                   />
                   {errors.teamLeaderName && (
-                    <p className="text-red-600 text-xs mt-1.5 flex items-center gap-1">
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" /> {errors.teamLeaderName.message}
                     </p>
                   )}
@@ -667,8 +678,8 @@ export default function RegistrationForm() {
 
                 {/* Email Address */}
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-bold text-[#243B53] uppercase tracking-wider mb-2">
-                    Email Address <span className="text-red-500">*</span>
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    Official Contact Email <span className="text-rose-400">*</span>
                   </label>
                   <input
                     type="email"
@@ -677,14 +688,14 @@ export default function RegistrationForm() {
                       required: 'Email Address is required',
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'Invalid email address'
+                        message: 'Please enter a valid email address'
                       }
                     })}
-                    placeholder={isFormDisabled ? 'Registration Closed' : 'official@team.com'}
-                    className={`w-full form-input-light ${errors.email ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
+                    placeholder={isFormDisabled ? 'Registration Closed' : 'captain@team.com'}
+                    className={`w-full form-input ${errors.email ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                   />
                   {errors.email && (
-                    <p className="text-red-600 text-xs mt-1.5 flex items-center gap-1">
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" /> {errors.email.message}
                     </p>
                   )}
@@ -692,436 +703,500 @@ export default function RegistrationForm() {
               </div>
             </div>
 
-            {/* SECTION 2: PLAYER DETAILS (5 PLAYERS) */}
-            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
-              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
-                  PLAYER DETAILS (5 PLAYERS)
-                </h2>
-                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
+            {/* SECTION 2: SQUAD ROSTER (4 Starters + 1 Optional Substitute) */}
+            <div className="bg-[#16161a] border border-slate-800 rounded-2xl p-5 md:p-7 space-y-6 shadow-sm">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-md bg-gold/15 border border-gold/30 flex items-center justify-center font-gaming font-black text-xs text-gold">
+                    02
+                  </span>
+                  <div>
+                    <h2 className="font-gaming font-bold text-sm md:text-base text-white tracking-wider uppercase">
+                      Squad Roster
+                    </h2>
+                    <p className="text-[11px] text-slate-400 font-sans mt-0.5">
+                      4 Core Starters required. 5th player is optional as a substitute.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              {/* Responsive Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                {[0, 1, 2, 3, 4].map((index) => {
-                  const isOptional = index === 4;
+              {/* Starters Grid: 4 Core Players */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[0, 1, 2, 3].map((index) => {
+                  const isCaptain = index === 0;
                   return (
                     <div
                       key={index}
-                      className={`bg-[#EEF5FA] border rounded-xl p-4 space-y-4 shadow-sm transition-all duration-300 ${isOptional
-                          ? 'border-[#E5E7EB] hover:border-[#E8C766]'
-                          : 'border-[#E5E7EB] hover:border-[#4F7CAC]/60'
-                        }`}
+                      className="bg-[#1a1a20] border border-slate-800 hover:border-slate-700 rounded-xl p-4 space-y-3.5 shadow-sm transition-all duration-200"
                     >
-                      <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-2">
-                        <h3 className="font-gaming font-black text-xs text-[#243B53] tracking-widest">
-                          PLAYER {index + 1}
-                        </h3>
-                        {isOptional ? (
-                          <span className="text-[9px] bg-[#FAF8F2] text-[#8C6B14] border border-[#E8C766] px-2 py-0.5 rounded font-bold uppercase tracking-wider font-gaming shadow-xs">
-                            Optional
-                          </span>
-                        ) : (
-                          <span className="text-[9px] bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded font-bold uppercase tracking-wider font-gaming shadow-xs">
-                            Required
-                          </span>
-                        )}
+                      <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                        <div className="flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5 text-gold" />
+                          <h3 className="font-gaming font-bold text-xs text-white tracking-wider uppercase">
+                            Player {index + 1}
+                          </h3>
+                        </div>
+                        <span className={`text-[9px] px-2 py-0.5 rounded font-gaming font-bold uppercase tracking-wider ${
+                          isCaptain
+                            ? 'bg-gold/15 text-gold border border-gold/30'
+                            : 'bg-slate-800 text-slate-300 border border-slate-700'
+                        }`}>
+                          {isCaptain ? 'Captain' : 'Starter'}
+                        </span>
                       </div>
 
-                      {/* Player Name */}
+                      {/* Player IGN */}
                       <div>
-                        <label className="block text-[10px] uppercase font-gaming text-[#243B53] mb-1 font-bold">
-                          Name In-Game
+                        <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
+                          In-Game Name (IGN) <span className="text-rose-400">*</span>
                         </label>
                         <input
                           type="text"
                           disabled={isFormDisabled}
-                          {...register(`players.${index}.playerName`, { required: (index < 4 || isP5Active) ? 'Name In-Game is required' : false })}
-                          placeholder={isFormDisabled ? 'Closed' : 'IGN'}
-                          className={`w-full form-input-light-sm ${errors.players?.[index]?.playerName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
+                          {...register(`players.${index}.playerName`, { required: 'IGN is required' })}
+                          placeholder={isFormDisabled ? 'Closed' : 'e.g. Shadow7'}
+                          className={`w-full form-input-sm ${errors.players?.[index]?.playerName ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                         />
                         {errors.players?.[index]?.playerName && (
-                          <p className="text-red-600 text-[10px] mt-1 font-sans font-medium">Required</p>
+                          <p className="text-red-400 text-[10px] mt-1 font-sans">IGN required</p>
                         )}
                       </div>
 
-                      {/* Player ID */}
+                      {/* Player UID */}
                       <div>
-                        <label className="block text-[10px] uppercase font-gaming text-[#243B53] mb-1 font-bold">
-                          Player ID (UID)
+                        <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
+                          Free Fire UID <span className="text-rose-400">*</span>
                         </label>
                         <input
                           type="text"
                           disabled={isFormDisabled}
                           {...register(`players.${index}.playerUID`, {
-                            required: (index < 4 || isP5Active) ? 'Player ID is required' : false,
+                            required: 'UID is required',
                             pattern: {
-                              value: (index < 4 || isP5Active) ? /^[0-9]+$/ : /^(|[0-9]+)$/,
+                              value: /^[0-9]+$/,
                               message: 'Numbers only'
                             }
                           })}
-                          placeholder={isFormDisabled ? 'Closed' : '12345678'}
-                          className={`w-full form-input-light-sm ${errors.players?.[index]?.playerUID ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
+                          placeholder={isFormDisabled ? 'Closed' : 'e.g. 192837465'}
+                          className={`w-full form-input-sm ${errors.players?.[index]?.playerUID ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                         />
                         {errors.players?.[index]?.playerUID && (
-                          <p className="text-red-600 text-[10px] mt-1 font-sans font-medium">
-                            {errors.players[index].playerUID.message || 'Required'}
+                          <p className="text-red-400 text-[10px] mt-1 font-sans">
+                            {errors.players[index].playerUID.message || 'UID required'}
                           </p>
                         )}
                       </div>
 
                       {/* Role */}
                       <div>
-                        <label className="block text-[10px] uppercase font-gaming text-[#243B53] mb-1 font-bold">
-                          Player Role
+                        <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
+                          Player Role <span className="text-rose-400">*</span>
                         </label>
                         <select
                           disabled={isFormDisabled}
-                          {...register(`players.${index}.role`, { required: (index < 4 || isP5Active) ? 'Role is required' : false })}
-                          className={`w-full form-input-light-sm cursor-pointer ${errors.players?.[index]?.role ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
+                          {...register(`players.${index}.role`, { required: 'Role is required' })}
+                          className={`w-full form-input-sm cursor-pointer ${errors.players?.[index]?.role ? '!border-red-500 focus:!ring-red-500/20' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                         >
-                          <option value="">Select Role</option>
-                          <option value="IGL">IGL</option>
-                          <option value="Rusher">Rusher</option>
-                          <option value="Sniper">Sniper</option>
-                          <option value="Support">Support</option>
+                          <option value="" className="bg-[#16161a] text-slate-400">Select Role</option>
+                          <option value="IGL" className="bg-[#16161a] text-slate-100">IGL (In-Game Leader)</option>
+                          <option value="Rusher" className="bg-[#16161a] text-slate-100">Rusher (Entry Fragger)</option>
+                          <option value="Sniper" className="bg-[#16161a] text-slate-100">Sniper</option>
+                          <option value="Support" className="bg-[#16161a] text-slate-100">Support / Flanker</option>
                         </select>
                         {errors.players?.[index]?.role && (
-                          <p className="text-red-600 text-[10px] mt-1 font-sans font-medium">Required</p>
+                          <p className="text-red-400 text-[10px] mt-1 font-sans">Role required</p>
                         )}
                       </div>
                     </div>
                   );
                 })}
               </div>
+
+              {/* Substitute Player 5 Card (Spacious & Clearly Identified) */}
+              <div className={`p-4 sm:p-5 rounded-xl border transition-all duration-200 ${
+                isP5Active 
+                  ? 'bg-[#1a1a20] border-gold/40 shadow-sm' 
+                  : 'bg-[#141418] border-slate-800/80 hover:border-slate-700'
+              }`}>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-slate-400" />
+                    <div>
+                      <h3 className="font-gaming font-bold text-xs sm:text-sm text-white uppercase tracking-wider">
+                        Player 5 — Substitute Roster
+                      </h3>
+                      <p className="text-[11px] text-slate-400 font-sans">
+                        Optional reserve player who can substitute during matches.
+                      </p>
+                    </div>
+                  </div>
+                  <span className="self-start sm:self-auto text-[10px] px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-gaming font-bold uppercase tracking-wider">
+                    Optional
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* P5 IGN */}
+                  <div>
+                    <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
+                      Substitute IGN
+                    </label>
+                    <input
+                      type="text"
+                      disabled={isFormDisabled}
+                      {...register('players.4.playerName', { required: isP5Active ? 'IGN required if substitute is added' : false })}
+                      placeholder={isFormDisabled ? 'Closed' : 'Optional IGN'}
+                      className={`w-full form-input-sm ${errors.players?.[4]?.playerName ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                    />
+                    {errors.players?.[4]?.playerName && (
+                      <p className="text-red-400 text-[10px] mt-1 font-sans">Required</p>
+                    )}
+                  </div>
+
+                  {/* P5 UID */}
+                  <div>
+                    <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
+                      Substitute UID
+                    </label>
+                    <input
+                      type="text"
+                      disabled={isFormDisabled}
+                      {...register('players.4.playerUID', {
+                        required: isP5Active ? 'UID required if substitute is added' : false,
+                        pattern: {
+                          value: /^(|[0-9]+)$/,
+                          message: 'Numbers only'
+                        }
+                      })}
+                      placeholder={isFormDisabled ? 'Closed' : 'Optional UID'}
+                      className={`w-full form-input-sm ${errors.players?.[4]?.playerUID ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                    />
+                    {errors.players?.[4]?.playerUID && (
+                      <p className="text-red-400 text-[10px] mt-1 font-sans">
+                        {errors.players[4].playerUID.message || 'Required'}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* P5 Role */}
+                  <div>
+                    <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
+                      Substitute Role
+                    </label>
+                    <select
+                      disabled={isFormDisabled}
+                      {...register('players.4.role', { required: isP5Active ? 'Role required if substitute is added' : false })}
+                      className={`w-full form-input-sm cursor-pointer ${errors.players?.[4]?.role ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                    >
+                      <option value="" className="bg-[#16161a] text-slate-400">Select Role (Optional)</option>
+                      <option value="Substitute" className="bg-[#16161a] text-slate-100">Substitute (All-Rounder)</option>
+                      <option value="Rusher" className="bg-[#16161a] text-slate-100">Rusher</option>
+                      <option value="Sniper" className="bg-[#16161a] text-slate-100">Sniper</option>
+                      <option value="Support" className="bg-[#16161a] text-slate-100">Support</option>
+                    </select>
+                    {errors.players?.[4]?.role && (
+                      <p className="text-red-400 text-[10px] mt-1 font-sans">Required</p>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* SECTION 3: SOCIAL MEDIA FOLLOW PROOFS */}
-            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
-              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
-                  SOCIAL MEDIA FOLLOW PROOFS (MANDATORY)
-                </h2>
-                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
+            {/* SECTION 3: SOCIAL MEDIA VERIFICATION */}
+            <div className="bg-[#16161a] border border-slate-800 rounded-2xl p-5 md:p-7 space-y-6 shadow-sm">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-md bg-gold/15 border border-gold/30 flex items-center justify-center font-gaming font-black text-xs text-gold">
+                    03
+                  </span>
+                  <div>
+                    <h2 className="font-gaming font-bold text-sm md:text-base text-white tracking-wider uppercase">
+                      Social Verification
+                    </h2>
+                    <p className="text-[11px] text-slate-400 font-sans mt-0.5">
+                      Upload proof of follow/subscription for Player 1 & Player 2.
+                    </p>
+                  </div>
+                </div>
               </div>
-
-              <p className="text-[#243B53]/80 text-xs md:text-sm font-sans">
-                Your team must follow our YouTube and Instagram. Upload screenshots verifying follow/subscription for Player 1 and Player 2.
-              </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
 
-                {/* YOUTUBE PROOF */}
-                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-4 sm:p-5 flex flex-col justify-between shadow-sm">
-                  <div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E5E7EB]">
-                      <div className="flex items-center gap-3">
-                        {/* YouTube Icon */}
-                        <div className="w-9 h-9 bg-[#FF0000] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
-                          <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
-                            <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.388.555a3.002 3.002 0 0 0-2.11 2.108C0 8.03 0 12 0 12s0 3.97.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.48 20.5 12 20.5 12 20.5s7.52 0-9.388-.555a3.002 3.002 0 0 0 2.11-2.108C24 15.97 24 12 24 12s0-3.97-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="font-gaming font-bold text-xs text-[#243B53] uppercase tracking-wider flex items-center gap-1.5">
-                            YOUTUBE PROOFS <span className="text-red-500">*</span>
-                          </h3>
-                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-0.5">
-                            Channel name & Subscribed must be visible.
-                          </p>
-                        </div>
+                {/* YOUTUBE PROOFS CARD */}
+                <div className="bg-[#1a1a20] border border-slate-800 rounded-xl p-5 flex flex-col justify-between shadow-sm space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 bg-[#FF0000] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                        <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 24 24">
+                          <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.388.555a3.002 3.002 0 0 0-2.11 2.108C0 8.03 0 12 0 12s0 3.97.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.48 20.5 12 20.5 12 20.5s7.52 0-9.388-.555a3.002 3.002 0 0 0 2.11-2.108C24 15.97 24 12 24 12s0-3.97-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
                       </div>
-
-                      {/* REDIRECT YT BUTTON */}
-                      <a
-                        href="https://youtu.be/YzaBVJJIxhE?is=kn_qD24OIbDlbKYq"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-[#FF0000] hover:bg-[#D90000] rounded-lg text-xs font-bold text-white transition-all shadow-sm w-full sm:w-auto shrink-0 cursor-pointer"
-                      >
-                        Subscribe Channel <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                      <div>
+                        <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider">
+                          YouTube Channel
+                        </h3>
+                        <p className="text-[10px] text-slate-400">Subscribe & take screenshot</p>
+                      </div>
                     </div>
 
-                    {/* Individual Upload Fields Grid */}
-                    <div className="space-y-3">
-                      {[...Array(proofRequiredCount)].map((_, idx) => {
-                        const file = ytFiles[idx];
-                        const preview = ytPreviews[idx];
-                        const playerName = watch(`players.${idx}.playerName`) || "";
-                        const playerRole = watch(`players.${idx}.role`) || "";
-                        const isReady = watch(`players.${idx}.playerName`)?.trim() &&
-                          watch(`players.${idx}.playerUID`)?.trim() &&
-                          watch(`players.${idx}.role`);
+                    <a
+                      href="https://youtu.be/YzaBVJJIxhE?is=kn_qD24OIbDlbKYq"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#FF0000] hover:bg-[#D90000] text-white rounded-lg text-xs font-bold transition-all shadow-sm shrink-0 cursor-pointer"
+                    >
+                      Subscribe <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
 
-                        return (
-                          <div
-                            key={idx}
-                            id={`yt-file-container-${idx}`}
-                            className={`bg-white border rounded-lg p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs transition-colors shadow-xs ${showUploadErrors && !file
-                                ? 'border-red-500 bg-rose-50/50'
-                                : 'border-[#E5E7EB]'
-                              }`}
-                          >
-                            <div className="flex items-center gap-2 flex-grow min-w-0">
-                              <User className="w-4 h-4 text-[#4F7CAC] shrink-0" />
-                              <div className="flex-grow flex items-center gap-1.5">
-                                <input
-                                  type="text"
-                                  disabled={isFormDisabled}
-                                  value={playerName}
-                                  onChange={(e) => setValue(`players.${idx}.playerName`, e.target.value, { shouldValidate: true })}
-                                  placeholder={isFormDisabled ? 'Closed' : `Player ${idx + 1} Name`}
-                                  className={`form-input-light-sm !py-1 !px-2 ${errors.players?.[idx]?.playerName ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
-                                />
-                                {playerRole && (
-                                  <span className="text-[9px] bg-[#DCEAF4] text-[#243B53] border border-[#4F7CAC]/25 px-1.5 py-0.5 rounded font-mono shrink-0 font-bold">
-                                    {playerRole}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
+                  {/* Upload Rows */}
+                  <div className="space-y-2.5">
+                    {[...Array(proofRequiredCount)].map((_, idx) => {
+                      const file = ytFiles[idx];
+                      const preview = ytPreviews[idx];
+                      const playerName = watch(`players.${idx}.playerName`) || `Player ${idx + 1}`;
+                      const isReady = watch(`players.${idx}.playerName`)?.trim();
 
-                            <div className="shrink-0 flex items-center gap-2">
-                              {file ? (
-                                <div className="flex items-center gap-2">
-                                  <div className="relative w-8 h-8 rounded border border-[#E5E7EB] overflow-hidden bg-slate-100 shadow-inner">
-                                    <img src={preview} alt="Youtube Proof" className="w-full h-full object-cover" />
-                                  </div>
-                                  <button
-                                    type="button"
-                                    disabled={isFormDisabled}
-                                    onClick={() => removeSlotFile(idx, 'youtube')}
-                                    className={`p-1 bg-red-600 hover:bg-red-500 text-white rounded cursor-pointer transition-colors ${isFormDisabled ? 'opacity-40 cursor-not-allowed' : ''}`}
-                                    title="Remove File"
-                                  >
-                                    <Trash2 className="w-3.5 h-3.5" />
-                                  </button>
-                                  <span className="text-emerald-600 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
-                                    <Check className="w-3.5 h-3.5 stroke-[3.5]" /> Done
-                                  </span>
-                                </div>
-                              ) : (
-                                <div>
-                                  <label
-                                    htmlFor={`yt-file-${idx}`}
-                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${isReady && !isFormDisabled
-                                        ? 'bg-[#DCEAF4] hover:bg-[#C9E0EF] border-[#4F7CAC]/30 text-[#243B53] cursor-pointer shadow-xs'
-                                        : 'bg-slate-100 border-[#E5E7EB] text-slate-400 opacity-50 cursor-not-allowed pointer-events-none'
-                                      }`}
-                                  >
-                                    <Upload className="w-3 h-3 text-[#4F7CAC]" /> Upload
-                                  </label>
-                                  <input
-                                    id={`yt-file-${idx}`}
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleSlotFileChange(e, idx, 'youtube')}
-                                    className="hidden"
-                                    disabled={!isReady || isFormDisabled}
-                                  />
-                                </div>
-                              )}
-                            </div>
+                      return (
+                        <div
+                          key={idx}
+                          className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-colors ${
+                            showUploadErrors && !file ? 'border-rose-500/70 bg-rose-950/20' : 'border-slate-800'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="w-5 h-5 rounded bg-slate-800 text-slate-300 font-gaming font-bold text-[10px] flex items-center justify-center shrink-0">
+                              P{idx + 1}
+                            </span>
+                            <span className="text-xs text-slate-300 font-medium truncate">
+                              {playerName}
+                            </span>
                           </div>
-                        );
-                      })}
-                    </div>
+
+                          <div className="shrink-0 flex items-center gap-2">
+                            {file ? (
+                              <div className="flex items-center gap-2">
+                                <div className="relative w-8 h-8 rounded border border-slate-700 overflow-hidden bg-black shadow-inner">
+                                  <img src={preview} alt="Proof" className="w-full h-full object-cover" />
+                                </div>
+                                <button
+                                  type="button"
+                                  disabled={isFormDisabled}
+                                  onClick={() => removeSlotFile(idx, 'youtube')}
+                                  className="p-1 bg-slate-800 hover:bg-red-900/80 text-slate-400 hover:text-red-200 rounded cursor-pointer transition-colors"
+                                  title="Remove File"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                                <span className="text-emerald-400 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
+                                  <Check className="w-3.5 h-3.5 stroke-[3]" /> Done
+                                </span>
+                              </div>
+                            ) : (
+                              <div>
+                                <label
+                                  htmlFor={`yt-file-${idx}`}
+                                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
+                                    isReady && !isFormDisabled
+                                      ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
+                                      : 'bg-slate-900 border-slate-800 text-slate-600 opacity-50 cursor-not-allowed pointer-events-none'
+                                  }`}
+                                >
+                                  <Upload className="w-3 h-3 text-gold" /> Upload
+                                </label>
+                                <input
+                                  id={`yt-file-${idx}`}
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleSlotFileChange(e, idx, 'youtube')}
+                                  className="hidden"
+                                  disabled={!isReady || isFormDisabled}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* INSTAGRAM PROOF */}
-                <div className="bg-[#EEF5FA] border border-[#E5E7EB] rounded-xl p-4 sm:p-5 flex flex-col justify-between shadow-sm">
-                  <div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#E5E7EB]">
-                      <div className="flex items-center gap-3">
-                        {/* Instagram Icon */}
-                        <div className="w-9 h-9 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
-                          <svg className="w-5 h-5 text-white stroke-current fill-none stroke-[2]" viewBox="0 0 24 24">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="font-gaming font-bold text-xs text-[#243B53] uppercase tracking-wider flex items-center gap-1.5">
-                            INSTAGRAM PROOFS <span className="text-red-500">*</span>
-                          </h3>
-                          <p className="text-[#243B53]/60 text-[10px] leading-relaxed mt-0.5">
-                            Username & Followed status must be visible.
-                          </p>
-                        </div>
+                {/* INSTAGRAM PROOFS CARD */}
+                <div className="bg-[#1a1a20] border border-slate-800 rounded-xl p-5 flex flex-col justify-between shadow-sm space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                        <svg className="w-4 h-4 text-white stroke-current fill-none stroke-[2]" viewBox="0 0 24 24">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
                       </div>
-
-                      {/* REDIRECT INSTA BUTTON */}
-                      <a
-                        href="https://www.instagram.com/theshieldesports10/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg text-xs font-bold text-white transition-all shadow-sm w-full sm:w-auto shrink-0 cursor-pointer"
-                      >
-                        Follow Instagram <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                      <div>
+                        <h3 className="font-gaming font-bold text-xs text-white uppercase tracking-wider">
+                          Instagram Page
+                        </h3>
+                        <p className="text-[10px] text-slate-400">Follow & take screenshot</p>
+                      </div>
                     </div>
 
-                    {/* Individual Upload Fields Grid */}
-                    <div className="space-y-3">
-                      {[...Array(proofRequiredCount)].map((_, idx) => {
-                        const file = igFiles[idx];
-                        const preview = igPreviews[idx];
-                        const playerName = watch(`players.${idx}.playerName`) || "";
-                        const playerRole = watch(`players.${idx}.role`) || "";
-                        const isReady = watch(`players.${idx}.playerName`)?.trim() &&
-                          watch(`players.${idx}.playerUID`)?.trim() &&
-                          watch(`players.${idx}.role`);
+                    <a
+                      href="https://www.instagram.com/theshieldesports10/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-bold transition-all shadow-sm shrink-0 cursor-pointer"
+                    >
+                      Follow <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
 
-                        return (
-                          <div
-                            key={idx}
-                            id={`ig-file-container-${idx}`}
-                            className={`bg-white border rounded-lg p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs transition-colors shadow-xs ${showUploadErrors && !file
-                                ? 'border-red-500 bg-rose-50/50'
-                                : 'border-[#E5E7EB]'
-                              }`}
-                          >
-                            <div className="flex items-center gap-2 flex-grow min-w-0">
-                              <User className="w-4 h-4 text-[#4F7CAC] shrink-0" />
-                              <div className="flex-grow flex items-center gap-1.5">
-                                <input
-                                  type="text"
-                                  disabled={isFormDisabled}
-                                  value={playerName}
-                                  onChange={(e) => setValue(`players.${idx}.playerName`, e.target.value, { shouldValidate: true })}
-                                  placeholder={isFormDisabled ? 'Closed' : `Player ${idx + 1} Name`}
-                                  className={`form-input-light-sm !py-1 !px-2 ${errors.players?.[idx]?.playerName ? '!border-red-500' : ''} ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''}`}
-                                />
-                                {playerRole && (
-                                  <span className="text-[9px] bg-[#DCEAF4] text-[#243B53] border border-[#4F7CAC]/25 px-1.5 py-0.5 rounded font-mono shrink-0 font-bold">
-                                    {playerRole}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
+                  {/* Upload Rows */}
+                  <div className="space-y-2.5">
+                    {[...Array(proofRequiredCount)].map((_, idx) => {
+                      const file = igFiles[idx];
+                      const preview = igPreviews[idx];
+                      const playerName = watch(`players.${idx}.playerName`) || `Player ${idx + 1}`;
+                      const isReady = watch(`players.${idx}.playerName`)?.trim();
 
-                            <div className="shrink-0 flex items-center gap-2">
-                              {file ? (
-                                <div className="flex items-center gap-2">
-                                  <div className="relative w-8 h-8 rounded border border-[#E5E7EB] overflow-hidden bg-slate-100 shadow-inner">
-                                    <img src={preview} alt="Instagram Proof" className="w-full h-full object-cover" />
-                                  </div>
-                                  <button
-                                    type="button"
-                                    disabled={isFormDisabled}
-                                    onClick={() => removeSlotFile(idx, 'instagram')}
-                                    className={`p-1 bg-red-600 hover:bg-red-500 text-white rounded cursor-pointer transition-colors ${isFormDisabled ? 'opacity-40 cursor-not-allowed' : ''}`}
-                                    title="Remove File"
-                                  >
-                                    <Trash2 className="w-3.5 h-3.5" />
-                                  </button>
-                                  <span className="text-emerald-600 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
-                                    <Check className="w-3.5 h-3.5 stroke-[3.5]" /> Done
-                                  </span>
-                                </div>
-                              ) : (
-                                <div>
-                                  <label
-                                    htmlFor={`ig-file-${idx}`}
-                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${isReady && !isFormDisabled
-                                        ? 'bg-[#DCEAF4] hover:bg-[#C9E0EF] border-[#4F7CAC]/30 text-[#243B53] cursor-pointer shadow-xs'
-                                        : 'bg-slate-100 border-[#E5E7EB] text-slate-400 opacity-50 cursor-not-allowed pointer-events-none'
-                                      }`}
-                                  >
-                                    <Upload className="w-3 h-3 text-[#4F7CAC]" /> Upload
-                                  </label>
-                                  <input
-                                    id={`ig-file-${idx}`}
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleSlotFileChange(e, idx, 'instagram')}
-                                    className="hidden"
-                                    disabled={!isReady || isFormDisabled}
-                                  />
-                                </div>
-                              )}
-                            </div>
+                      return (
+                        <div
+                          key={idx}
+                          className={`bg-[#121214] border rounded-lg p-2.5 flex items-center justify-between gap-3 text-xs transition-colors ${
+                            showUploadErrors && !file ? 'border-rose-500/70 bg-rose-950/20' : 'border-slate-800'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="w-5 h-5 rounded bg-slate-800 text-slate-300 font-gaming font-bold text-[10px] flex items-center justify-center shrink-0">
+                              P{idx + 1}
+                            </span>
+                            <span className="text-xs text-slate-300 font-medium truncate">
+                              {playerName}
+                            </span>
                           </div>
-                        );
-                      })}
-                    </div>
+
+                          <div className="shrink-0 flex items-center gap-2">
+                            {file ? (
+                              <div className="flex items-center gap-2">
+                                <div className="relative w-8 h-8 rounded border border-slate-700 overflow-hidden bg-black shadow-inner">
+                                  <img src={preview} alt="Proof" className="w-full h-full object-cover" />
+                                </div>
+                                <button
+                                  type="button"
+                                  disabled={isFormDisabled}
+                                  onClick={() => removeSlotFile(idx, 'instagram')}
+                                  className="p-1 bg-slate-800 hover:bg-red-900/80 text-slate-400 hover:text-red-200 rounded cursor-pointer transition-colors"
+                                  title="Remove File"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                                <span className="text-emerald-400 font-bold flex items-center gap-0.5 font-gaming text-[9px] uppercase tracking-wider">
+                                  <Check className="w-3.5 h-3.5 stroke-[3]" /> Done
+                                </span>
+                              </div>
+                            ) : (
+                              <div>
+                                <label
+                                  htmlFor={`ig-file-${idx}`}
+                                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border transition-all ${
+                                    isReady && !isFormDisabled
+                                      ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200 cursor-pointer'
+                                      : 'bg-slate-900 border-slate-800 text-slate-600 opacity-50 cursor-not-allowed pointer-events-none'
+                                  }`}
+                                >
+                                  <Upload className="w-3 h-3 text-gold" /> Upload
+                                </label>
+                                <input
+                                  id={`ig-file-${idx}`}
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleSlotFileChange(e, idx, 'instagram')}
+                                  className="hidden"
+                                  disabled={!isReady || isFormDisabled}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
 
-              {/* Warning Banner */}
-              <div className="bg-[#FAF8F2] border border-[#E8C766] rounded-xl p-3.5 text-center shadow-xs">
-                <p className="text-[#8C6B14] text-xs md:text-sm font-gaming font-bold tracking-widest flex items-center justify-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-[#8C6B14] animate-pulse" />
-                  WITHOUT PROOFS, YOUR TEAM WILL NOT BE REGISTERED.
-                </p>
+              <div className="text-[11px] text-slate-400 text-center font-sans">
+                Verification screenshots are checked by admins before bracket seeding.
               </div>
             </div>
 
             {/* SECTION 4: TERMS & CONDITIONS */}
-            <div className="bg-[#F7F9FB] border border-[#E5E7EB] rounded-2xl p-5 md:p-6 space-y-6 shadow-sm">
-              <div className="flex items-center gap-3 border-b border-[#E5E7EB] pb-3">
-                <h2 className="font-gaming font-bold text-base md:text-lg text-[#4F7CAC] uppercase tracking-wider">
-                  TERMS & CONDITIONS
-                </h2>
-                <div className="text-[#E8C766] font-mono tracking-widest text-sm font-bold">////</div>
+            <div className="bg-[#16161a] border border-slate-800 rounded-2xl p-5 md:p-7 space-y-4 shadow-sm">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-md bg-gold/15 border border-gold/30 flex items-center justify-center font-gaming font-black text-xs text-gold">
+                    04
+                  </span>
+                  <div>
+                    <h2 className="font-gaming font-bold text-sm md:text-base text-white tracking-wider uppercase">
+                      Tournament Agreement
+                    </h2>
+                  </div>
+                </div>
               </div>
 
-              <div id="terms-container" className="flex items-start gap-3 cursor-pointer select-none font-sans">
+              <div id="terms-container" className="flex items-start gap-3 cursor-pointer select-none font-sans pt-1">
                 <div className="relative flex items-center mt-0.5">
                   <input
                     type="checkbox"
-                    {...register('termsAccepted', { required: 'You must accept the terms and conditions' })}
+                    {...register('termsAccepted', { required: 'You must accept the terms to participate' })}
                     className="sr-only peer"
                     id="terms-check"
                     disabled={isFormDisabled}
                   />
                   <label
                     htmlFor="terms-check"
-                    className={`w-5 h-5 bg-white border-2 rounded-md flex items-center justify-center transition-all ${isFormDisabled ? 'border-[#E5E7EB] cursor-not-allowed opacity-55' : 'cursor-pointer'
-                      } ${watchTerms && !isFormDisabled ? 'border-[#4F7CAC] bg-[#4F7CAC] shadow-sm' : 'border-[#E5E7EB] hover:border-[#4F7CAC]'
-                      }`}
+                    className={`w-5 h-5 bg-[#1a1a20] border-2 rounded-md flex items-center justify-center transition-all ${
+                      isFormDisabled ? 'border-slate-800 cursor-not-allowed opacity-50' : 'cursor-pointer'
+                    } ${watchTerms && !isFormDisabled ? 'border-gold bg-gold text-black shadow-gold-glow' : 'border-slate-600 hover:border-gold'}`}
                   >
-                    {watchTerms && !isFormDisabled && <Check className="w-3.5 h-3.5 text-white font-black stroke-[3.5]" />}
+                    {watchTerms && !isFormDisabled && <Check className="w-3.5 h-3.5 text-black font-black stroke-[3.5]" />}
                   </label>
                 </div>
-                <label htmlFor="terms-check" className={`text-xs md:text-sm transition-colors leading-relaxed ${isFormDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-[#243B53] hover:text-[#4F7CAC] cursor-pointer'
-                  }`}>
-                  I agree to all the rules and regulations of The Shield Showdown. All details provided are correct and my team is ready to participate.
+                <label htmlFor="terms-check" className={`text-xs md:text-sm transition-colors leading-relaxed ${
+                  isFormDisabled ? 'text-gray-500 cursor-not-allowed' : 'text-slate-300 hover:text-white cursor-pointer'
+                }`}>
+                  I confirm that all team and player details provided are accurate. Our squad agrees to follow all official tournament rules and attend scheduled match lobbies on time.
                 </label>
               </div>
               {errors.termsAccepted && (
-                <p className="text-red-600 text-xs flex items-center gap-1 font-medium -mt-2 pl-8 font-sans">
+                <p className="text-red-400 text-xs flex items-center gap-1 font-medium pl-8 font-sans">
                   <AlertTriangle className="w-3.5 h-3.5" /> {errors.termsAccepted.message}
                 </p>
               )}
             </div>
 
             {/* SUBMIT BUTTON */}
-            <div className="flex flex-col items-center pt-2">
-              {/* Submit Requirements State message */}
+            <div className="flex flex-col items-center pt-2 space-y-4">
               {!allProofsUploaded && !loading && !isFormDisabled && (
-                <p className="text-[#243B53]/70 text-[11px] md:text-xs font-gaming uppercase tracking-wide text-center mb-4 leading-relaxed max-w-md animate-pulse">
-                  <span className="text-[#4F7CAC] font-black">Upload Proof Status:</span> YouTube ({activeYtFiles.filter(Boolean).length}/{proofRequiredCount}) &bull; Instagram ({activeIgFiles.filter(Boolean).length}/{proofRequiredCount})<br />
-                  <span className="text-rose-600 text-[10px] font-sans lowercase font-medium">(please upload follow screenshots for Player 1 and Player 2 before submitting)</span>
-                </p>
+                <div className="px-4 py-2 rounded-full bg-[#16161a] border border-slate-800 text-[11px] text-slate-400 font-gaming uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                  <span>Upload Status: YouTube ({activeYtFiles.filter(Boolean).length}/{proofRequiredCount}) &bull; Instagram ({activeIgFiles.filter(Boolean).length}/{proofRequiredCount})</span>
+                </div>
               )}
 
               <button
                 type="submit"
                 disabled={isSubmitDisabled}
-                className={`w-full max-w-sm font-gaming font-black uppercase text-sm md:text-base tracking-widest py-3.5 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group shadow-md ${isSubmitDisabled
-                    ? 'bg-slate-200 text-slate-400 border border-[#E5E7EB] opacity-60 cursor-not-allowed'
-                    : 'bg-softgold-gradient hover:brightness-105 text-[#243B53] cursor-pointer transform hover:-translate-y-0.5 shadow-[0_4px_15px_rgba(232,199,102,0.4)] hover:shadow-[0_6px_20px_rgba(232,199,102,0.6)]'
-                  }`}
+                className={`w-full max-w-sm font-gaming font-black uppercase text-xs md:text-sm tracking-widest py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group shadow-md ${
+                  isSubmitDisabled
+                    ? 'bg-slate-800 text-slate-500 border border-slate-700 opacity-60 cursor-not-allowed'
+                    : 'bg-softgold-gradient hover:brightness-110 text-black cursor-pointer transform hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(232,199,102,0.35)] hover:shadow-[0_6px_25px_rgba(232,199,102,0.5)]'
+                }`}
               >
                 {loading ? (
                   <>
-                    <RefreshCw className="w-5 h-5 text-[#243B53] animate-spin" />
-                    Submitting...
+                    <RefreshCw className="w-4 h-4 text-black animate-spin" />
+                    Submitting Registration...
                   </>
                 ) : isFormDisabled ? (
                   'REGISTRATION CLOSED'
@@ -1135,40 +1210,40 @@ export default function RegistrationForm() {
       </div>
 
       {/* Bottom widgets row */}
-      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
         {/* INSTRUCTIONS CARD */}
-        <div className="bg-[#EEF5FA]/95 backdrop-blur-md border border-[#E5E7EB] rounded-2xl p-6 shadow-[0_10px_25px_rgba(0,0,0,0.35)] relative overflow-hidden font-sans">
-          <h3 className="font-gaming font-bold text-xs text-[#4F7CAC] uppercase tracking-wider mb-4 border-b border-[#E5E7EB] pb-2">
+        <div className="bg-[#121214]/95 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-[0_10px_25px_rgba(0,0,0,0.5)] relative overflow-hidden">
+          <h3 className="font-gaming font-bold text-xs text-gold uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">
             REGISTRATION GUIDE
           </h3>
-          <ul className="text-xs text-[#243B53] space-y-3 list-none pl-0">
-            <li className="flex gap-2">
-              <span className="text-[#E8C766] font-gaming font-black text-sm">01.</span>
-              <span>Input your Team Name, Leader Name, Leader UID and Discord.</span>
+          <ul className="text-xs text-slate-300 space-y-3 list-none pl-0">
+            <li className="flex gap-2.5 items-start">
+              <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">01.</span>
+              <span>Provide your Team Name, Team Captain Name, and Contact Email.</span>
             </li>
-            <li className="flex gap-2">
-              <span className="text-[#E8C766] font-gaming font-black text-sm">02.</span>
-              <span>Provide information for at least 4 squad members (Player 5 is optional).</span>
+            <li className="flex gap-2.5 items-start">
+              <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">02.</span>
+              <span>Fill in player IGN, UID, and Roles for 4 starters (5th substitute optional).</span>
             </li>
-            <li className="flex gap-2">
-              <span className="text-[#E8C766] font-gaming font-black text-sm">03.</span>
-              <span>Upload social screenshots verifying subscription/follows for each player.</span>
+            <li className="flex gap-2.5 items-start">
+              <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">03.</span>
+              <span>Upload YouTube & Instagram screenshots for Player 1 and Player 2.</span>
             </li>
-            <li className="flex gap-2">
-              <span className="text-[#E8C766] font-gaming font-black text-sm">04.</span>
-              <span>Check "Agree" to the terms, click Submit and wait for confirmation.</span>
+            <li className="flex gap-2.5 items-start">
+              <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">04.</span>
+              <span>Accept the tournament terms and submit to receive your Registration ID.</span>
             </li>
           </ul>
         </div>
 
         {/* JOIN DISCORD CARD */}
-        <div className="bg-[#EEF5FA]/95 backdrop-blur-md border border-[#E5E7EB] rounded-2xl p-6 shadow-[0_10px_25px_rgba(0,0,0,0.35)] text-center flex flex-col justify-between relative overflow-hidden font-sans">
+        <div className="bg-[#121214]/95 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-[0_10px_25px_rgba(0,0,0,0.5)] text-center flex flex-col justify-between relative overflow-hidden">
           <div>
-            <h4 className="font-gaming font-black text-xs text-[#4F7CAC] uppercase tracking-wider mb-2">
-              GLORY AWAITS
+            <h4 className="font-gaming font-black text-xs text-gold uppercase tracking-wider mb-2">
+              TOURNAMENT COMMUNITY
             </h4>
-            <p className="text-xs text-[#243B53]/80 mb-4 font-sans leading-relaxed">
-              Need support or have tournament questions? Connect with our administration team directly.
+            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+              Have questions regarding brackets, schedules, or need help? Connect with the tournament administration team on Discord.
             </p>
           </div>
           <a
