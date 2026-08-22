@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const playerSchema = new mongoose.Schema({
   playerName: { type: String, required: true },
   playerUID: { type: String, required: true },
-  role: { type: String, enum: ['IGL', 'Rusher', 'Sniper', 'Support'], required: true }
+  role: { type: String, default: '' }
 });
 
 const registrationSchema = new mongoose.Schema({
@@ -18,7 +18,7 @@ const registrationSchema = new mongoose.Schema({
   },
   tiktokProofs: { type: [String], default: [] },
   youtubeProofs: { type: [String], default: [] },
-  instagramProofs: { type: [String], required: true },
+  instagramProofs: { type: [String], default: [] },
   submittedAt: { type: Date, default: Date.now }
 });
 

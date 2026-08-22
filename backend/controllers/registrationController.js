@@ -98,9 +98,9 @@ exports.createRegistration = async (req, res) => {
     const primaryVideoProofs = tiktokProofs.length > 0 ? tiktokProofs : youtubeProofs;
 
     // If files are missing, clean up any uploaded files and return error
-    if (!req.files || primaryVideoProofs.length === 0 || instagramProofs.length === 0) {
+    if (!req.files || (primaryVideoProofs.length === 0 && instagramProofs.length === 0)) {
       await cleanUploadedFiles(req.files);
-      return res.status(400).json({ message: 'Both TikTok and Instagram follow screenshots are required.' });
+      return res.status(400).json({ message: 'Please upload screenshot verification proofs for TikTok and Instagram.' });
     }
 
     const { teamName, teamLeaderName, email, discordUsername, players } = req.body;
@@ -119,40 +119,34 @@ exports.createRegistration = async (req, res) => {
       return res.status(400).json({ message: 'Between 4 and 5 players are required.' });
     }
 
-    // Handle optional Player 5
+    // Handle optional Player 5 (Substitute)
     if (parsedPlayers.length === 5) {
       const p5 = parsedPlayers[4];
-      const isP5Empty = !p5.playerName && !p5.playerUID && !p5.role;
+      const isP5Empty = !p5.playerName && !p5.playerUID;
       if (isP5Empty) {
         parsedPlayers = parsedPlayers.slice(0, 4);
       } else {
-        // If partially filled, validate it
-        if (!p5.playerName || !p5.playerUID || !p5.role) {
+        // If partially filled, ensure both Name and UID are provided
+        if (!p5.playerName || !p5.playerUID) {
           await cleanUploadedFiles(req.files);
-          return res.status(400).json({ message: 'Player 5 is incomplete. Please fill all fields (Name, UID, and Role) or leave them completely blank.' });
+          return res.status(400).json({ message: 'Player 5 (Substitute) is incomplete. Please fill both In-Game Name and UID, or leave them blank.' });
         }
       }
     }
 
-    // Validate required players (1 to 4) and verify numeric playerUID
+    // Validate required starter players (1 to 4) and verify numeric playerUID
     for (let i = 0; i < parsedPlayers.length; i++) {
       const p = parsedPlayers[i];
-      if (!p.playerName || !p.playerUID || !p.role) {
+      if (!p.playerName || !p.playerUID) {
         await cleanUploadedFiles(req.files);
-        return res.status(400).json({ message: `Player ${i + 1} is missing required fields (Name, UID, and Role).` });
+        return res.status(400).json({ message: `Player ${i + 1} is missing required fields (In-Game Name and UID).` });
       }
       if (!/^[0-9]+$/.test(p.playerUID)) {
         await cleanUploadedFiles(req.files);
         return res.status(400).json({ message: `Player ${i + 1} ID (UID) must contain numbers only.` });
       }
-    }
-
-    // Validate required proof count: requires 3 screenshots each (accepts >= 2 up to 5)
-    if (primaryVideoProofs.length < 2 || instagramProofs.length < 2) {
-      await cleanUploadedFiles(req.files);
-      return res.status(400).json({
-        message: 'Upload mismatch: You must upload 3 TikTok follow screenshots and 3 Instagram follow screenshots.'
-      });
+      // Ensure role string exists (defaults to empty string if not provided)
+      p.role = p.role ? String(p.role).trim() : '';
     }
 
     // Auto-generate sequential ID

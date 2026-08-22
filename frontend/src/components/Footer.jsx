@@ -1,33 +1,26 @@
 import React from 'react';
-import { Shield, Instagram, Youtube, MessageSquare } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-black border-t border-gold/10 py-8 px-6 md:px-12 mt-auto">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="flex items-center gap-3">
-          <Shield className="w-6 h-6 text-gold" />
-          <span className="font-gaming font-bold text-sm tracking-widest text-gold-bright">
-            THE SHIELD SHOWDOWN
-          </span>
-        </div>
-
-        <p className="text-gray-500 text-xs font-sans text-center md:text-left">
-          &copy; {new Date().getFullYear()} The Shield Showdown. All Rights Reserved. Glory Awaits the Brave.
-        </p>
-
-        <div className="flex items-center gap-4">
-          <a href="#" className="text-gray-400 hover:text-gold transition-colors duration-200">
-            <Youtube className="w-5 h-5" />
+    <footer className="bg-[#09090c] border-t border-slate-800/60 py-6 px-4 mt-auto font-sans relative z-10">
+      <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[11px] text-zinc-500 text-center">
+        <span>&copy; {new Date().getFullYear()} The Shield Showdown. All Rights Reserved.</span>
+        <span className="text-zinc-700 hidden sm:inline">&bull;</span>
+        <span className="inline-flex items-center gap-1 text-zinc-500">
+          Powered by{' '}
+          <a
+            href="https://www.facebook.com/profile.php?id=61563629297035"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-zinc-400 hover:text-gold transition-colors duration-200 inline-flex items-center gap-0.5 font-medium hover:underline cursor-pointer"
+          >
+            <span>Dynamatrix Solutions</span>
+            <ExternalLink className="w-2.5 h-2.5 opacity-60" />
           </a>
-          <a href="#" className="text-gray-400 hover:text-gold transition-colors duration-200">
-            <Instagram className="w-5 h-5" />
-          </a>
-          <a href="#" className="text-gray-400 hover:text-gold transition-colors duration-200">
-            <MessageSquare className="w-5 h-5" />
-          </a>
-        </div>
+        </span>
       </div>
     </footer>
   );
 }
+

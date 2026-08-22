@@ -390,16 +390,6 @@ export default function RegistrationForm() {
           focusName: `players.${i}.playerUID`
         });
       }
-      if (playerErrors?.role) {
-        list.push({
-          id: `players.${i}.role`,
-          section: `Player ${i + 1} (${roleLabel})`,
-          field: `Player ${i + 1} Role`,
-          message: 'Player Role must be selected',
-          targetId: `input-player-${i}-role`,
-          focusName: `players.${i}.role`
-        });
-      }
     }
 
     // 3. Player 5 (Substitute)
@@ -423,16 +413,6 @@ export default function RegistrationForm() {
           message: p5Errors.playerUID.message || 'Substitute UID must contain numbers only',
           targetId: 'input-player-4-uid',
           focusName: 'players.4.playerUID'
-        });
-      }
-      if (p5Errors?.role) {
-        list.push({
-          id: 'players.4.role',
-          section: 'Player 5 (Substitute)',
-          field: 'Substitute Role',
-          message: 'Substitute Role must be selected',
-          targetId: 'input-player-4-role',
-          focusName: 'players.4.role'
         });
       }
     }
@@ -550,12 +530,12 @@ export default function RegistrationForm() {
     }
 
     // 6. Player data incomplete
-    if (backendMsg.toLowerCase().includes('player')) {
+    if (backendMsg.toLowerCase().includes('player') || backendMsg.toLowerCase().includes('validation failed')) {
       return {
         status: 400,
         title: 'Squad Roster Validation Failed',
         reason: backendMsg,
-        solution: 'Check that all starter players have valid In-Game Names (IGN), numeric Free Fire UIDs, and selected roles.',
+        solution: 'Check that all starter players have valid In-Game Names (IGN) and numeric Free Fire UIDs.',
         raw: backendMsg
       };
     }
@@ -571,11 +551,10 @@ export default function RegistrationForm() {
       };
     }
 
-    // Default general fallback
     return {
       status: status || 400,
-      title: status === 400 ? 'Registration Validation Rejection' : 'Submission Error',
-      reason: backendMsg || 'The server could not process the registration request.',
+      title: 'Submission Error',
+      reason: backendMsg,
       solution: 'Please review all form fields, ensure your screenshots are uploaded, and try submitting again.',
       raw: backendMsg
     };
@@ -612,11 +591,20 @@ export default function RegistrationForm() {
     setLoading(true);
 
     try {
-      // Clean players array: only include first 4 always, add 5th only if fully filled
-      let cleanPlayers = data.players.slice(0, 4);
-      const p5 = data.players[4];
-      if (p5 && p5.playerName?.trim() && p5.playerUID?.trim() && p5.role) {
-        cleanPlayers.push(p5);
+      // Clean players array: first 4 core starters always, add 5th only if name or UID is provided
+      let cleanPlayers = (data.players || []).slice(0, 4).map(p => ({
+        playerName: p?.playerName?.trim() || '',
+        playerUID: p?.playerUID?.trim() || '',
+        role: p?.role?.trim() || ''
+      }));
+
+      const p5 = data.players?.[4];
+      if (p5 && (p5.playerName?.trim() || p5.playerUID?.trim())) {
+        cleanPlayers.push({
+          playerName: p5.playerName?.trim() || '',
+          playerUID: p5.playerUID?.trim() || '',
+          role: p5.role?.trim() || ''
+        });
       }
 
       const formData = new FormData();
@@ -1232,7 +1220,7 @@ export default function RegistrationForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[0, 1, 2, 3].map((index) => {
                   const isCaptain = index === 0;
-                  const hasPlayerError = !!(errors.players?.[index]?.playerName || errors.players?.[index]?.playerUID || errors.players?.[index]?.role);
+                  const hasPlayerError = !!(errors.players?.[index]?.playerName || errors.players?.[index]?.playerUID);
                   return (
                     <div
                       key={index}
@@ -1316,29 +1304,20 @@ export default function RegistrationForm() {
                       {/* Role */}
                       <div>
                         <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
-                          Player Role <span className="text-rose-400">*</span>
+                          Player Role <span className="text-slate-500 text-[9px] lowercase font-normal">(optional)</span>
                         </label>
                         <select
                           id={`input-player-${index}-role`}
                           disabled={isFormDisabled}
-                          {...register(`players.${index}.role`, { required: 'Please select a role' })}
-                          className={`w-full form-input-sm cursor-pointer transition-all ${
-                            errors.players?.[index]?.role 
-                              ? '!border-red-500 !bg-red-950/20 focus:!ring-red-500/30' 
-                              : ''
-                          } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                          {...register(`players.${index}.role`)}
+                          className={`w-full form-input-sm cursor-pointer transition-all ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                         >
-                          <option value="" className="bg-[#16161a] text-slate-400">Select Role</option>
+                          <option value="" className="bg-[#16161a] text-slate-400">Select Role (Optional)</option>
                           <option value="IGL" className="bg-[#16161a] text-slate-100">IGL (In-Game Leader)</option>
                           <option value="Rusher" className="bg-[#16161a] text-slate-100">Rusher (Entry Fragger)</option>
                           <option value="Sniper" className="bg-[#16161a] text-slate-100">Sniper</option>
                           <option value="Support" className="bg-[#16161a] text-slate-100">Support / Flanker</option>
                         </select>
-                        {errors.players?.[index]?.role && (
-                          <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
-                            <AlertCircle className="w-3 h-3 flex-shrink-0" /> Role required
-                          </p>
-                        )}
                       </div>
                     </div>
                   );
@@ -1349,7 +1328,7 @@ export default function RegistrationForm() {
               <div 
                 id="container-player-4"
                 className={`p-4 sm:p-5 rounded-xl border transition-all duration-200 ${
-                  errors.players?.[4]?.playerName || errors.players?.[4]?.playerUID || errors.players?.[4]?.role
+                  errors.players?.[4]?.playerName || errors.players?.[4]?.playerUID
                     ? 'bg-[#1e1518] border-rose-500/60 shadow-sm'
                     : isP5Active 
                     ? 'bg-[#1a1a20] border-gold/40 shadow-sm' 
@@ -1364,7 +1343,7 @@ export default function RegistrationForm() {
                         Player 5 — Substitute Roster
                       </h3>
                       <p className="text-[11px] text-slate-400 font-sans">
-                        Optional reserve player. If filled, IGN, numeric UID, and Role are required.
+                        Optional reserve player. If entered, In-Game Name and numeric UID are required (Role is optional).
                       </p>
                     </div>
                   </div>
@@ -1432,29 +1411,21 @@ export default function RegistrationForm() {
                   {/* P5 Role */}
                   <div>
                     <label className="block text-[10px] uppercase font-gaming text-slate-400 mb-1 font-bold">
-                      Substitute Role
+                      Substitute Role <span className="text-slate-500 text-[9px] lowercase font-normal">(optional)</span>
                     </label>
                     <select
                       id="input-player-4-role"
                       disabled={isFormDisabled}
-                      {...register('players.4.role', { required: isP5Active ? 'Substitute Role required' : false })}
-                      className={`w-full form-input-sm cursor-pointer transition-all ${
-                        errors.players?.[4]?.role 
-                          ? '!border-red-500 !bg-red-950/20' 
-                          : ''
-                      } ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
+                      {...register('players.4.role')}
+                      className={`w-full form-input-sm cursor-pointer transition-all ${isFormDisabled ? 'opacity-50 cursor-not-allowed bg-slate-900' : ''}`}
                     >
                       <option value="" className="bg-[#16161a] text-slate-400">Select Role (Optional)</option>
                       <option value="Substitute" className="bg-[#16161a] text-slate-100">Substitute (All-Rounder)</option>
+                      <option value="IGL" className="bg-[#16161a] text-slate-100">IGL (In-Game Leader)</option>
                       <option value="Rusher" className="bg-[#16161a] text-slate-100">Rusher</option>
                       <option value="Sniper" className="bg-[#16161a] text-slate-100">Sniper</option>
                       <option value="Support" className="bg-[#16161a] text-slate-100">Support</option>
                     </select>
-                    {errors.players?.[4]?.role && (
-                      <p className="text-red-400 text-[10px] mt-1 font-sans flex items-center gap-1 font-medium">
-                        <AlertCircle className="w-3 h-3 flex-shrink-0" /> Role required
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>
@@ -1861,7 +1832,7 @@ export default function RegistrationForm() {
             </li>
             <li className="flex gap-2.5 items-start">
               <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">02.</span>
-              <span>Fill in player IGN, UID, and Roles for 4 starters (5th substitute optional).</span>
+              <span>Fill in player IGN and UID for 4 starters (Player Roles & 5th substitute are optional).</span>
             </li>
             <li className="flex gap-2.5 items-start">
               <span className="text-gold font-gaming font-bold text-xs shrink-0 mt-0.5">03.</span>

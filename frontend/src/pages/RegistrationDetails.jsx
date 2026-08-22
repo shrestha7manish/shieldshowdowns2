@@ -186,7 +186,7 @@ export default function RegistrationDetails() {
                       <td className="py-3.5 px-4 text-gray-300 font-mono">{player.playerUID}</td>
                       <td className="py-3.5 px-4">
                         <span className="px-2 py-0.5 bg-[#1A1A1E] text-gold font-gaming text-xs font-bold tracking-wider rounded border border-gold/15">
-                          {player.role}
+                          {player.role || (idx === 4 ? 'Substitute' : 'Member')}
                         </span>
                       </td>
                     </tr>
