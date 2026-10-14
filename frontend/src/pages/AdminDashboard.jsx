@@ -172,11 +172,13 @@ export default function AdminDashboard() {
 
   async function fetchRegistrations() {
     setLoading(true);
+    setErrorMsg('');
     try {
       const response = await axios.get(`${API_BASE_URL}/registrations`, {
         params: { search }
       });
       setRegistrations(response.data || []);
+      setErrorMsg('');
     } catch (error) {
       console.error('Error fetching registrations:', error);
       setErrorMsg('Failed to load registration data.');
@@ -744,6 +746,12 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
               <div className="py-16 text-center text-red-400">
                 <ShieldAlert className="w-12 h-12 mx-auto mb-3 text-red-500" />
                 <p className="font-medium">{errorMsg}</p>
+                <button
+                  onClick={fetchRegistrations}
+                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 text-xs font-gaming text-black bg-gold-gradient rounded font-bold hover:brightness-110 cursor-pointer shadow-gold-glow transition-all"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" /> Retry
+                </button>
               </div>
             ) : filteredAndSortedRegistrations.length === 0 ? (
               <div className="py-20 text-center text-gray-500 font-sans">

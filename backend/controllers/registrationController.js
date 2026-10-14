@@ -181,10 +181,10 @@ exports.createRegistration = async (req, res) => {
   }
 };
 
-// Get all registrations with optional search
+// Get all registrations with optional search and pagination
 exports.getRegistrations = async (req, res) => {
   try {
-    const { search } = req.query;
+    const { search, limit, page } = req.query;
     let query = {};
 
     if (search) {
@@ -201,11 +201,24 @@ exports.getRegistrations = async (req, res) => {
       };
     }
 
-    const registrations = await Registration.find(query).sort({ submittedAt: -1 });
+    let cursor = Registration.find(query).sort({ submittedAt: -1 }).lean();
+
+    if (limit) {
+      const parsedLimit = parseInt(limit, 10);
+      if (parsedLimit > 0) {
+        if (page) {
+          const parsedPage = Math.max(1, parseInt(page, 10));
+          cursor = cursor.skip((parsedPage - 1) * parsedLimit);
+        }
+        cursor = cursor.limit(parsedLimit);
+      }
+    }
+
+    const registrations = await cursor;
     res.status(200).json(registrations);
   } catch (error) {
     console.error('Fetch error:', error);
-    res.status(500).json({ message: 'Error retrieving registrations.' });
+    res.status(500).json({ message: error.message || 'Error retrieving registrations.' });
   }
 };
 
@@ -248,9 +261,9 @@ exports.getRegistrationById = async (req, res) => {
 
     // Check if ID matches MongoDB ObjectId type
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      registration = await Registration.findById(id);
+      registration = await Registration.findById(id).lean();
     } else {
-      registration = await Registration.findOne({ registrationId: id });
+      registration = await Registration.findOne({ registrationId: id }).lean();
     }
 
     if (!registration) {

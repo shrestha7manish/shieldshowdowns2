@@ -3,6 +3,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 const connectDB = require('./config/db');
 const registrationRoutes = require('./routes/registrationRoutes');
 const settingRoutes = require('./routes/settingRoutes');
@@ -11,6 +12,9 @@ const app = express();
 
 // Connect to MongoDB Database
 connectDB();
+
+// Gzip compression middleware
+app.use(compression());
 
 // CORS - open to all origins (public registration API)
 app.use(cors());

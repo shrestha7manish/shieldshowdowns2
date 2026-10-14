@@ -19,7 +19,11 @@ const registrationSchema = new mongoose.Schema({
   tiktokProofs: { type: [String], default: [] },
   youtubeProofs: { type: [String], default: [] },
   instagramProofs: { type: [String], default: [] },
-  submittedAt: { type: Date, default: Date.now }
+  submittedAt: { type: Date, default: Date.now, index: true }
 });
+
+registrationSchema.index({ submittedAt: -1 });
+registrationSchema.index({ email: 1 });
+registrationSchema.index({ teamName: 1 });
 
 module.exports = mongoose.model('Registration', registrationSchema);
