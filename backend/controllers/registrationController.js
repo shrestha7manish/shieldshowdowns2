@@ -181,15 +181,20 @@ exports.createRegistration = async (req, res) => {
   }
 };
 
-// Get all registrations with optional search and pagination
+// Get all registrations with optional search, filtering, and pagination
 exports.getRegistrations = async (req, res) => {
   try {
-    const { search, limit, page } = req.query;
-    let query = {};
+    const { search, limit, page, realOnly } = req.query;
+    const conditions = [];
+
+    // Filter out dummy/test data by default unless realOnly is explicitly 'false'
+    if (realOnly !== 'false') {
+      conditions.push({ 'players.playerName': { $ne: 'john doe' } });
+    }
 
     if (search) {
       const searchRegex = new RegExp(search, 'i');
-      query = {
+      conditions.push({
         $or: [
           { registrationId: searchRegex },
           { teamName: searchRegex },
@@ -198,8 +203,10 @@ exports.getRegistrations = async (req, res) => {
           { 'players.playerName': searchRegex },
           { 'players.playerUID': searchRegex }
         ]
-      };
+      });
     }
+
+    const query = conditions.length > 0 ? { $and: conditions } : {};
 
     let cursor = Registration.find(query).sort({ submittedAt: -1 }).lean();
 
@@ -226,17 +233,22 @@ exports.getRegistrations = async (req, res) => {
 exports.getStats = async (req, res) => {
   try {
     const totalRegistrations = await Registration.countDocuments();
+    const realRegistrations = await Registration.countDocuments({
+      'players.playerName': { $ne: 'john doe' }
+    });
     
     // Start of today in server local time
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
 
     const registrationsToday = await Registration.countDocuments({
-      submittedAt: { $gte: startOfToday }
+      submittedAt: { $gte: startOfToday },
+      'players.playerName': { $ne: 'john doe' }
     });
 
-    // Find count of unique team names (case-insensitive group check or simple distinct group)
+    // Find count of unique team names among real teams
     const uniqueTeamsResult = await Registration.aggregate([
+      { $match: { 'players.playerName': { $ne: 'john doe' } } },
       { $group: { _id: { $toLower: '$teamName' } } },
       { $count: 'count' }
     ]);
@@ -244,6 +256,7 @@ exports.getStats = async (req, res) => {
 
     res.status(200).json({
       totalRegistrations,
+      realRegistrations,
       registrationsToday,
       totalTeams
     });

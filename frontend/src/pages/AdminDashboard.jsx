@@ -49,10 +49,11 @@ export default function AdminDashboard() {
   const [filterTab, setFilterTab] = useState('all'); // 'all', 'today', '5players', 'withProofs'
   const [sortBy, setSortBy] = useState('newest'); // 'newest', 'oldest', 'name_asc', 'name_desc'
   const [search, setSearch] = useState('');
+  const [showTestData, setShowTestData] = useState(false); // hide test/dummy john doe data by default
 
   // Dashboard Stats & Lists
   const [registrations, setRegistrations] = useState([]);
-  const [stats, setStats] = useState({ totalRegistrations: 0, registrationsToday: 0, totalTeams: 0 });
+  const [stats, setStats] = useState({ totalRegistrations: 0, realRegistrations: 0, registrationsToday: 0, totalTeams: 0 });
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -126,7 +127,7 @@ export default function AdminDashboard() {
       }, 300);
       return () => clearTimeout(delayDebounceFn);
     }
-  }, [search, isLoggedIn]);
+  }, [search, isLoggedIn, showTestData]);
 
   async function fetchTimerSettings() {
     try {
@@ -175,7 +176,7 @@ export default function AdminDashboard() {
     setErrorMsg('');
     try {
       const response = await axios.get(`${API_BASE_URL}/registrations`, {
-        params: { search }
+        params: { search, realOnly: showTestData ? 'false' : 'true' }
       });
       setRegistrations(response.data || []);
       setErrorMsg('');
@@ -585,8 +586,9 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
             <Users className="w-6 h-6 text-gold-bright" />
           </div>
           <div>
-            <span className="block text-[10px] uppercase font-gaming text-gray-400 tracking-wider">Total Registrations</span>
-            <span className="font-gaming font-black text-3xl text-white mt-0.5 block">{stats.totalRegistrations}</span>
+            <span className="block text-[10px] uppercase font-gaming text-gray-400 tracking-wider">Real Registrations</span>
+            <span className="font-gaming font-black text-3xl text-white mt-0.5 block">{stats.realRegistrations}</span>
+            <span className="text-[10px] text-gray-500 font-sans">{stats.totalRegistrations} total incl. test data</span>
           </div>
         </div>
 
@@ -719,6 +721,21 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                 <AlertTriangle className={`w-3.5 h-3.5 ${filterTab === 'duplicateEmail' ? 'text-black' : 'text-amber-400'}`} />
                 Duplicate Emails <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${filterTab === 'duplicateEmail' ? 'bg-black text-amber-400' : 'bg-amber-900/60 text-amber-300'}`}>{filterCounts.duplicateEmails}</span>
               </button>
+
+              {/* Test Data Toggle */}
+              <button
+                onClick={() => setShowTestData(prev => !prev)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium font-sans transition-all cursor-pointer flex items-center gap-1.5 ml-auto ${
+                  showTestData
+                    ? 'bg-slate-600 text-white border border-slate-400'
+                    : 'bg-[#14151c] text-gray-400 hover:bg-[#1e202a] border border-slate-700'
+                }`}
+                title={showTestData ? 'Currently showing all data including test entries' : 'Test data hidden — click to show'}
+              >
+                <Shield className={`w-3.5 h-3.5 ${showTestData ? 'text-amber-400' : 'text-gray-500'}`} />
+                {showTestData ? 'Hiding Test Data: OFF' : 'Hide Test Data: ON'}
+              </button>
+
               {/* Reset Filters shortcut */}
               {(filterTab !== 'all' || search || sortBy !== 'newest') && (
                 <button
@@ -727,7 +744,7 @@ ${(reg.players || []).map((p, i) => `${i + 1}. ${p.playerName} (UID: ${p.playerU
                     setSearch('');
                     setSortBy('newest');
                   }}
-                  className="ml-auto text-[11px] text-red-400 hover:text-red-300 flex items-center gap-1 transition-colors cursor-pointer"
+                  className="text-[11px] text-red-400 hover:text-red-300 flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <RefreshCw className="w-3 h-3" /> Reset Filters
                 </button>
